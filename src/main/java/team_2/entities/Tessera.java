@@ -38,14 +38,10 @@ public class Tessera {
 
     }
 
-    public Tessera(LocalDate dataInizio, LocalDate dataFine, boolean validitàTessera, PuntoDiEmissione puntoDiEmissione, Utente utente, List<Abbonamento> listaAbbonamento, List<Biglietto> listaBiglietto) {
+    public Tessera(LocalDate dataInizio, LocalDate dataFine, boolean validitàTessera) {
         this.dataInizio = dataInizio;
         this.dataFine = dataFine;
         this.validitàTessera = validitàTessera;
-        this.puntoDiEmissione = puntoDiEmissione;
-        this.utente = utente;
-        this.listaAbbonamento = listaAbbonamento;
-        this.listaBiglietto = listaBiglietto;
     }
 
 
