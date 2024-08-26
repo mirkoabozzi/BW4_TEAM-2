@@ -16,9 +16,10 @@ public class UtenteDAO {
 
     public void save(Utente utente) {
         EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
+        ;
         em.persist(utente);
-        transaction.commit();
+
+
         System.out.println("Utente " + utente.getNome() + " aggiunto nel DB");
     }
 

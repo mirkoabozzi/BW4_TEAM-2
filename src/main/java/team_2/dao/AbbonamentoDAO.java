@@ -16,9 +16,9 @@ public class AbbonamentoDAO {
 
     public void save(Abbonamento abbonamento) {
         EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
+
         em.persist(abbonamento);
-        transaction.commit();
+
         System.out.println("Abbonamento con id " + abbonamento.getId() + " aggiunto nel DB");
     }
 

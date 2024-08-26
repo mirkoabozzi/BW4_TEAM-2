@@ -16,9 +16,9 @@ public class BigliettoDAO {
 
     public void save(Biglietto biglietto) {
         EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
+
         em.persist(biglietto);
-        transaction.commit();
+
         System.out.println("Biglietto con id " + biglietto.getId() + " aggiunto nel DB");
     }
 
