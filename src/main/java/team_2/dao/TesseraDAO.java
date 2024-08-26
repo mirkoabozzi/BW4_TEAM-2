@@ -28,4 +28,13 @@ public class TesseraDAO {
             throw new NotFoundException(id);
         else return elementFound;
     }
+
+    public void findByIdAndDelete(String tesseraId) {
+        Tessera found = this.getById(tesseraId);
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        em.remove(found);
+        transaction.commit();
+        System.out.println("La tessera " + found.getId() + " è stato eliminata correttamente!");
+    }
 }

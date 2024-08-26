@@ -28,4 +28,13 @@ public class UtenteDAO {
             throw new NotFoundException(id);
         else return elementFound;
     }
+
+    public void findByIdAndDelete(String utenteId) {
+        Utente found = this.getById(utenteId);
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        em.remove(found);
+        transaction.commit();
+        System.out.println("L'utente " + found.getNome() + " " + found.getCognome() + " è stato eliminato correttamente!");
+    }
 }

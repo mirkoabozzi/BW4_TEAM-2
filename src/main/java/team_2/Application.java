@@ -27,7 +27,11 @@ public class Application {
         LocalDate date = fk.date().birthday(12, 90).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         return new Utente(fk.name().firstName(), fk.name().lastName(), date, r.nextInt(111111111, 999999999));
     };
-    //fare la tessera
+    public static Supplier<Tessera> tesseraCreateOne = () -> {
+        LocalDate initialDate = fk.date().birthday(2, 5).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate endDate = fk.date().birthday(0, 2).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return new Tessera(initialDate, endDate, r.nextInt(0, 1) == 0);
+    };
     public static Supplier<Abbonamento> abbonamentoCreateOne = () -> {
         LocalDate date = fk.date().birthday(0, 10).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         StatoAbbonamento[] statoAbbonamentoList = StatoAbbonamento.values();
@@ -117,34 +121,34 @@ public class Application {
 
         return utenteList;
     }
-//creare tessera
-// public static List<Tessera> createTessera() {
-//        List<Tessera> tesseraList = new ArrayList<>();
-//        Scanner sc = new Scanner(System.in);
-//        int numOfTessera;
-//        while (true) {
-//            System.out.println("quante persone vuoi creare?");
-//            try {
-//                numOfTessera = Integer.parseInt(sc.nextLine());
-//                break;
-//            } catch (InputMismatchException e) {
-//                System.out.println("inserisci un numero valido");
-//
-//            } catch (Exception e) {
-//                System.out.println("Errore: " + e.getMessage());
-//            }
-//        }
-//        try {
-//            for (int i = 0; i < numOfTessera; i++) {
-//                tesseraList.add(tesseraCreateOne.get());
-//            }
-//            System.out.println("persone create con successo");
-//        } catch (Exception e) {
-//            System.out.println("Errore: " + e.getMessage());
-//        }
-//
-//        return tesseraList;
-//    }
+
+    public static List<Tessera> createTessera() {
+        List<Tessera> tesseraList = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
+        int numOfTessera;
+        while (true) {
+            System.out.println("Quante persone vuoi creare?");
+            try {
+                numOfTessera = Integer.parseInt(sc.nextLine());
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Inserisci un numero valido");
+
+            } catch (Exception e) {
+                System.out.println("Errore: " + e.getMessage());
+            }
+        }
+        try {
+            for (int i = 0; i < numOfTessera; i++) {
+                tesseraList.add(tesseraCreateOne.get());
+            }
+            System.out.println("Persone create con successo");
+        } catch (Exception e) {
+            System.out.println("Errore: " + e.getMessage());
+        }
+
+        return tesseraList;
+    }
 
     public static List<Abbonamento> createAbbonamento() {
         List<Abbonamento> abbonamentoList = new ArrayList<>();
@@ -203,9 +207,7 @@ public class Application {
     }
 
     public static void main(String[] args) {
-
         System.out.println("Hello World!");
-
     }
 
 }
