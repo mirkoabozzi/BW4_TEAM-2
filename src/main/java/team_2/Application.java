@@ -1,4 +1,4 @@
-package team_;
+package team_2;
 
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;

@@ -1,4 +1,4 @@
-package team_;
+package team_2;
 
 import org.junit.jupiter.api.Test;
 
