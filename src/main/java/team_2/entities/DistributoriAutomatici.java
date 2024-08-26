@@ -2,37 +2,37 @@ package team_2.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import team_2.enums.Stato;
+import team_2.enums.StatoDistributori;
 
 @Entity
 @Table(name = "distributori_automatici")
 public class DistributoriAutomatici extends PuntoDiEmissione {
     //attributi
-    private Stato stato;
+    private StatoDistributori statoDistributori;
 
     //costruttori
     public DistributoriAutomatici() {
 
     }
 
-    public DistributoriAutomatici(Stato stato) {
-        this.stato = stato;
+    public DistributoriAutomatici(StatoDistributori statoDistributori) {
+        this.statoDistributori = statoDistributori;
     }
 
     //getter e setter
-    public Stato getStato() {
-        return stato;
+    public StatoDistributori getStato() {
+        return statoDistributori;
     }
 
-    public void setStato(Stato stato) {
-        this.stato = stato;
+    public void setStato(StatoDistributori statoDistributori) {
+        this.statoDistributori = statoDistributori;
     }
 
     //to String
     @Override
     public String toString() {
         return "DistributoriAutomatici{" +
-                "stato=" + stato +
+                "stato=" + statoDistributori +
                 '}';
     }
 }

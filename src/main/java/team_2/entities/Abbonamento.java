@@ -1,7 +1,7 @@
 package team_2.entities;
 
 import jakarta.persistence.*;
-import team_2.enums.Status;
+import team_2.enums.StatoAbbonamento;
 import team_2.enums.Tipo;
 
 import java.time.LocalDate;
@@ -16,20 +16,20 @@ public class Abbonamento {
     private UUID id;
     @Column(name = "data_ultimo_rinnovo")
     private LocalDate dataUltimoRinnovo;
-    private Status status;
+    private StatoAbbonamento statoAbbonamento;
     private Tipo tipo;
 
     @ManyToOne
     @JoinColumn(name = "tessera_id", nullable = false)
     private Tessera tessera;
-    
+
     //costruttori
     public Abbonamento() {
     }
 
-    public Abbonamento(LocalDate dataUltimoRinnovo, Status status, Tipo tipo, Tessera tessera) {
+    public Abbonamento(LocalDate dataUltimoRinnovo, StatoAbbonamento statoAbbonamento, Tipo tipo, Tessera tessera) {
         this.dataUltimoRinnovo = dataUltimoRinnovo;
-        this.status = status;
+        this.statoAbbonamento = statoAbbonamento;
         this.tipo = tipo;
         this.tessera = tessera;
     }
@@ -47,12 +47,12 @@ public class Abbonamento {
         this.dataUltimoRinnovo = dataUltimoRinnovo;
     }
 
-    public Status getStatus() {
-        return status;
+    public StatoAbbonamento getStatus() {
+        return statoAbbonamento;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(StatoAbbonamento statoAbbonamento) {
+        this.statoAbbonamento = statoAbbonamento;
     }
 
     public Tipo getTipo() {
@@ -75,7 +75,7 @@ public class Abbonamento {
 
     @Override
     public String toString() {
-        return "Abbonamento{" + "id=" + id + ", dataUltimoRinnovo=" + dataUltimoRinnovo + ", status=" + status + ", tipo=" + tipo +
+        return "Abbonamento{" + "id=" + id + ", dataUltimoRinnovo=" + dataUltimoRinnovo + ", status=" + statoAbbonamento + ", tipo=" + tipo +
                 // ", tessera=" + tessera +
                 '}';
     }

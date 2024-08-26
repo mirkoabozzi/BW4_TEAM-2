@@ -1,5 +1,5 @@
 package team_2.enums;
 
-public enum Stato {
+public enum StatoDistributori {
     ATTIVO, FUORI_SERVIZIO;
 }
