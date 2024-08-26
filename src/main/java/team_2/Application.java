@@ -1,7 +1,9 @@
 package team_2;
 
 import com.github.javafaker.Faker;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import team_2.entities.*;
 import team_2.enums.StatoAbbonamento;
@@ -10,208 +12,121 @@ import team_2.enums.Tipo;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.function.Supplier;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("bw4_team_2");
-    static Faker fk = new Faker();
-    //createOne
-    public static Supplier<RivenditoriAutorizzati> rivenditoriAutorizzatiCreateOne = () -> new RivenditoriAutorizzati(fk.company().name());
-    static Random r = new Random();
+    private static final Faker fk = new Faker();
+    private static final Random random = new Random();
+
+
+    public static Supplier<RivenditoriAutorizzati> rivenditoriAutorizzatiCreateOne = () ->
+            new RivenditoriAutorizzati(fk.company().name());
+
     public static Supplier<DistributoriAutomatici> distributoriAutomaticiCreateOne = () -> {
         StatoDistributori[] statoDistributoriList = StatoDistributori.values();
-        return new DistributoriAutomatici(statoDistributoriList[r.nextInt(statoDistributoriList.length)]);
+        return new DistributoriAutomatici(statoDistributoriList[random.nextInt(statoDistributoriList.length)]);
     };
+
     public static Supplier<Utente> utenteCreateOne = () -> {
         LocalDate date = fk.date().birthday(12, 90).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        return new Utente(fk.name().firstName(), fk.name().lastName(), date, r.nextInt(111111111, 999999999));
+        return new Utente(fk.name().firstName(), fk.name().lastName(), date, random.nextInt(111111111, 999999999));
     };
+
     public static Supplier<Tessera> tesseraCreateOne = () -> {
-        LocalDate initialDate = fk.date().birthday(2, 5).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate endDate = fk.date().birthday(0, 2).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        return new Tessera(initialDate, endDate, r.nextInt(0, 1) == 0);
+        LocalDate initialDate = LocalDate.now();
+        LocalDate endDate = initialDate.plusMonths(random.nextInt(1, 24)); // Ensure endDate is after initialDate
+        return new Tessera(initialDate, endDate, random.nextBoolean());
     };
+
     public static Supplier<Abbonamento> abbonamentoCreateOne = () -> {
-        LocalDate date = fk.date().birthday(0, 10).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate date = LocalDate.now();
         StatoAbbonamento[] statoAbbonamentoList = StatoAbbonamento.values();
         Tipo[] tipoList = Tipo.values();
-        return new Abbonamento(date, statoAbbonamentoList[r.nextInt(statoAbbonamentoList.length)], tipoList[r.nextInt(tipoList.length)]);
+        return new Abbonamento(date, statoAbbonamentoList[random.nextInt(statoAbbonamentoList.length)],
+                tipoList[random.nextInt(tipoList.length)]);
     };
+
     public static Supplier<Biglietto> bigliettoCreateOne = () -> {
-        LocalDate date = fk.date().birthday(0, 1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        return new Biglietto(r.nextInt(0, 1) == 0, date);
+        LocalDate date = LocalDate.now();
+        return new Biglietto(random.nextBoolean(), date);
     };
 
-    //create Object
-    public static List<PuntoDiEmissione> createPuntoDiEmissione() {
-        List<PuntoDiEmissione> puntoDiEmissioneList = new ArrayList<>();
-        Scanner sc = new Scanner(System.in);
-        int numOfPuntoDiEmissione;
-        while (true) {
-            System.out.println("Quanti punti di emissione vuoi creare?");
-            try {
-                numOfPuntoDiEmissione = Integer.parseInt(sc.nextLine());
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("Inserisci un numero valido");
-
-            } catch (Exception e) {
-                System.out.println("Errore: " + e.getMessage());
-            }
-
-        }
-
-        System.out.println("1. Crea distributori automatici \n 2. Crea rivenditori autorizzati");
-        int choice;
+    private static <T> void createAndPersistEntities(Supplier<T> entitySupplier, String entityName, Scanner scanner) {
         try {
-            choice = Integer.parseInt(sc.nextLine());
-            switch (choice) {
-                case 1:
-                    for (int i = 0; i < numOfPuntoDiEmissione; i++) {
-                        puntoDiEmissioneList.add(distributoriAutomaticiCreateOne.get());
-                    }
-                    System.out.println("Distributori automatici creati con successo");
+            int numOfEntities;
+            while (true) {
+                System.out.printf("Quanti %s vuoi creare?%n", entityName);
+                try {
+                    numOfEntities = Integer.parseInt(scanner.nextLine());
                     break;
-                case 2:
-                    for (int i = 0; i < numOfPuntoDiEmissione; i++) {
-                        puntoDiEmissioneList.add(rivenditoriAutorizzatiCreateOne.get());
-                    }
-                    System.out.println("Rivenditori autorizzati creati con successo");
-                    break;
-                default:
-                    System.out.println("Scelta non valida riprova!");
-                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Inserisci un numero valido.");
+                }
             }
 
-        } catch (InputMismatchException e) {
-            System.out.println("Inserisci un numero valido");
+            EntityManager em = emf.createEntityManager();
+            EntityTransaction transaction = em.getTransaction();
 
+            try {
+                transaction.begin();
+                for (int i = 0; i < numOfEntities; i++) {
+                    T entity = entitySupplier.get();
+                    em.persist(entity);
+                }
+                transaction.commit();
+                System.out.printf("%s creati e salvati nel database con successo.%n", entityName);
+            } catch (Exception e) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+                System.out.printf("Errore durante il salvataggio: %s%n", e.getMessage());
+            } finally {
+                em.close();
+            }
         } catch (Exception e) {
-            System.out.println("Errore: " + e.getMessage());
+            System.out.printf("Errore durante la creazione di %s: %s%n", entityName, e.getMessage());
         }
-        sc.close();
-        return puntoDiEmissioneList;
     }
 
-    public static List<Utente> createUtente() {
-        List<Utente> utenteList = new ArrayList<>();
-        Scanner sc = new Scanner(System.in);
-        int numOfUtente;
-        while (true) {
-            System.out.println("Quante persone vuoi creare?");
-            try {
-                numOfUtente = Integer.parseInt(sc.nextLine());
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("Inserisci un numero valido");
 
-            } catch (Exception e) {
-                System.out.println("Errore: " + e.getMessage());
-            }
-        }
-        try {
-            for (int i = 0; i < numOfUtente; i++) {
-                utenteList.add(utenteCreateOne.get());
-            }
-            System.out.println("Persone create con successo");
-        } catch (Exception e) {
-            System.out.println("Errore: " + e.getMessage());
-        }
-
-        return utenteList;
+    public static void createDistributoriAutomatici(Scanner scanner) {
+        createAndPersistEntities(distributoriAutomaticiCreateOne, "distributori automatici", scanner);
     }
 
-    public static List<Tessera> createTessera() {
-        List<Tessera> tesseraList = new ArrayList<>();
-        Scanner sc = new Scanner(System.in);
-        int numOfTessera;
-        while (true) {
-            System.out.println("Quante persone vuoi creare?");
-            try {
-                numOfTessera = Integer.parseInt(sc.nextLine());
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("Inserisci un numero valido");
-
-            } catch (Exception e) {
-                System.out.println("Errore: " + e.getMessage());
-            }
-        }
-        try {
-            for (int i = 0; i < numOfTessera; i++) {
-                tesseraList.add(tesseraCreateOne.get());
-            }
-            System.out.println("Persone create con successo");
-        } catch (Exception e) {
-            System.out.println("Errore: " + e.getMessage());
-        }
-
-        return tesseraList;
+    public static void createRivenditoriAutorizzati(Scanner scanner) {
+        createAndPersistEntities(rivenditoriAutorizzatiCreateOne, "rivenditori autorizzati", scanner);
     }
 
-    public static List<Abbonamento> createAbbonamento() {
-        List<Abbonamento> abbonamentoList = new ArrayList<>();
-        Scanner sc = new Scanner(System.in);
-        int numOfAbbonamento;
-        while (true) {
-            System.out.println("quanti abbonamenti vuoi creare?");
-            try {
-                numOfAbbonamento = Integer.parseInt(sc.nextLine());
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("inserisci un numero valido");
-
-            } catch (Exception e) {
-                System.out.println("Errore: " + e.getMessage());
-            }
-        }
-        try {
-            for (int i = 0; i < numOfAbbonamento; i++) {
-                abbonamentoList.add(abbonamentoCreateOne.get());
-            }
-            System.out.println("Abbonamenti creati con successo");
-        } catch (Exception e) {
-            System.out.println("Errore: " + e.getMessage());
-        }
-
-        return abbonamentoList;
+    public static void createUtente(Scanner scanner) {
+        createAndPersistEntities(utenteCreateOne, "persone", scanner);
     }
 
-    public static List<Biglietto> createBiglietto() {
-        List<Biglietto> bigliettoList = new ArrayList<>();
-        Scanner sc = new Scanner(System.in);
-        int numOfBiglietto;
-        while (true) {
-            System.out.println("quanti biglietti vuoi creare?");
-            try {
-                numOfBiglietto = Integer.parseInt(sc.nextLine());
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("inserisci un numero valido");
+    public static void createTessera(Scanner scanner) {
+        createAndPersistEntities(tesseraCreateOne, "tessere", scanner);
+    }
 
-            } catch (Exception e) {
-                System.out.println("Errore: " + e.getMessage());
-            }
-        }
-        try {
-            for (int i = 0; i < numOfBiglietto; i++) {
-                bigliettoList.add(bigliettoCreateOne.get());
-            }
-            System.out.println("Biglietti creati con successo");
-        } catch (Exception e) {
-            System.out.println("Errore: " + e.getMessage());
-        }
+    public static void createAbbonamento(Scanner scanner) {
+        createAndPersistEntities(abbonamentoCreateOne, "abbonamenti", scanner);
+    }
 
-        return bigliettoList;
+    public static void createBiglietto(Scanner scanner) {
+        createAndPersistEntities(bigliettoCreateOne, "biglietti", scanner);
     }
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Hello World!");
+
+        createDistributoriAutomatici(scanner);
+        createRivenditoriAutorizzati(scanner);
+        createUtente(scanner);
+        createTessera(scanner);
+        createAbbonamento(scanner);
+        createBiglietto(scanner);
+
+        scanner.close();
     }
-
 }
-
-
-
-
