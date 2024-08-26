@@ -33,7 +33,9 @@ public class Tessera {
     @OneToMany(mappedBy = "tessera")
     private List<Biglietto> listaBiglietto;
 
-    //manca la lista giri!!
+    @ManyToOne
+    @JoinColumn(name = "giro_id", nullable = false)
+    private List<Giro> giroList;
 
     public Tessera() {
         //COSTRUTTORE DI DEFAULT

@@ -24,7 +24,7 @@ public class Giro {
     private UUID mezzoId;
 
     @OneToMany(mappedBy = "tessera")
-    private Tessera tessera;
+    private List<Tessera> tesseraList;
 
     @ManyToOne
     @JoinColumn(name = "tratta_id")

@@ -37,6 +37,12 @@ public class Tratta {
     private List<Giro> giroList;
 
     @ManyToMany
+    @JoinTable(
+            name = "join_tratta_mezzo",
+            joinColumns = @JoinColumn(name = "tratta_id"),
+            inverseJoinColumns = @JoinColumn(name = "mezzo_id")
+    )
+    private List<Mezzo> mezzoList;
 
     //JUMPTION TABLE
 
