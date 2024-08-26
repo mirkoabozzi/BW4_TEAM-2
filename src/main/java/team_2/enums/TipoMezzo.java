@@ -1,4 +1,4 @@
-package team_2.entities;
+package team_2.enums;
 
 public enum TipoMezzo {
     AUTOBUS, TRAM

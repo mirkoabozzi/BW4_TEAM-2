@@ -36,7 +36,7 @@ public class Tessera {
     //manca la lista giri!!
 
     public Tessera() {
-        //COSTRUTTORE DI DEFAULT 
+        //COSTRUTTORE DI DEFAULT
     }
 
     public Tessera(LocalDate dataInizio, LocalDate dataFine, boolean validitàTessera) {

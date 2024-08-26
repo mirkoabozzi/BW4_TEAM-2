@@ -1,6 +1,7 @@
 package team_2.entities;
 
 import jakarta.persistence.*;
+import team_2.enums.TipoMezzo;
 
 import java.util.Date;
 import java.util.List;
