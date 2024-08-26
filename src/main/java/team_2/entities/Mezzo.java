@@ -42,9 +42,6 @@ public class Mezzo {
     @OneToMany(mappedBy = "mezzoList")
     private List<Tratta> trattaList;
 
-    @OneToMany(mappedBy = "mezzo")
-    private List<Manutenzione> manutenzioneList;
-
 
     //COSTRUTTORI
 
