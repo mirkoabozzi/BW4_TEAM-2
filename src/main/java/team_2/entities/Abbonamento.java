@@ -27,11 +27,10 @@ public class Abbonamento {
     public Abbonamento() {
     }
 
-    public Abbonamento(LocalDate dataUltimoRinnovo, StatoAbbonamento statoAbbonamento, Tipo tipo, Tessera tessera) {
+    public Abbonamento(LocalDate dataUltimoRinnovo, StatoAbbonamento statoAbbonamento, Tipo tipo) {
         this.dataUltimoRinnovo = dataUltimoRinnovo;
         this.statoAbbonamento = statoAbbonamento;
         this.tipo = tipo;
-        this.tessera = tessera;
     }
 
     //getter e setter
