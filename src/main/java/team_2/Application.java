@@ -122,8 +122,6 @@ public class Application {
         BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
         PuntoDiEmissioneDAO puntoDiEmissioneDAO = new PuntoDiEmissioneDAO(em);
 
-        System.out.println("Hello World!");
-
 
         createDistributoriAutomatici(scanner, puntoDiEmissioneDAO, em);
         createRivenditoriAutorizzati(scanner, puntoDiEmissioneDAO, em);
