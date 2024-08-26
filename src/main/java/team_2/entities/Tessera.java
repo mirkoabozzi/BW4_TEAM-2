@@ -19,8 +19,9 @@ public class Tessera {
     @Column(name = "validità_tessera")
     private boolean validitàTessera;
 
-    @ManyToMany(mappedBy = "listaTessera")
-    private List<PuntoDiEmissione> listaPuntoDiEmissione;
+    @ManyToOne
+    @JoinColumn(name = "punto_di_emissione_id", nullable = false)
+    private PuntoDiEmissione puntoDiEmissione;
 
     @OneToOne
     @JoinColumn(name = "id-utente", nullable = false, unique = true)

@@ -10,11 +10,7 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "tipo_punto_emissione")
 public abstract class PuntoDiEmissione {
-    @ManyToMany
-    @JoinTable(name = "punti_emissione_tessere",
-            joinColumns = @JoinColumn(name = "punto_di_emissione_id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "tessera_id", nullable = false)
-    )
+    @OneToMany(mappedBy = "puntoDiEmissione")
     List<Tessera> listaTessera;
     //attributi
     @Id
