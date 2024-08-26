@@ -28,4 +28,13 @@ public class BigliettoDAO {
             throw new NotFoundException(id);
         else return elementFound;
     }
+
+    public void deleteById(String id) {
+        Biglietto elementFound = this.getById(id);
+        EntityTransaction transition = em.getTransaction();
+        transition.begin();
+        em.remove(elementFound);
+        transition.commit();
+        System.out.println("Elemento con id " + elementFound.getId() + " eliminato");
+    }
 }
