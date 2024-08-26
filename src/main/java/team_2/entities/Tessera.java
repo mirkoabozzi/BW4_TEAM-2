@@ -20,11 +20,11 @@ public class Tessera {
     private boolean validitàTessera;
 
     @ManyToOne
-    @JoinColumn(name = "punto_di_emissione_id", nullable = false)
+    @JoinColumn(name = "punto_di_emissione_id")
     private PuntoDiEmissione puntoDiEmissione;
 
     @OneToOne
-    @JoinColumn(name = "id-utente", nullable = false, unique = true)
+    @JoinColumn(name = "utente_id")
     private Utente utente;
 
     @OneToMany(mappedBy = "tessera")
@@ -34,17 +34,19 @@ public class Tessera {
     private List<Biglietto> listaBiglietto;
 
     @ManyToOne
-    @JoinColumn(name = "giro_id", nullable = false)
+    @JoinColumn(name = "giro_id")
     private Giro giroId;
 
     public Tessera() {
         //COSTRUTTORE DI DEFAULT
     }
 
-    public Tessera(LocalDate dataInizio, LocalDate dataFine, boolean validitàTessera) {
+    public Tessera(LocalDate dataInizio, LocalDate dataFine, boolean validitàTessera, PuntoDiEmissione puntoDiEmissione) {
         this.dataInizio = dataInizio;
         this.dataFine = dataFine;
         this.validitàTessera = validitàTessera;
+
+        this.puntoDiEmissione = puntoDiEmissione;
     }
 
     public UUID getId() {
@@ -106,5 +108,21 @@ public class Tessera {
 
     public void setListaBiglietto(List<Biglietto> listaBiglietto) {
         this.listaBiglietto = listaBiglietto;
+    }
+
+    //toString
+    @Override
+    public String toString() {
+        return "Tessera{" +
+                "id=" + id +
+                ", dataInizio=" + dataInizio +
+                ", dataFine=" + dataFine +
+                ", validitàTessera=" + validitàTessera +
+                ", puntoDiEmissione=" + puntoDiEmissione +
+                ", utente=" + utente +
+                ", listaAbbonamento=" + listaAbbonamento +
+                ", listaBiglietto=" + listaBiglietto +
+                ", giroId=" + giroId +
+                '}';
     }
 }

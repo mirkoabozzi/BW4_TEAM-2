@@ -5,6 +5,7 @@ import jakarta.persistence.EntityTransaction;
 import team_2.entities.Abbonamento;
 import team_2.exceptions.NotFoundException;
 
+import java.util.List;
 import java.util.UUID;
 
 public class AbbonamentoDAO {
@@ -14,12 +15,14 @@ public class AbbonamentoDAO {
         this.em = em;
     }
 
-    public void save(Abbonamento abbonamento) {
+    public void save(List<Abbonamento> abbonamentoList) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        em.persist(abbonamento);
+        for (Abbonamento abbonamento : abbonamentoList) {
+            em.persist(abbonamento);
+        }
         transaction.commit();
-        System.out.println("Abbonamento con id " + abbonamento.getId() + " aggiunto nel DB");
+        System.out.println("Abbonamenti aggiunti nel DB");
     }
 
     public Abbonamento getByID(String id) {

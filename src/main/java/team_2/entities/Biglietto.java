@@ -25,9 +25,10 @@ public class Biglietto {
 
     }
 
-    public Biglietto(boolean vidimizzato, LocalDate dataVidimizzazione) {
+    public Biglietto(boolean vidimizzato, LocalDate dataVidimizzazione, Tessera tessera) {
         this.vidimizzato = vidimizzato;
         this.dataVidimizzazione = dataVidimizzazione;
+        this.tessera = tessera;
     }
 
     //getter e setter

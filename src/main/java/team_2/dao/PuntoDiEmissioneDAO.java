@@ -5,6 +5,7 @@ import jakarta.persistence.EntityTransaction;
 import team_2.entities.PuntoDiEmissione;
 import team_2.exceptions.NotFoundException;
 
+import java.util.List;
 import java.util.UUID;
 
 public class PuntoDiEmissioneDAO {
@@ -14,12 +15,14 @@ public class PuntoDiEmissioneDAO {
         this.em = em;
     }
 
-    public void save(PuntoDiEmissione puntoDiEmissione) {
+    public void save(List<PuntoDiEmissione> puntoDiEmissioneList) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        em.persist(puntoDiEmissione);
+        for (PuntoDiEmissione puntoDiEmissione : puntoDiEmissioneList) {
+            em.persist(puntoDiEmissione);
+        }
         transaction.commit();
-        System.out.println("Punto di emissione con id " + puntoDiEmissione.getId() + " aggiunto nel DB");
+        System.out.println("Punti di emissione aggiunti nel DB");
     }
 
     public PuntoDiEmissione getById(String id) {

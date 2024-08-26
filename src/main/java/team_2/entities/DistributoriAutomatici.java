@@ -1,6 +1,8 @@
 package team_2.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import team_2.enums.StatoDistributori;
 
@@ -8,6 +10,7 @@ import team_2.enums.StatoDistributori;
 @Table(name = "distributori_automatici")
 public class DistributoriAutomatici extends PuntoDiEmissione {
     //attributi
+    @Enumerated(EnumType.STRING)
     private StatoDistributori statoDistributori;
 
     //costruttori
