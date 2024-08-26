@@ -28,4 +28,13 @@ public class PuntoDiEmissioneDAO {
             throw new NotFoundException(id);
         else return elementFound;
     }
+
+    public void deleteById(String id) {
+        PuntoDiEmissione elementFound = this.getById(id);
+        EntityTransaction transition = em.getTransaction();
+        transition.begin();
+        em.remove(elementFound);
+        transition.commit();
+        System.out.println("Elemento con id " + elementFound.getId() + " eliminato");
+    }
 }
