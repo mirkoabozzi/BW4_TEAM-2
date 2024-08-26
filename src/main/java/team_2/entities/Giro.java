@@ -2,6 +2,7 @@ package team_2.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -24,6 +25,14 @@ public class Giro {
 
     @OneToMany(mappedBy = "tessera")
     private Tessera tessera;
+
+    @ManyToOne
+    @JoinColumn(name = "tratta_id")
+    private List<Tratta> trattaList;
+
+    @ManyToOne
+    @JoinColumn(name = "mezzo_id")
+    private List<Mezzo> mezzoList;
 
     //COSTRUTTORI
 

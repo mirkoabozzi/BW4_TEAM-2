@@ -33,10 +33,12 @@ public class Tessera {
     @OneToMany(mappedBy = "tessera")
     private List<Biglietto> listaBiglietto;
 
-    //manca la lista giri!!
+    @ManyToOne
+    @JoinColumn(name = "giro_id")
+    private List<Giro> giroList;
 
 
-    public Tessera(LocalDate dataInizio, LocalDate dataFine, boolean validitàTessera, PuntoDiEmissione puntoDiEmissione, Utente utente, List<Abbonamento> listaAbbonamento, List<Biglietto> listaBiglietto) {
+    public Tessera(LocalDate dataInizio, LocalDate dataFine, boolean validitàTessera, PuntoDiEmissione puntoDiEmissione, Utente utente, List<Abbonamento> listaAbbonamento, List<Biglietto> listaBiglietto, List<Giro> giroList) {
         this.dataInizio = dataInizio;
         this.dataFine = dataFine;
         this.validitàTessera = validitàTessera;
@@ -44,6 +46,7 @@ public class Tessera {
         this.utente = utente;
         this.listaAbbonamento = listaAbbonamento;
         this.listaBiglietto = listaBiglietto;
+        this.giroList = giroList;
     }
 
     public UUID getId() {
@@ -105,5 +108,13 @@ public class Tessera {
 
     public void setListaBiglietto(List<Biglietto> listaBiglietto) {
         this.listaBiglietto = listaBiglietto;
+    }
+
+    public List<Giro> getGiroList() {
+        return giroList;
+    }
+
+    public void setGiroList(List<Giro> giroList) {
+        this.giroList = giroList;
     }
 }
