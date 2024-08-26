@@ -36,6 +36,8 @@ public class Tratta {
     @OneToMany(mappedBy = "giro_id")
     private List<Giro> giroList;
 
+    @ManyToMany
+
     //JUMPTION TABLE
 
     //COSTRUTTORI
