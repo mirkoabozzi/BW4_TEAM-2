@@ -33,7 +33,7 @@ public class Tratta {
     @Column(name = "orario_partenza")
     private double orarioPartenza;
 
-    @OneToMany(mappedBy = "giro_id")
+    @OneToMany(mappedBy = "tratta")
     private List<Giro> giroList;
 
     @ManyToMany

@@ -14,25 +14,17 @@ public class Giro {
     @GeneratedValue
     private UUID id;
 
-    @Column(name = "tratta_id")
-    private UUID trattaId;
-
-    @Column(name = "lista_tessere")
-    private UUID listaTessere;
-
-    @Column(name = "mezzo_id")
-    private UUID mezzoId;
-
-    @OneToMany(mappedBy = "tessera")
+    @OneToMany(mappedBy = "giroId")
     private List<Tessera> tesseraList;
 
     @ManyToOne
     @JoinColumn(name = "tratta_id")
-    private List<Tratta> trattaList;
+    private Tratta tratta;
 
     @ManyToOne
     @JoinColumn(name = "mezzo_id")
-    private List<Mezzo> mezzoList;
+    private Mezzo mezzo;
+
 
     //COSTRUTTORI
 
@@ -40,12 +32,11 @@ public class Giro {
         //COSTRUTTORE DEFAULT
     }
 
-    public Giro(UUID trattaId, UUID listaTessere, UUID mezzoId) {
-        this.trattaId = trattaId;
-        this.listaTessere = listaTessere;
-        this.mezzoId = mezzoId;
+    public Giro(List<Tessera> tesseraList, Tratta tratta, Mezzo mezzo) {
+        this.tesseraList = tesseraList;
+        this.tratta = tratta;
+        this.mezzo = mezzo;
     }
-
 
     //SETTER E GETTER
 
@@ -53,28 +44,29 @@ public class Giro {
         return id;
     }
 
-    public UUID getTrattaId() {
-        return trattaId;
+
+    public List<Tessera> getTesseraList() {
+        return tesseraList;
     }
 
-    public void setTrattaId(UUID trattaId) {
-        this.trattaId = trattaId;
+    public void setTesseraList(List<Tessera> tesseraList) {
+        this.tesseraList = tesseraList;
     }
 
-    public UUID getListaTessere() {
-        return listaTessere;
+    public Tratta getTratta() {
+        return tratta;
     }
 
-    public void setListaTessere(UUID listaTessere) {
-        this.listaTessere = listaTessere;
+    public void setTratta(Tratta tratta) {
+        this.tratta = tratta;
     }
 
-    public UUID getMezzoId() {
-        return mezzoId;
+    public Mezzo getMezzo() {
+        return mezzo;
     }
 
-    public void setMezzoId(UUID mezzoId) {
-        this.mezzoId = mezzoId;
+    public void setMezzo(Mezzo mezzo) {
+        this.mezzo = mezzo;
     }
 
 
@@ -83,11 +75,6 @@ public class Giro {
 
     @Override
     public String toString() {
-        return "Giro{" +
-                "id=" + id +
-                ", trattaId=" + trattaId +
-                ", listaTessere=" + listaTessere +
-                ", mezzoId=" + mezzoId +
-                '}';
+        return "Giro{" + "id=" + id + ", tesseraList=" + tesseraList + ", tratta=" + tratta + ", mezzo=" + mezzo + '}';
     }
 }

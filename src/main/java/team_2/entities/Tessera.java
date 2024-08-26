@@ -35,7 +35,7 @@ public class Tessera {
 
     @ManyToOne
     @JoinColumn(name = "giro_id", nullable = false)
-    private List<Giro> giroList;
+    private Giro giroId;
 
     public Tessera() {
         //COSTRUTTORE DI DEFAULT

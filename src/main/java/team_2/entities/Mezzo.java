@@ -36,11 +36,12 @@ public class Mezzo {
     @Column(name = "lista_giro")
     private long listaGiro;
 
-    @OneToMany(mappedBy = "giro_id")
+    @OneToMany(mappedBy = "mezzo")
     private List<Giro> giroList;
 
-    @ManyToMany(mappedBy = "mezzoList")
+    @OneToMany(mappedBy = "mezzoList")
     private List<Tratta> trattaList;
+
 
     //COSTRUTTORI
 
