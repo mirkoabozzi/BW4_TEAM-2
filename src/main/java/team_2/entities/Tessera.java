@@ -34,7 +34,9 @@ public class Tessera {
     private List<Biglietto> listaBiglietto;
 
     //manca la lista giri!!
+    public Tessera() {
 
+    }
 
     public Tessera(LocalDate dataInizio, LocalDate dataFine, boolean validitàTessera, PuntoDiEmissione puntoDiEmissione, Utente utente, List<Abbonamento> listaAbbonamento, List<Biglietto> listaBiglietto) {
         this.dataInizio = dataInizio;
@@ -45,6 +47,7 @@ public class Tessera {
         this.listaAbbonamento = listaAbbonamento;
         this.listaBiglietto = listaBiglietto;
     }
+
 
     public UUID getId() {
         return id;
