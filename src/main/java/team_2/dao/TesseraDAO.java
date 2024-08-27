@@ -22,9 +22,13 @@ public class TesseraDAO {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         em.persist(tessera);
+        tessera.getUtente().setTessera(tessera);
+        em.persist(tessera.getUtente());
         transaction.commit();
         System.out.println("Tessera con id " + tessera.getId() + " salvata nel DB");
     }
+
+
 
 
     public Tessera getById(String id) {

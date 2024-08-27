@@ -28,14 +28,14 @@ public abstract class PuntoDiEmissione {
         return listaTessera;
     }
 
+    public void setListaTessera(List<Tessera> listaTessera) {
+        this.listaTessera = listaTessera;
+    }
 
     public UUID getId() {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     //to string
 
