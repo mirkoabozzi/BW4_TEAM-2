@@ -49,7 +49,7 @@ public class BigliettoDAO {
 
     public List<Biglietto> filtraBigliettiVidimizzatiInData(String data) {
         LocalDate d = LocalDate.parse(data);
-        TypedQuery<Biglietto> query = em.createQuery("SELECT b FROM Biglietto WHERE b.dataVidimizzazione = :data", Biglietto.class);
+        TypedQuery<Biglietto> query = em.createQuery("SELECT b FROM Biglietto b WHERE b.dataVidimizzazione = :data", Biglietto.class);
         query.setParameter("data", d);
         List<Biglietto> risultatoQuery = query.getResultList();
         if (risultatoQuery.isEmpty())
@@ -61,5 +61,10 @@ public class BigliettoDAO {
         TypedQuery<Biglietto> query = em.createQuery("SELECT b FROM Biglietto b WHERE b.tessera.id = :tesseraId", Biglietto.class);
         query.setParameter("tesseraId", tesseraId);
         return query.getResultList();
+    }
+
+    public long contaBigliettiVidimati() {
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(b) FROM Biglietto b WHERE b.vidimizzato = true", Long.class);
+        return query.getSingleResult();
     }
 }

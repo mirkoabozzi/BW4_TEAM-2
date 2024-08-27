@@ -51,7 +51,7 @@ public class AbbonamentoDAO {
 
     public List<Abbonamento> filtraAbbonamentiRinnovatiInData(String data) {
         LocalDate d = LocalDate.parse(data);
-        TypedQuery<Abbonamento> query = em.createQuery("SELECT a FROM Abbonamento WHERE a.dataUltimoRinnovo = :data", Abbonamento.class);
+        TypedQuery<Abbonamento> query = em.createQuery("SELECT a FROM Abbonamento a WHERE a.dataUltimoRinnovo = :data", Abbonamento.class);
         query.setParameter("data", d);
         List<Abbonamento> risultatoQuery = query.getResultList();
         if (risultatoQuery.isEmpty())
@@ -60,15 +60,27 @@ public class AbbonamentoDAO {
     }
 
     public List<Abbonamento> filtraAbbonamentiPerTipo(Tipo tipoAbbonamento) {
-        TypedQuery<Abbonamento> query = em.createQuery("SELECT a FROM Abbonamento where a.tipo = :tipo", Abbonamento.class);
+        TypedQuery<Abbonamento> query = em.createQuery("SELECT a FROM Abbonamento a where a.tipo = :tipo", Abbonamento.class);
         query.setParameter("tipo", tipoAbbonamento);
         return query.getResultList();
     }
 
     public List<Abbonamento> trovaAbbonamentiTramiteTessera(UUID tesseraId) {
-        TypedQuery<Abbonamento> query = em.createQuery("SELECT b FROM Abbonamento b WHERE b.tessera.id = :tesseraId", Abbonamento.class);
+        TypedQuery<Abbonamento> query = em.createQuery("SELECT a FROM Abbonamento a WHERE a.tessera.id = :tesseraId", Abbonamento.class);
         query.setParameter("tesseraId", tesseraId);
         return query.getResultList();
+    }
+
+    public Long contaAbbonamentiPerTipo(Tipo tipoAbbonamento) {
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(a) FROM Abbonamento a WHERE a.tipo = :tipo", Long.class);
+        query.setParameter("tipo", tipoAbbonamento);
+        return query.getSingleResult();
+    }
+
+    public Long contaAbbonamentiPerStato(StatoAbbonamento statoAbbonamento) {
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(a) FROM Abbonamento a WHERE a.statoAbbonamento = :stato", Long.class);
+        query.setParameter("stato", statoAbbonamento);
+        return query.getSingleResult();
     }
 
 }

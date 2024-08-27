@@ -55,4 +55,12 @@ public class ManutenzioneDAO {
         query.setParameter("oggi", oggi);
         return query.getResultList();
     }
+
+    public long contaMezziInManutenzionePerTipo(TipoMezzo tipoMezzo) {
+        LocalDate oggi = LocalDate.now();
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(DISTINCT m.mezzo) FROM Manutenzione m WHERE :oggi BETWEEN m.dataInizio AND m.dataFine AND m.mezzo.tipoMezzo = :tipo", Long.class);
+        query.setParameter("oggi", oggi);
+        query.setParameter("tipo", tipoMezzo);
+        return query.getSingleResult();
+    }
 }
