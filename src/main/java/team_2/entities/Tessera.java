@@ -44,7 +44,6 @@ public class Tessera {
         this.dataInizio = dataInizio;
         this.dataFine = dataFine;
         this.validitàTessera = validitàTessera;
-        System.out.println(utente);
         this.utente = utente;
         this.puntoDiEmissione = puntoDiEmissione;
     }

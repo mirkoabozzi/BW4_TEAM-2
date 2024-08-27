@@ -1,6 +1,5 @@
 package team_2;
 
-import com.github.javafaker.Faker;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -11,45 +10,40 @@ import team_2.enums.StatoDistributori;
 import team_2.enums.Tipo;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.function.Supplier;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("bw4_team_2");
-    static Faker fk = new Faker();
-    //createOne
-    public static Supplier<RivenditoriAutorizzati> rivenditoriAutorizzatiCreateOne = () -> new RivenditoriAutorizzati(fk.company().name());
-    public static Supplier<Utente> utenteCreateOne = () -> {
-        LocalDate date = fk.date().birthday(12, 90).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        return new Utente(fk.name().firstName(), fk.name().lastName(), date);
-    };
     static Scanner sc = new Scanner(System.in);
     static Random r = new Random();
-    public static Supplier<DistributoriAutomatici> distributoriAutomaticiCreateOne = () -> {
-        StatoDistributori[] statoDistributoriList = StatoDistributori.values();
-        return new DistributoriAutomatici(statoDistributoriList[r.nextInt(statoDistributoriList.length)]);
-    };
-    public static Supplier<Abbonamento> abbonamentoCreateOne = () -> {
-        LocalDate date = fk.date().birthday(0, 10).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        StatoAbbonamento[] statoAbbonamentoList = StatoAbbonamento.values();
-        Tipo[] tipoList = Tipo.values();
-        return new Abbonamento(date, statoAbbonamentoList[r.nextInt(statoAbbonamentoList.length)], tipoList[r.nextInt(tipoList.length)]);
-    };
 
-    public static Tessera tesseraCreateOne(List<Utente> utenteList, List<PuntoDiEmissione> puntoDiEmissioneList) {
-        LocalDate initialDate = fk.date().birthday(2, 5).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate endDate = fk.date().birthday(0, 2).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//        utenteList.get(r.nextInt(utenteList.size()));
-        return new Tessera(initialDate, endDate, r.nextInt(0, 2) == 0, utenteList.get(r.nextInt(utenteList.size())), puntoDiEmissioneList.get(r.nextInt(puntoDiEmissioneList.size())));
+    //createOne
+    public static Abbonamento abbonamentoCreateOne(LocalDate date, StatoAbbonamento statoAbbonamento, Tipo tipo, Tessera tessera) {
+        return new Abbonamento(date, statoAbbonamento, tipo, tessera);
     }
 
-    public static Biglietto bigliettoCreateOne(List<Tessera> tesseraList) {
-        LocalDate date = fk.date().birthday(0, 1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        return new Biglietto(r.nextInt(0, 1) == 0, date, tesseraList.get(r.nextInt(tesseraList.size())));
+    ;
+
+    public static Utente utenteCreateOne(String name, String surname, LocalDate date) {
+        return new Utente(name, surname, date);
+    }
+
+    public static DistributoriAutomatici distributoriAutomaticiCreateOne(StatoDistributori statoDistributori) {
+        return new DistributoriAutomatici(statoDistributori);
+    }
+
+    public static RivenditoriAutorizzati rivenditoriAutorizzatiCreateOne(String name) {
+        return new RivenditoriAutorizzati(name);
+    }
+
+    public static Tessera tesseraCreateOne(LocalDate initialDate, LocalDate endDate, boolean bool, Utente utente, PuntoDiEmissione puntoDiEmissione) {
+        return new Tessera(initialDate, endDate, bool, utente, puntoDiEmissione);
+    }
+
+    public static Biglietto bigliettoCreateOne(boolean vidimizzato, LocalDate date, Tessera tessera) {
+        return new Biglietto(vidimizzato, date, tessera);
     }
 
 
@@ -62,27 +56,28 @@ public class Application {
         BigliettoDAO bd = new BigliettoDAO(em);
         AbbonamentoDAO ad = new AbbonamentoDAO(em);
         //Liste
-        //liste
-        List<PuntoDiEmissione> puntoDiEmissioneList = new ArrayList<>();
-        List<Utente> utenteList = new ArrayList<>();
-        List<Biglietto> bigliettoList = new ArrayList<>();
-        List<Abbonamento> abbonamentoList = new ArrayList<>();
-        List<Tessera> tesseraList = new ArrayList<>();
-        List<Giro> giroList = new ArrayList<>();
-        List<Mezzo> mezzoList = new ArrayList<>();
-        List<Tratta> trattaList = new ArrayList<>();
-        //manca manutenzione
+
+        PuntoDiEmissione puntoDiEmissione = null;
+        Utente utente = null;
+        Biglietto biglietto = null;
+        Abbonamento abbonamento = null;
+        Tessera tessera = null;
+        Giro giro = null;
+        Mezzo mezzo = null;
+        Tratta tratta = null;
+        Manutenzione manutenzione = null;
+
 
         //liste aggiornate dal db
-        puntoDiEmissioneList = em.createQuery("SELECT p FROM PuntoDiEmissione p", PuntoDiEmissione.class).getResultList();
-        utenteList = em.createQuery("SELECT u FROM Utente u", Utente.class).getResultList();
-        bigliettoList = em.createQuery("SELECT b FROM Biglietto b", Biglietto.class).getResultList();
-        abbonamentoList = em.createQuery("SELECT a FROM Abbonamento a", Abbonamento.class).getResultList();
-        tesseraList = em.createQuery("SELECT p FROM Tessera p", Tessera.class).getResultList();
-        giroList = em.createQuery("SELECT g FROM Giro g", Giro.class).getResultList();
-        mezzoList = em.createQuery("SELECT m FROM Mezzo m", Mezzo.class).getResultList();
-        trattaList = em.createQuery("SELECT t FROM Tratta t", Tratta.class).getResultList();
-        //manca manutenzione
+//        puntoDiEmissioneList = em.createQuery("SELECT p FROM PuntoDiEmissione p", PuntoDiEmissione.class).getResultList();
+//        utenteList = em.createQuery("SELECT u FROM Utente u", Utente.class).getResultList();
+//        bigliettoList = em.createQuery("SELECT b FROM Biglietto b", Biglietto.class).getResultList();
+//        abbonamentoList = em.createQuery("SELECT a FROM Abbonamento a", Abbonamento.class).getResultList();
+//        tesseraList = em.createQuery("SELECT p FROM Tessera p", Tessera.class).getResultList();
+//        giroList = em.createQuery("SELECT g FROM Giro g", Giro.class).getResultList();
+//        mezzoList = em.createQuery("SELECT m FROM Mezzo m", Mezzo.class).getResultList();
+//        trattaList = em.createQuery("SELECT t FROM Tratta t", Tratta.class).getResultList();
+//        //manca manutenzione
 
         while (true) {
             try {
@@ -92,11 +87,11 @@ public class Application {
                 switch (choice) {
 
                     case "1":
-                        puntoDiEmissioneList = createPuntoDiEmissione();
-                        System.out.println(puntoDiEmissioneList);
+                        puntoDiEmissione = createPuntoDiEmissione();
+                        System.out.println(puntoDiEmissione);
                         break;
                     case "2":
-                        ped.saveList(puntoDiEmissioneList);
+                        ped.save(puntoDiEmissione);
                         break;
                     case "3":
                         try {
@@ -123,11 +118,11 @@ public class Application {
                         }
                         break;
                     case "5":
-                        utenteList = createUtente();
-                        System.out.println(utenteList);
+                        utente = createUtente();
+                        System.out.println(utente);
                         break;
                     case "6":
-                        ud.saveList(utenteList);
+                        ud.save(utente);
                         break;
                     case "7":
                         try {
@@ -154,11 +149,11 @@ public class Application {
                         }
                         break;
                     case "9":
-                        bigliettoList = createBiglietto(tesseraList);
-                        System.out.println(bigliettoList);
+//                        biglietto = createBiglietto();
+                        System.out.println(biglietto);
                         break;
                     case "10":
-                        bd.saveList(bigliettoList);
+                        bd.save(biglietto);
                         break;
                     case "11":
                         try {
@@ -186,11 +181,11 @@ public class Application {
                         break;
 
                     case "13":
-                        tesseraList = createTessera(utenteList, puntoDiEmissioneList);
-                        System.out.println(tesseraList);
+                        tessera = createTessera(ud, ped);
+                        System.out.println(tessera);
                         break;
                     case "14":
-                        td.saveList(tesseraList);
+                        td.save(tessera);
                         break;
                     case "15":
                         try {
@@ -218,11 +213,11 @@ public class Application {
                         break;
 
                     case "17":
-                        abbonamentoList = createAbbonamento();
-                        System.out.println(abbonamentoList);
+                        abbonamento = createAbbonamento(td);
+                        System.out.println(abbonamento);
                         break;
                     case "18":
-                        ad.saveList(abbonamentoList);
+                        ad.save(abbonamento);
                         break;
                     case "19":
                         try {
@@ -273,12 +268,187 @@ public class Application {
                 System.out.println(e.getMessage());
             }
         }
-        tesseraList = createTessera(utenteList, puntoDiEmissioneList);
-        td.saveList(tesseraList);
         em.close();
         emf.close();
         sc.close();
     }
+
+    //create Object
+    public static PuntoDiEmissione createPuntoDiEmissione() {
+        System.out.println("1. Crea distributori automatici \n 2. Crea rivenditori autorizzati");
+        int choice;
+        PuntoDiEmissione puntoDiEmissione = null;
+
+        try {
+            choice = Integer.parseInt(sc.nextLine());
+            switch (choice) {
+                case 1:
+                    StatoDistributori statoDistributori;
+                    while (true) {
+                        try {
+                            System.out.println("Inserisci lo stato dei distributori (ATTIVO, FUORI_SERVIZIO)");
+                            statoDistributori = StatoDistributori.valueOf(sc.nextLine());
+                            break;
+                        } catch (InputMismatchException e) {
+                            System.out.println("inserisci un numero valido");
+                        } catch (Exception e) {
+                            System.out.println("Errore: " + e.getMessage());
+                        }
+                    }
+                    System.out.println("Distributori automatici creati con successo");
+                    puntoDiEmissione = distributoriAutomaticiCreateOne(statoDistributori);
+                    break;
+                case 2:
+                    String name;
+                    while (true) {
+                        try {
+                            System.out.println("Inserisci nome punto di emissione");
+                            name = sc.nextLine();
+                            break;
+                        } catch (InputMismatchException e) {
+                            System.out.println("inserisci un numero valido");
+                        } catch (Exception e) {
+                            System.out.println("Errore: " + e.getMessage());
+                        }
+                    }
+                    System.out.println("Rivenditori autorizzati creati con successo");
+                    puntoDiEmissione = rivenditoriAutorizzatiCreateOne(name);
+                    break;
+                default:
+                    System.out.println("Scelta non valida riprova!");
+                    break;
+            }
+
+        } catch (InputMismatchException e) {
+            System.out.println("Inserisci un numero valido");
+
+        } catch (Exception e) {
+            System.out.println("Errore: " + e.getMessage());
+        }
+
+        return puntoDiEmissione;
+    }
+
+    public static Utente createUtente() {
+        Utente utente = null;
+        String name;
+        String surname;
+        LocalDate date;
+        while (true) {
+            try {
+                System.out.println("Inserisci nome utente");
+                name = sc.nextLine();
+                System.out.println("Inserisci cognome utente");
+                surname = sc.nextLine();
+                System.out.println("Inserisci data di nascita");
+                date = LocalDate.parse(sc.nextLine());
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("inserisci un numero valido");
+            } catch (Exception e) {
+                System.out.println("Errore: " + e.getMessage());
+            }
+        }
+        try {
+            utente = utenteCreateOne(name, surname, date);
+            System.out.println("Persone create con successo");
+        } catch (Exception e) {
+            System.out.println("Errore: " + e.getMessage());
+        }
+        return utente;
+    }
+
+    public static Tessera createTessera(UtenteDAO ud, PuntoDiEmissioneDAO ped) {
+        LocalDate initialDate;
+        LocalDate endDate;
+        boolean bool;
+        Utente utente;
+        PuntoDiEmissione puntoDiEmissione;
+        while (true) {
+            try {
+                System.out.println("Inserisci data di inizio");
+                initialDate = LocalDate.parse(sc.nextLine());
+                System.out.println("Inserisci data di fine");
+                endDate = LocalDate.parse(sc.nextLine());
+                System.out.println("Inserisci se la tessera è velida o no (true, false)");
+                bool = Boolean.parseBoolean(sc.nextLine());
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("inserisci un numero valido");
+            } catch (Exception e) {
+                System.out.println("Errore: " + e.getMessage());
+            }
+        }
+        Tessera tessera = null;
+        try {
+            System.out.println("Inserisci id Utente da abbinare alla tessera");
+            String id = sc.nextLine();
+            System.out.println("Inserisci id punto di emissione da abbinare alla tessera");
+            String id1 = sc.nextLine();
+            tessera = tesseraCreateOne(initialDate, endDate, bool, ud.getById(id), ped.getById(id1));
+            System.out.println("Tessere create con successo");
+        } catch (Exception e) {
+            System.out.println("Errore: " + e.getMessage());
+        }
+        return tessera;
+    }
+
+    public static Abbonamento createAbbonamento(TesseraDAO td) {
+        Abbonamento abbonamento = null;
+        LocalDate date;
+        StatoAbbonamento statoAbbonamento;
+        Tipo tipo;
+        while (true) {
+            try {
+                System.out.println("Inserisci data ultimo rinnovo");
+                date = LocalDate.parse(sc.nextLine());
+                System.out.println("Inserisci stato abbonamento(ATTIVO,NON_ATTIVO)");
+                statoAbbonamento = StatoAbbonamento.valueOf(sc.nextLine());
+                System.out.println("Inserisci tipo abbonamento (SETTIMANALE,MENSILE)");
+                tipo = Tipo.valueOf(sc.nextLine());
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("inserisci un numero valido");
+            } catch (Exception e) {
+                System.out.println("Errore: " + e.getMessage());
+            }
+        }
+        try {
+            System.out.println("inserisci id tessera ");
+            String id = sc.nextLine();
+            abbonamento = abbonamentoCreateOne(date, statoAbbonamento, tipo, td.getById(id));
+            System.out.println("Abbonamento creato con successo");
+        } catch (Exception e) {
+            System.out.println("Errore: " + e.getMessage());
+        }
+        return abbonamento;
+    }
+
+//    public static Biglietto createBiglietto() {
+//        Biglietto biglietto = null;
+//        boolean vidimizzato;
+//        LocalDate date;
+//        while (true) {
+//            try {
+//                System.out.println("Inserisci se il biglietto è stato vidimizzato (true,false)");
+//                vidimizzato = Boolean.parseBoolean(sc.nextLine());
+//                System.out.println("Inserisci data di vidimizzazione");
+//                date = LocalDate.parse(sc.nextLine());
+//                break;
+//            } catch (InputMismatchException e) {
+//                System.out.println("inserisci un numero valido");
+//            } catch (Exception e) {
+//                System.out.println("Errore: " + e.getMessage());
+//            }
+//        }
+//        try {
+//            biglietto = bigliettoCreateOne(vidimizzato, date, createTessera());
+//            System.out.println("Biglietti creati con successo");
+//        } catch (Exception e) {
+//            System.out.println("Errore: " + e.getMessage());
+//        }
+//        return biglietto;
+//    }
 
 }
 
