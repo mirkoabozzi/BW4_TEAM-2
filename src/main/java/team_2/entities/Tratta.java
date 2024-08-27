@@ -44,13 +44,103 @@ public class Tratta {
     )
     private List<Mezzo> mezzoList;
 
-    //JUMPTION TABLE
-
     //COSTRUTTORI
+
+    public Tratta(String zanaPartenza, String capolinea, double tempoPercorrenza, int listaMezzi, int listaNumeroGiri, double orarioPartenza, List<Giro> giroList, List<Mezzo> mezzoList) {
+        this.zanaPartenza = zanaPartenza;
+        this.capolinea = capolinea;
+        this.tempoPercorrenza = tempoPercorrenza;
+        this.listaMezzi = listaMezzi;
+        this.listaNumeroGiri = listaNumeroGiri;
+        this.orarioPartenza = orarioPartenza;
+        this.giroList = giroList;
+        this.mezzoList = mezzoList;
+    }
 
     //SETTER E GETTER
 
+    public UUID getId() {
+        return id;
+    }
+
+    public String getZanaPartenza() {
+        return zanaPartenza;
+    }
+
+    public void setZanaPartenza(String zanaPartenza) {
+        this.zanaPartenza = zanaPartenza;
+    }
+
+    public String getCapolinea() {
+        return capolinea;
+    }
+
+    public void setCapolinea(String capolinea) {
+        this.capolinea = capolinea;
+    }
+
+    public double getTempoPercorrenza() {
+        return tempoPercorrenza;
+    }
+
+    public void setTempoPercorrenza(double tempoPercorrenza) {
+        this.tempoPercorrenza = tempoPercorrenza;
+    }
+
+    public int getListaMezzi() {
+        return listaMezzi;
+    }
+
+    public void setListaMezzi(int listaMezzi) {
+        this.listaMezzi = listaMezzi;
+    }
+
+    public int getListaNumeroGiri() {
+        return listaNumeroGiri;
+    }
+
+    public void setListaNumeroGiri(int listaNumeroGiri) {
+        this.listaNumeroGiri = listaNumeroGiri;
+    }
+
+    public double getOrarioPartenza() {
+        return orarioPartenza;
+    }
+
+    public void setOrarioPartenza(double orarioPartenza) {
+        this.orarioPartenza = orarioPartenza;
+    }
+
+    public List<Giro> getGiroList() {
+        return giroList;
+    }
+
+    public void setGiroList(List<Giro> giroList) {
+        this.giroList = giroList;
+    }
+
+    public List<Mezzo> getMezzoList() {
+        return mezzoList;
+    }
+
+    public void setMezzoList(List<Mezzo> mezzoList) {
+        this.mezzoList = mezzoList;
+    }
+
     //TO STRING
 
-
+    @Override
+    public String toString() {
+        return "Tratta{" +
+                "id=" + id +
+                ", zanaPartenza='" + zanaPartenza + '\'' +
+                ", capolinea='" + capolinea + '\'' +
+                ", tempoPercorrenza=" + tempoPercorrenza +
+                ", listaMezzi=" + listaMezzi +
+                ", listaNumeroGiri=" + listaNumeroGiri +
+                ", orarioPartenza=" + orarioPartenza +
+                ", giroList=" + giroList +
+                ", mezzoList=" + mezzoList +
+                '}';
+    }
 }
