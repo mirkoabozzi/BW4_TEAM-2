@@ -2,6 +2,7 @@ package team_2.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import team_2.entities.Giro;
 import team_2.exceptions.NotFoundException;
 
@@ -23,15 +24,6 @@ public class GiroDAO {
         System.out.println("Giro con id " + giro.getId() + " salvato nel DB");
     }
 
-    public void saveList(List<Giro> giroList) {
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-        for (Giro giro : giroList) {
-            em.persist(giro);
-        }
-        transaction.commit();
-        System.out.println("Giri aggiunti nel DB");
-    }
 
     public Giro getByID(String id) {
         Giro elementFound = em.find(Giro.class, UUID.fromString(id));
@@ -48,4 +40,29 @@ public class GiroDAO {
         transition.commit();
         System.out.println("Elemento con id " + elementFound.getId() + " eliminato");
     }
+
+    //QUERY
+
+    //TROVIAMO LA TRATTA CHE FA IL DETERMINATO GIRO
+    public List<Giro> trattaGiro(String trattaId) {
+        TypedQuery<Giro> query = em.createQuery("SELECT g FROM Giro g WHERE g.tratta = :trattaId", Giro.class);
+        query.setParameter("trattaId", trattaId);
+        return query.getResultList();
+    }
+
+    //TROVIAMO LE LISTE DI TESSERE (UTENTI) PRESENTI NEL GIRO
+    public List<Giro> tessereGiro(String listaTessere) {
+        TypedQuery<Giro> query = em.createQuery("SELECT g FROM Giro g WHERE g.tesseraList = :listaTessere", Giro.class);
+        query.setParameter("listaTessere", listaTessere);
+        return query.getResultList();
+    }
+
+    //TROVIAMO CHE MEZZO STA FACENDO IL GIRO
+    public List<Giro> mezzoGiro(String mezzoGiro) {
+        TypedQuery<Giro> query = em.createQuery("SELECT g FROM Giro g WHERE g.mezzo = :mezzoGiro", Giro.class);
+        query.setParameter("mezzoGiro", mezzoGiro);
+        return query.getResultList();
+    }
+
+
 }
