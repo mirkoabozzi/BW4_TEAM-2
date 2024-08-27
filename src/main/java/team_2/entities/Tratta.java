@@ -21,14 +21,11 @@ public class Tratta {
     @Column(name = "capolinea")
     private String capolinea;
 
-    @Column(name = "tempo_percorrenza")
-    private double tempoPercorrenza;
+    @Column(name = "tempo_percorrenza_previsto")
+    private double tempoPercorrenzaPrevisto;
 
-    @Column(name = "lista_mezzi")
-    private int listaMezzi;
-
-    @Column(name = "lista_numero_giri")
-    private int listaNumeroGiri;
+    @Column(name = "tempo_percorrenza_effettivo")
+    private double tempoPercorrenzaEffettivo;
 
     @Column(name = "orario_partenza")
     private double orarioPartenza;
@@ -45,17 +42,16 @@ public class Tratta {
     private List<Mezzo> mezzoList;
 
     //COSTRUTTORI
-
-    public Tratta(String zanaPartenza, String capolinea, double tempoPercorrenza, int listaMezzi, int listaNumeroGiri, double orarioPartenza, List<Giro> giroList, List<Mezzo> mezzoList) {
+    public Tratta(String zanaPartenza, String capolinea, double tempoPercorrenzaPrevisto, double tempoPercorrenzaEffettivo, double orarioPartenza, List<Giro> giroList, List<Mezzo> mezzoList) {
         this.zanaPartenza = zanaPartenza;
         this.capolinea = capolinea;
-        this.tempoPercorrenza = tempoPercorrenza;
-        this.listaMezzi = listaMezzi;
-        this.listaNumeroGiri = listaNumeroGiri;
+        this.tempoPercorrenzaPrevisto = tempoPercorrenzaPrevisto;
+        this.tempoPercorrenzaEffettivo = tempoPercorrenzaEffettivo;
         this.orarioPartenza = orarioPartenza;
         this.giroList = giroList;
         this.mezzoList = mezzoList;
     }
+
 
     //SETTER E GETTER
 
@@ -79,28 +75,20 @@ public class Tratta {
         this.capolinea = capolinea;
     }
 
-    public double getTempoPercorrenza() {
-        return tempoPercorrenza;
+    public double getTempoPercorrenzaPrevisto() {
+        return tempoPercorrenzaPrevisto;
     }
 
-    public void setTempoPercorrenza(double tempoPercorrenza) {
-        this.tempoPercorrenza = tempoPercorrenza;
+    public void setTempoPercorrenzaPrevisto(double tempoPercorrenzaPrevisto) {
+        this.tempoPercorrenzaPrevisto = tempoPercorrenzaPrevisto;
     }
 
-    public int getListaMezzi() {
-        return listaMezzi;
+    public double getTempoPercorrenzaEffettivo() {
+        return tempoPercorrenzaEffettivo;
     }
 
-    public void setListaMezzi(int listaMezzi) {
-        this.listaMezzi = listaMezzi;
-    }
-
-    public int getListaNumeroGiri() {
-        return listaNumeroGiri;
-    }
-
-    public void setListaNumeroGiri(int listaNumeroGiri) {
-        this.listaNumeroGiri = listaNumeroGiri;
+    public void setTempoPercorrenzaEffettivo(double tempoPercorrenzaEffettivo) {
+        this.tempoPercorrenzaEffettivo = tempoPercorrenzaEffettivo;
     }
 
     public double getOrarioPartenza() {
@@ -127,7 +115,9 @@ public class Tratta {
         this.mezzoList = mezzoList;
     }
 
+
     //TO STRING
+
 
     @Override
     public String toString() {
@@ -135,9 +125,8 @@ public class Tratta {
                 "id=" + id +
                 ", zanaPartenza='" + zanaPartenza + '\'' +
                 ", capolinea='" + capolinea + '\'' +
-                ", tempoPercorrenza=" + tempoPercorrenza +
-                ", listaMezzi=" + listaMezzi +
-                ", listaNumeroGiri=" + listaNumeroGiri +
+                ", tempoPercorrenzaPrevisto=" + tempoPercorrenzaPrevisto +
+                ", tempoPercorrenzaEffettivo=" + tempoPercorrenzaEffettivo +
                 ", orarioPartenza=" + orarioPartenza +
                 ", giroList=" + giroList +
                 ", mezzoList=" + mezzoList +
