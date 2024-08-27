@@ -42,18 +42,18 @@ public class BigliettoDAO {
     }
 
     public List<Biglietto> filtraAbbonamentiPerStato(Boolean statoBiglietto) {
-        TypedQuery<Biglietto> query = em.createQuery("SELECT b FROM Biglietto b WHERE b.vidimizzato = :stato", Biglietto.class);
+        TypedQuery<Biglietto> query = em.createQuery("SELECT b FROM Biglietto b WHERE b.vidimato = :stato", Biglietto.class);
         query.setParameter("stato", statoBiglietto);
         return query.getResultList();
     }
 
-    public List<Biglietto> filtraBigliettiVidimizzatiInData(String data) {
+    public List<Biglietto> filtraBigliettiVidimatiInData(String data) {
         LocalDate d = LocalDate.parse(data);
-        TypedQuery<Biglietto> query = em.createQuery("SELECT b FROM Biglietto b WHERE b.dataVidimizzazione = :data", Biglietto.class);
+        TypedQuery<Biglietto> query = em.createQuery("SELECT b FROM Biglietto b WHERE b.dataVidimazione = :data", Biglietto.class);
         query.setParameter("data", d);
         List<Biglietto> risultatoQuery = query.getResultList();
         if (risultatoQuery.isEmpty())
-            System.out.println("Nessun biglietto vidimizzato in data " + data);
+            System.out.println("Nessun biglietto vidimato in data " + data);
         return risultatoQuery;
     }
 
@@ -64,7 +64,7 @@ public class BigliettoDAO {
     }
 
     public long contaBigliettiVidimati() {
-        TypedQuery<Long> query = em.createQuery("SELECT COUNT(b) FROM Biglietto b WHERE b.vidimizzato = true", Long.class);
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(b) FROM Biglietto b WHERE b.vidimato = true", Long.class);
         return query.getSingleResult();
     }
 }

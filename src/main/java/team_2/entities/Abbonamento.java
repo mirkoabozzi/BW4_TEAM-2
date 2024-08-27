@@ -2,7 +2,7 @@ package team_2.entities;
 
 import jakarta.persistence.*;
 import team_2.enums.StatoAbbonamento;
-import team_2.enums.Tipo;
+import team_2.enums.TipoAbbonamento;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -19,7 +19,7 @@ public class Abbonamento {
     @Enumerated(EnumType.STRING)
     private StatoAbbonamento statoAbbonamento;
     @Enumerated(EnumType.STRING)
-    private Tipo tipo;
+    private TipoAbbonamento tipoAbbonamento;
 
     @ManyToOne
     @JoinColumn(name = "tessera_id")
@@ -29,10 +29,10 @@ public class Abbonamento {
     public Abbonamento() {
     }
 
-    public Abbonamento(LocalDate dataUltimoRinnovo, StatoAbbonamento statoAbbonamento, Tipo tipo, Tessera tessera) {
+    public Abbonamento(LocalDate dataUltimoRinnovo, StatoAbbonamento statoAbbonamento, TipoAbbonamento tipoAbbonamento, Tessera tessera) {
         this.dataUltimoRinnovo = dataUltimoRinnovo;
         this.statoAbbonamento = statoAbbonamento;
-        this.tipo = tipo;
+        this.tipoAbbonamento = tipoAbbonamento;
         this.tessera = tessera;
     }
 
@@ -58,12 +58,12 @@ public class Abbonamento {
         this.statoAbbonamento = statoAbbonamento;
     }
 
-    public Tipo getTipo() {
-        return tipo;
+    public TipoAbbonamento getTipo() {
+        return tipoAbbonamento;
     }
 
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
+    public void setTipo(TipoAbbonamento tipoAbbonamento) {
+        this.tipoAbbonamento = tipoAbbonamento;
     }
 
     public Tessera getTessera() {
@@ -82,7 +82,7 @@ public class Abbonamento {
                 "id=" + id +
                 ", dataUltimoRinnovo=" + dataUltimoRinnovo +
                 ", statoAbbonamento=" + statoAbbonamento +
-                ", tipo=" + tipo +
+                ", tipo=" + tipoAbbonamento +
                 '}';
     }
 }

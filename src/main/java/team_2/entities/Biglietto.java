@@ -12,9 +12,9 @@ public class Biglietto {
     @Id
     @GeneratedValue
     private UUID id;
-    private boolean vidimizzato;
-    @Column(name = "data_vidimizzazione")
-    private LocalDate dataVidimizzazione;
+    private boolean vidimato;
+    @Column(name = "data_vidimazione")
+    private LocalDate dataVidimazione;
 
     @ManyToOne
     @JoinColumn(name = "tessera_id", nullable = false)
@@ -25,9 +25,9 @@ public class Biglietto {
 
     }
 
-    public Biglietto(boolean vidimizzato, LocalDate dataVidimizzazione, Tessera tessera) {
-        this.vidimizzato = vidimizzato;
-        this.dataVidimizzazione = dataVidimizzazione;
+    public Biglietto(boolean vidimato, LocalDate dataVidimazione, Tessera tessera) {
+        this.vidimato = vidimato;
+        this.dataVidimazione = dataVidimazione;
         this.tessera = tessera;
     }
 
@@ -36,20 +36,20 @@ public class Biglietto {
         return id;
     }
 
-    public boolean isVidimizzato() {
-        return vidimizzato;
+    public boolean isVidimato() {
+        return vidimato;
     }
 
-    public void setVidimizzato(boolean vidimizzato) {
-        this.vidimizzato = vidimizzato;
+    public void setVidimato(boolean vidimato) {
+        this.vidimato = vidimato;
     }
 
-    public LocalDate getDataVidimizzazione() {
-        return dataVidimizzazione;
+    public LocalDate getDataVidimazione() {
+        return dataVidimazione;
     }
 
-    public void setDataVidimizzazione(LocalDate dataVidimizzazione) {
-        this.dataVidimizzazione = dataVidimizzazione;
+    public void setDataVidimazione(LocalDate dataVidimazione) {
+        this.dataVidimazione = dataVidimazione;
     }
 
     public Tessera getTessera() {
@@ -65,8 +65,8 @@ public class Biglietto {
     public String toString() {
         return "Biglietto{" +
                 "id=" + id +
-                ", vidimizzato=" + vidimizzato +
-                ", dataVidimizzazione=" + dataVidimizzazione +
+                ", vidimato=" + vidimato +
+                ", dataVidimazione=" + dataVidimazione +
                 //", tessera=" + tessera +
                 '}';
     }

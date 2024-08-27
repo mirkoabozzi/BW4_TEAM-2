@@ -1,5 +1,5 @@
 package team_2.enums;
 
-public enum Tipo {
+public enum TipoAbbonamento {
     SETTIMANALE, MENSILE;
 }

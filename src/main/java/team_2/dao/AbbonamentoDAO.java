@@ -5,7 +5,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import team_2.entities.Abbonamento;
 import team_2.enums.StatoAbbonamento;
-import team_2.enums.Tipo;
+import team_2.enums.TipoAbbonamento;
 import team_2.exceptions.NotFoundException;
 
 import java.time.LocalDate;
@@ -59,7 +59,7 @@ public class AbbonamentoDAO {
         return risultatoQuery;
     }
 
-    public List<Abbonamento> filtraAbbonamentiPerTipo(Tipo tipoAbbonamento) {
+    public List<Abbonamento> filtraAbbonamentiPerTipo(TipoAbbonamento tipoAbbonamento) {
         TypedQuery<Abbonamento> query = em.createQuery("SELECT a FROM Abbonamento a where a.tipo = :tipo", Abbonamento.class);
         query.setParameter("tipo", tipoAbbonamento);
         return query.getResultList();
@@ -71,7 +71,7 @@ public class AbbonamentoDAO {
         return query.getResultList();
     }
 
-    public Long contaAbbonamentiPerTipo(Tipo tipoAbbonamento) {
+    public Long contaAbbonamentiPerTipo(TipoAbbonamento tipoAbbonamento) {
         TypedQuery<Long> query = em.createQuery("SELECT COUNT(a) FROM Abbonamento a WHERE a.tipo = :tipo", Long.class);
         query.setParameter("tipo", tipoAbbonamento);
         return query.getSingleResult();
