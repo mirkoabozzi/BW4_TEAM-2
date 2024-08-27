@@ -52,7 +52,7 @@ public class ManutenzioneDAO {
     public List<Mezzo> mezziInManutenzione() {
         LocalDate oggi = LocalDate.now();
         TypedQuery<Mezzo> query = em.createQuery("SELECT m.mezzo FROM Manutenzione m WHERE :oggi BETWEEN m.dataInizio AND m.dataFine", Mezzo.class);
-        query.setParameter("today", oggi);
+        query.setParameter("oggi", oggi);
         return query.getResultList();
     }
 }
