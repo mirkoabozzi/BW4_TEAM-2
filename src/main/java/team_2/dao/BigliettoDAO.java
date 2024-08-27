@@ -5,6 +5,7 @@ import jakarta.persistence.EntityTransaction;
 import team_2.entities.Biglietto;
 import team_2.exceptions.NotFoundException;
 
+import java.util.List;
 import java.util.UUID;
 
 public class BigliettoDAO {
@@ -19,7 +20,17 @@ public class BigliettoDAO {
         transaction.begin();
         em.persist(biglietto);
         transaction.commit();
-        System.out.println("Biglietto con id " + biglietto.getId() + " aggiunto nel DB");
+        System.out.println("Biglietto con id " + biglietto.getId() + " salvato nel DB");
+    }
+
+    public void saveList(List<Biglietto> bigliettoList) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        for (Biglietto biglietto : bigliettoList) {
+            em.persist(biglietto);
+        }
+        transaction.commit();
+        System.out.println("Biglietti aggiunti nel DB");
     }
 
     public Biglietto getById(String id) {

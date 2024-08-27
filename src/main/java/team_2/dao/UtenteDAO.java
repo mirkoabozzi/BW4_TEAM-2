@@ -5,6 +5,7 @@ import jakarta.persistence.EntityTransaction;
 import team_2.entities.Utente;
 import team_2.exceptions.NotFoundException;
 
+import java.util.List;
 import java.util.UUID;
 
 public class UtenteDAO {
@@ -19,7 +20,17 @@ public class UtenteDAO {
         transaction.begin();
         em.persist(utente);
         transaction.commit();
-        System.out.println("Utente " + utente.getNome() + " aggiunto nel DB");
+        System.out.println("Utente " + utente.getNome() + " con id " + utente.getId() + " salvato nel DB");
+    }
+
+    public void saveList(List<Utente> utenteList) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        for (Utente utente : utenteList) {
+            em.persist(utente);
+        }
+        transaction.commit();
+        System.out.println("Utenti aggiunti nel DB");
     }
 
     public Utente getById(String id) {
@@ -29,7 +40,7 @@ public class UtenteDAO {
         else return elementFound;
     }
 
-    public void findByIdAndDelete(String utenteId) {
+    public void deleteById(String utenteId) {
         Utente found = this.getById(utenteId);
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();

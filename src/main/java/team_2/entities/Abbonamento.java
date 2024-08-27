@@ -16,11 +16,13 @@ public class Abbonamento {
     private UUID id;
     @Column(name = "data_ultimo_rinnovo")
     private LocalDate dataUltimoRinnovo;
+    @Enumerated(EnumType.STRING)
     private StatoAbbonamento statoAbbonamento;
+    @Enumerated(EnumType.STRING)
     private Tipo tipo;
 
     @ManyToOne
-    @JoinColumn(name = "tessera_id", nullable = false)
+    @JoinColumn(name = "tessera_id")
     private Tessera tessera;
 
     //costruttori
