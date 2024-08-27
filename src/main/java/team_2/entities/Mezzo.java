@@ -44,7 +44,7 @@ public class Mezzo {
         //COSTRUTTORE DI DEFAULT
     }
 
-    public Mezzo(TipoMezzo tipoMezzo, int capienza, boolean inServizio, Date dataInizioServizio, Date dataFineServizio, int numeroMezzo, long listaGiro, List<Giro> giroList, List<Tratta> trattaList, List<Manutenzione> manutenzioneList) {
+    public Mezzo(TipoMezzo tipoMezzo, int capienza, boolean inServizio, Date dataInizioServizio, Date dataFineServizio, int numeroMezzo, List<Giro> giroList, List<Tratta> trattaList, List<Manutenzione> manutenzioneList) {
         this.tipoMezzo = tipoMezzo;
         this.capienza = capienza;
         this.inServizio = inServizio;
