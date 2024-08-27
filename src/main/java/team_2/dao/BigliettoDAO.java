@@ -15,7 +15,15 @@ public class BigliettoDAO {
         this.em = em;
     }
 
-    public void save(List<Biglietto> bigliettoList) {
+    public void save(Biglietto biglietto) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        em.persist(biglietto);
+        transaction.commit();
+        System.out.println("Biglietto con id " + biglietto.getId() + " salvato nel DB");
+    }
+
+    public void saveList(List<Biglietto> bigliettoList) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         for (Biglietto biglietto : bigliettoList) {

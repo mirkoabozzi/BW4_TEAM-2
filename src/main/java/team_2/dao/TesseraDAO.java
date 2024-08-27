@@ -16,14 +16,21 @@ public class TesseraDAO {
         this.em = em;
     }
 
-    public void save(List<Tessera> tesseraList) {
+    public void save(Tessera tessera) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        em.persist(tessera);
+        transaction.commit();
+        System.out.println("Tessera con id " + tessera.getId() + " salvata nel DB");
+    }
+
+    public void saveList(List<Tessera> tesseraList) {
 
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         for (Tessera tessera : tesseraList) {
             em.persist(tessera);
         }
-
         transaction.commit();
         System.out.println("Tessere aggiunte nel DB");
     }

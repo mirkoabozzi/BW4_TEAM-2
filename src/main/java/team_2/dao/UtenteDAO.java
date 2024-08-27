@@ -15,7 +15,15 @@ public class UtenteDAO {
         this.em = em;
     }
 
-    public void save(List<Utente> utenteList) {
+    public void save(Utente utente) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        em.persist(utente);
+        transaction.commit();
+        System.out.println("Utente " + utente.getNome() + " con id " + utente.getId() + " salvato nel DB");
+    }
+
+    public void saveList(List<Utente> utenteList) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         for (Utente utente : utenteList) {

@@ -15,7 +15,15 @@ public class PuntoDiEmissioneDAO {
         this.em = em;
     }
 
-    public void save(List<PuntoDiEmissione> puntoDiEmissioneList) {
+    public void save(PuntoDiEmissione puntoDiEmissione) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        em.persist(puntoDiEmissione);
+        transaction.commit();
+        System.out.println("Punto di emissione con id " + puntoDiEmissione.getId() + " salvato nel DB");
+    }
+
+    public void saveList(List<PuntoDiEmissione> puntoDiEmissioneList) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         for (PuntoDiEmissione puntoDiEmissione : puntoDiEmissioneList) {

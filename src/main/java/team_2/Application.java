@@ -249,7 +249,7 @@ public class Application {
                         System.out.println(puntoDiEmissioneList);
                         break;
                     case "2":
-                        ped.save(puntoDiEmissioneList);
+                        ped.saveList(puntoDiEmissioneList);
                         break;
                     case "3":
                         try {
@@ -280,7 +280,7 @@ public class Application {
                         System.out.println(utenteList);
                         break;
                     case "6":
-                        ud.save(utenteList);
+                        ud.saveList(utenteList);
                         break;
                     case "7":
                         try {
@@ -311,7 +311,7 @@ public class Application {
                         System.out.println(bigliettoList);
                         break;
                     case "10":
-                        bd.save(bigliettoList);
+                        bd.saveList(bigliettoList);
                         break;
                     case "11":
                         try {
@@ -343,7 +343,7 @@ public class Application {
                         System.out.println(tesseraList);
                         break;
                     case "14":
-                        td.save(tesseraList);
+                        td.saveList(tesseraList);
                         break;
                     case "15":
                         try {
@@ -375,7 +375,7 @@ public class Application {
                         System.out.println(abbonamentoList);
                         break;
                     case "18":
-                        ad.save(abbonamentoList);
+                        ad.saveList(abbonamentoList);
                         break;
                     case "19":
                         try {

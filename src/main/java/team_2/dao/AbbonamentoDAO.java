@@ -15,7 +15,15 @@ public class AbbonamentoDAO {
         this.em = em;
     }
 
-    public void save(List<Abbonamento> abbonamentoList) {
+    public void save(Abbonamento abbonamento) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        em.persist(abbonamento);
+        transaction.commit();
+        System.out.println("Abbonamento con id " + abbonamento.getId() + " salvato nel DB");
+    }
+
+    public void saveList(List<Abbonamento> abbonamentoList) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         for (Abbonamento abbonamento : abbonamentoList) {
