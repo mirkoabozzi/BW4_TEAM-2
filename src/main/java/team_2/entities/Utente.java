@@ -17,7 +17,8 @@ public class Utente {
     private LocalDate dataDiNascita;
     private int numeroTessera;
 
-    @OneToOne(mappedBy = "utente")
+    @OneToOne
+    @JoinColumn(name = "tessera_id")
     private Tessera tessera;
     //costruttori
 
@@ -25,11 +26,11 @@ public class Utente {
 
     }
 
-    public Utente(String nome, String cognome, LocalDate dataDiNascita, int numeroTessera) {
+    public Utente(String nome, String cognome, LocalDate dataDiNascita) {
         this.nome = nome;
         this.cognome = cognome;
         this.dataDiNascita = dataDiNascita;
-        this.numeroTessera = numeroTessera;
+
     }
 
     //getter e setter

@@ -30,6 +30,8 @@ public class TesseraDAO {
         transaction.begin();
         for (Tessera tessera : tesseraList) {
             em.persist(tessera);
+            tessera.getUtente().setTessera(tessera);
+            em.persist(tessera.getUtente());
         }
         transaction.commit();
         System.out.println("Tessere aggiunte nel DB");

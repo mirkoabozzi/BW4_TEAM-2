@@ -23,8 +23,7 @@ public class Tessera {
     @JoinColumn(name = "punto_di_emissione_id")
     private PuntoDiEmissione puntoDiEmissione;
 
-    @OneToOne
-    @JoinColumn(name = "utente_id")
+    @OneToOne(mappedBy = "tessera")
     private Utente utente;
 
     @OneToMany(mappedBy = "tessera")
@@ -41,11 +40,12 @@ public class Tessera {
         //COSTRUTTORE DI DEFAULT
     }
 
-    public Tessera(LocalDate dataInizio, LocalDate dataFine, boolean validitàTessera, PuntoDiEmissione puntoDiEmissione) {
+    public Tessera(LocalDate dataInizio, LocalDate dataFine, boolean validitàTessera, Utente utente, PuntoDiEmissione puntoDiEmissione) {
         this.dataInizio = dataInizio;
         this.dataFine = dataFine;
         this.validitàTessera = validitàTessera;
-
+        System.out.println(utente);
+        this.utente = utente;
         this.puntoDiEmissione = puntoDiEmissione;
     }
 
