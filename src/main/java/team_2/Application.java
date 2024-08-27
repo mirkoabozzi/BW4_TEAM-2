@@ -630,10 +630,10 @@ public class Application {
             }
         }
         try {
-            System.out.println("inserisci id tessera ");
+            System.out.println("Inserisci id tessera ");
             String id = sc.nextLine();
             biglietto = bigliettoCreateOne(vidimato, date, td.getById(id));
-            System.out.println("Biglietti creati con successo");
+            System.out.println("Biglietto creato con successo");
         } catch (Exception e) {
             System.out.println("Errore: " + e.getMessage());
         }

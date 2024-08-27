@@ -16,8 +16,10 @@ public class Abbonamento {
     private UUID id;
     @Column(name = "data_ultimo_rinnovo")
     private LocalDate dataUltimoRinnovo;
+    @Column(name = "stato_abbonamento")
     @Enumerated(EnumType.STRING)
     private StatoAbbonamento statoAbbonamento;
+    @Column(name = "tipo_abbonamento")
     @Enumerated(EnumType.STRING)
     private TipoAbbonamento tipoAbbonamento;
 

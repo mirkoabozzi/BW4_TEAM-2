@@ -13,11 +13,12 @@ public class Mezzo {
 
     //ATTRIBUTI
 
-    @Enumerated(EnumType.STRING)
-    protected TipoMezzo tipoMezzo;
     @Id
     @GeneratedValue
     private UUID id;
+    @Column(name = "tipo_mezzo")
+    @Enumerated(EnumType.STRING)
+    private TipoMezzo tipoMezzo;
     @Column(name = "capienza")
     private int capienza;
     @Column(name = "in_servizio")

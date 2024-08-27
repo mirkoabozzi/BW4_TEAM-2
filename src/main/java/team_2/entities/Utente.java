@@ -14,7 +14,9 @@ public class Utente {
     private UUID id;
     private String nome;
     private String cognome;
+    @Column(name = "data_di_nascita")
     private LocalDate dataDiNascita;
+    @Column(name = "numero_tessera")
     private int numeroTessera;
 
     @OneToOne
