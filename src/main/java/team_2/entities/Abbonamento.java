@@ -29,13 +29,15 @@ public class Abbonamento {
     public Abbonamento() {
     }
 
-    public Abbonamento(LocalDate dataUltimoRinnovo, StatoAbbonamento statoAbbonamento, Tipo tipo) {
+    public Abbonamento(LocalDate dataUltimoRinnovo, StatoAbbonamento statoAbbonamento, Tipo tipo, Tessera tessera) {
         this.dataUltimoRinnovo = dataUltimoRinnovo;
         this.statoAbbonamento = statoAbbonamento;
         this.tipo = tipo;
+        this.tessera = tessera;
     }
 
     //getter e setter
+
     public UUID getId() {
         return id;
     }
@@ -48,11 +50,11 @@ public class Abbonamento {
         this.dataUltimoRinnovo = dataUltimoRinnovo;
     }
 
-    public StatoAbbonamento getStatus() {
+    public StatoAbbonamento getStatoAbbonamento() {
         return statoAbbonamento;
     }
 
-    public void setStatus(StatoAbbonamento statoAbbonamento) {
+    public void setStatoAbbonamento(StatoAbbonamento statoAbbonamento) {
         this.statoAbbonamento = statoAbbonamento;
     }
 
@@ -72,12 +74,15 @@ public class Abbonamento {
         this.tessera = tessera;
     }
 
-    //to string
+//to string
 
     @Override
     public String toString() {
-        return "Abbonamento{" + "id=" + id + ", dataUltimoRinnovo=" + dataUltimoRinnovo + ", status=" + statoAbbonamento + ", tipo=" + tipo +
-                // ", tessera=" + tessera +
+        return "Abbonamento{" +
+                "id=" + id +
+                ", dataUltimoRinnovo=" + dataUltimoRinnovo +
+                ", statoAbbonamento=" + statoAbbonamento +
+                ", tipo=" + tipo +
                 '}';
     }
 }

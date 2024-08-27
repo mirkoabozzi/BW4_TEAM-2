@@ -2,9 +2,11 @@ package team_2.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import team_2.entities.Biglietto;
 import team_2.exceptions.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,16 +25,6 @@ public class BigliettoDAO {
         System.out.println("Biglietto con id " + biglietto.getId() + " salvato nel DB");
     }
 
-    public void saveList(List<Biglietto> bigliettoList) {
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-        for (Biglietto biglietto : bigliettoList) {
-            em.persist(biglietto);
-        }
-        transaction.commit();
-        System.out.println("Biglietti aggiunti nel DB");
-    }
-
     public Biglietto getById(String id) {
         Biglietto elementFound = em.find(Biglietto.class, UUID.fromString(id));
         if (elementFound == null)
@@ -47,5 +39,27 @@ public class BigliettoDAO {
         em.remove(elementFound);
         transition.commit();
         System.out.println("Elemento con id " + elementFound.getId() + " eliminato");
+    }
+
+    public List<Biglietto> filtraAbbonamentiPerStato(Boolean statoBiglietto) {
+        TypedQuery<Biglietto> query = em.createQuery("SELECT b FROM Biglietto b WHERE b.vidimizzato = :stato", Biglietto.class);
+        query.setParameter("stato", statoBiglietto);
+        return query.getResultList();
+    }
+
+    public List<Biglietto> filtraBigliettiVidimizzatiInData(String data) {
+        LocalDate d = LocalDate.parse(data);
+        TypedQuery<Biglietto> query = em.createQuery("SELECT b FROM Biglietto WHERE b.dataVidimizzazione = :data", Biglietto.class);
+        query.setParameter("data", d);
+        List<Biglietto> risultatoQuery = query.getResultList();
+        if (risultatoQuery.isEmpty())
+            System.out.println("Nessun biglietto vidimizzato in data " + data);
+        return risultatoQuery;
+    }
+
+    public List<Biglietto> trovaBigliettiTramiteTessera(UUID tesseraId) {
+        TypedQuery<Biglietto> query = em.createQuery("SELECT b FROM Biglietto b WHERE b.tessera.id = :tesseraId", Biglietto.class);
+        query.setParameter("tesseraId", tesseraId);
+        return query.getResultList();
     }
 }
