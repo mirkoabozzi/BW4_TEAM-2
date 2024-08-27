@@ -149,7 +149,7 @@ public class Application {
                         }
                         break;
                     case "9":
-//                        biglietto = createBiglietto();
+                        biglietto = createBiglietto(td);
                         System.out.println(biglietto);
                         break;
                     case "10":
@@ -424,31 +424,33 @@ public class Application {
         return abbonamento;
     }
 
-//    public static Biglietto createBiglietto() {
-//        Biglietto biglietto = null;
-//        boolean vidimizzato;
-//        LocalDate date;
-//        while (true) {
-//            try {
-//                System.out.println("Inserisci se il biglietto è stato vidimizzato (true,false)");
-//                vidimizzato = Boolean.parseBoolean(sc.nextLine());
-//                System.out.println("Inserisci data di vidimizzazione");
-//                date = LocalDate.parse(sc.nextLine());
-//                break;
-//            } catch (InputMismatchException e) {
-//                System.out.println("inserisci un numero valido");
-//            } catch (Exception e) {
-//                System.out.println("Errore: " + e.getMessage());
-//            }
-//        }
-//        try {
-//            biglietto = bigliettoCreateOne(vidimizzato, date, createTessera());
-//            System.out.println("Biglietti creati con successo");
-//        } catch (Exception e) {
-//            System.out.println("Errore: " + e.getMessage());
-//        }
-//        return biglietto;
-//    }
+    public static Biglietto createBiglietto(TesseraDAO td) {
+        Biglietto biglietto = null;
+        boolean vidimizzato;
+        LocalDate date;
+        while (true) {
+            try {
+                System.out.println("Inserisci se il biglietto è stato vidimizzato (true,false)");
+                vidimizzato = Boolean.parseBoolean(sc.nextLine());
+                System.out.println("Inserisci data di vidimizzazione");
+                date = LocalDate.parse(sc.nextLine());
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("inserisci un numero valido");
+            } catch (Exception e) {
+                System.out.println("Errore: " + e.getMessage());
+            }
+        }
+        try {
+            System.out.println("inserisci id tessera ");
+            String id = sc.nextLine();
+            biglietto = bigliettoCreateOne(vidimizzato, date, td.getById(id));
+            System.out.println("Biglietti creati con successo");
+        } catch (Exception e) {
+            System.out.println("Errore: " + e.getMessage());
+        }
+        return biglietto;
+    }
 
 }
 
