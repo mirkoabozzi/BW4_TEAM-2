@@ -98,325 +98,370 @@ public class Application {
 //        trattaList = em.createQuery("SELECT t FROM Tratta t", Tratta.class).getResultList();
 //        manutenzioneList = em.createQuery("SELECT m FROM Manutenzione m", Manutenzione.class).getResultList();
 
-
-        while (true) {
-            try {
-                System.out.println("Cosa vuoi creare?");
-                System.out.println("""
-                        1. Crea punto di emissione\s
-                        2. Cerca punto di emissione tramite id\s
-                        3. Elimina punto di emissione
-                        4. Crea utente\s
-                        5. Cerca utente tramite id\s
-                        6. Elimina utente
-                        7. Crea biglietto\s
-                        8. Cerca biglietto tramite id\s
-                        9. Elimina biglietto
-                        10. Crea tessera\s
-                        11. Cerca tessera tramite id\s
-                        12. Elimina tessera
-                        13. Crea abbonamento\s
-                        14. Cerca abbonamento tramite id\s
-                        15. Elimina abbonamento
-                        16. Crea mezzo\s
-                        17. Cerca mezzo tramite id\s
-                        18. Elimina mezzo
-                        19. Crea tratta\s
-                        20. Cerca tratta tramite id\s
-                        21. Elimina tratta
-                        22. Crea giro\s
-                        23. Cerca giro tramite id\s
-                        24. Elimina giro
-                        25. Crea manutenzione\s
-                        26. Cerca manutenzione tramite id\s
-                        27. Elimina manutenzione
-                        0. Esci""");
+        try {
+            for (int i = 0; i < 1; i++) {
+                System.out.println("1. Amministratore\n2. Utente");
                 String choice = sc.nextLine();
                 switch (choice) {
-
                     case "1":
-                        puntoDiEmissione = createPuntoDiEmissione();
-                        System.out.println(puntoDiEmissione);
-                        ped.save(puntoDiEmissione);
+                        System.out.println("inserisci password");
+                        String pass = sc.nextLine();
+                        if (pass.equals("1234")) {
+                            System.out.println("ok");
+                            while (true) {
+                                try {
+                                    System.out.println("Cosa vuoi creare?");
+                                    System.out.println("""
+                                            1. Crea punto di emissione\s
+                                            2. Cerca punto di emissione tramite id\s
+                                            3. Elimina punto di emissione
+                                            4. Crea utente\s
+                                            5. Cerca utente tramite id\s
+                                            6. Elimina utente
+                                            7. Crea tessera\s
+                                            8. Cerca tessera tramite id\s
+                                            9. Elimina tessera
+                                            10. Crea mezzo\s
+                                            11. Cerca mezzo tramite id\s
+                                            12. Elimina mezzo
+                                            13. Crea tratta\s
+                                            14. Cerca tratta tramite id\s
+                                            15. Elimina tratta
+                                            16. Crea giro\s
+                                            17. Cerca giro tramite id\s
+                                            18. Elimina giro
+                                            19. Crea manutenzione\s
+                                            20. Cerca manutenzione tramite id\s
+                                            21. Elimina manutenzione
+                                            0. Esci""");
+                                    String choice1 = sc.nextLine();
+                                    switch (choice1) {
+
+                                        case "1":
+                                            puntoDiEmissione = createPuntoDiEmissione();
+                                            System.out.println(puntoDiEmissione);
+                                            ped.save(puntoDiEmissione);
+                                            break;
+                                        case "2":
+                                            try {
+                                                System.out.println("Quale punto di emissione vuoi cercare tramite id?");
+                                                String findId = sc.nextLine();
+                                                System.out.println(ped.getById(findId));
+
+                                            } catch (NumberFormatException e) {
+                                                System.out.println("Inserisci il formato corretto\n");
+
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+                                        case "3":
+                                            try {
+                                                System.out.println("Quale punto di emissione vuoi eliminare tramite id?");
+                                                String findByIdAndDelete = sc.nextLine();
+                                                ped.deleteById(findByIdAndDelete);
+                                            } catch (NumberFormatException e) {
+                                                System.out.println("Inserisci il formato corretto");
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+                                        case "4":
+                                            utente = createUtente();
+                                            System.out.println(utente);
+                                            ud.save(utente);
+                                            break;
+                                        case "5":
+                                            try {
+                                                System.out.println("Quale utente vuoi cercare tramite id?");
+                                                String findId = sc.nextLine();
+                                                System.out.println(ud.getById(findId));
+
+                                            } catch (NumberFormatException e) {
+                                                System.out.println("Inserisci il formato corretto\n");
+
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+                                        case "6":
+                                            try {
+                                                System.out.println("Quale utente vuoi eliminare tramite id?");
+                                                String findByIdAndDelete = sc.nextLine();
+                                                ud.deleteById(findByIdAndDelete);
+                                            } catch (NumberFormatException e) {
+                                                System.out.println("Inserisci il formato corretto");
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+
+                                        case "7":
+                                            tessera = createTessera(ud, ped);
+                                            System.out.println(tessera);
+                                            td.save(tessera);
+                                            break;
+                                        case "8":
+                                            try {
+                                                System.out.println("Quale tessera vuoi cercare tramite id?");
+                                                String findId = sc.nextLine();
+                                                System.out.println(td.getById(findId));
+
+                                            } catch (NumberFormatException e) {
+                                                System.out.println("Inserisci il formato corretto\n");
+
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+                                        case "9":
+                                            try {
+                                                System.out.println("Quale tessera vuoi eliminare tramite id?");
+                                                String findByIdAndDelete = sc.nextLine();
+                                                td.deleteById(findByIdAndDelete);
+                                            } catch (NumberFormatException e) {
+                                                System.out.println("Inserisci il formato corretto");
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+
+                                        case "10":
+                                            mezzo = createMezzo();
+                                            System.out.println(mezzo);
+                                            md.save(mezzo);
+                                            break;
+                                        case "11":
+                                            try {
+                                                System.out.println("Quale mezzo vuoi cercare tramite id?");
+                                                String findId = sc.nextLine();
+                                                System.out.println(md.getById(findId));
+
+                                            } catch (NumberFormatException e) {
+                                                System.out.println("Inserisci il formato corretto\n");
+
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+                                        case "12":
+                                            try {
+                                                System.out.println("Quale mezzo vuoi eliminare tramite id?");
+                                                String findByIdAndDelete = sc.nextLine();
+                                                md.deleteById(findByIdAndDelete);
+                                            } catch (NumberFormatException e) {
+                                                System.out.println("Inserisci il formato corretto");
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+
+                                        case "13":
+                                            List<Mezzo> mezzoList = em.createQuery("SELECT m FROM Mezzo m", Mezzo.class).getResultList();
+                                            tratta = createTratta(mezzoList);
+                                            System.out.println(tratta);
+                                            trd.save(tratta);
+                                            break;
+
+                                        case "14":
+                                            try {
+                                                System.out.println("Quale tratta vuoi cercare tramite id?");
+                                                String findId = sc.nextLine();
+                                                System.out.println(trd.getByID(findId));
+
+                                            } catch (NumberFormatException e) {
+                                                System.out.println("Inserisci il formato corretto\n");
+
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+                                        case "15":
+                                            try {
+                                                System.out.println("Quale tratta vuoi eliminare tramite id?");
+                                                String findByIdAndDelete = sc.nextLine();
+                                                trd.deleteById(findByIdAndDelete);
+                                            } catch (NumberFormatException e) {
+                                                System.out.println("Inserisci il formato corretto");
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+                                        case "16":
+                                            giro = createGiro(trd, md);
+                                            System.out.println(giro);
+                                            gd.save(giro);
+                                            break;
+                                        case "17":
+                                            try {
+                                                System.out.println("Quale giro vuoi cercare tramite id?");
+                                                String findId = sc.nextLine();
+                                                System.out.println(gd.getByID(findId));
+
+                                            } catch (NumberFormatException e) {
+                                                System.out.println("Inserisci il formato corretto\n");
+
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+                                        case "18":
+                                            try {
+                                                System.out.println("Quale giro vuoi eliminare tramite id?");
+                                                String findByIdAndDelete = sc.nextLine();
+                                                gd.deleteById(findByIdAndDelete);
+                                            } catch (NumberFormatException e) {
+                                                System.out.println("Inserisci il formato corretto");
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+
+                                        case "19":
+                                            manutenzione = createManutenzione(md);
+                                            System.out.println(manutenzione);
+                                            mnd.save(manutenzione);
+                                            break;
+
+                                        case "20":
+                                            try {
+                                                System.out.println("Quale manutenzione vuoi cercare tramite id?");
+                                                String findId = sc.nextLine();
+                                                System.out.println(mnd.getByID(findId));
+
+                                            } catch (NumberFormatException e) {
+                                                System.out.println("Inserisci il formato corretto\n");
+
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+                                        case "21":
+                                            try {
+                                                System.out.println("Quale manutenzione vuoi eliminare tramite id?");
+                                                String findByIdAndDelete = sc.nextLine();
+                                                mnd.deleteById(findByIdAndDelete);
+                                            } catch (NumberFormatException e) {
+                                                System.out.println("Inserisci il formato corretto");
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+                                        case "0":
+                                            System.out.println("Uscita dal programma...");
+                                            return;
+                                        default:
+                                            System.out.println("il valore non è valido");
+                                            break;
+                                    }
+
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+
+                            }
+                        } else {
+                            i--;
+                        }
                         break;
                     case "2":
-                        try {
-                            System.out.println("Quale punto di emissione vuoi cercare tramite id?");
-                            String findId = sc.nextLine();
-                            System.out.println(ped.getById(findId));
+                        while (true) {
+                            try {
+                                System.out.println("Cosa vuoi creare?");
+                                System.out.println("""
+                                        1. Crea biglietto\s
+                                        2. Cerca biglietto tramite id\s
+                                        3. Elimina biglietto
+                                        4. Crea abbonamento\s
+                                        5. Cerca abbonamento tramite id\s
+                                        6. Elimina abbonamento
+                                        0. Esci""");
+                                String choice2 = sc.nextLine();
+                                switch (choice2) {
+                                    case "1":
+                                        biglietto = createBiglietto(td);
+                                        System.out.println(biglietto);
+                                        bd.save(biglietto);
+                                        break;
+                                    case "2":
+                                        try {
+                                            System.out.println("Quale biglietto vuoi cercare tramite id?");
+                                            String findId = sc.nextLine();
+                                            System.out.println(bd.getById(findId));
 
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto\n");
+                                        } catch (NumberFormatException e) {
+                                            System.out.println("Inserisci il formato corretto\n");
 
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
+                                        } catch (Exception e) {
+                                            System.out.println(e.getMessage());
+                                        }
+                                        break;
+                                    case "3":
+                                        try {
+                                            System.out.println("Quale biglietto vuoi eliminare tramite id?");
+                                            String findByIdAndDelete = sc.nextLine();
+                                            bd.deleteById(findByIdAndDelete);
+                                        } catch (NumberFormatException e) {
+                                            System.out.println("Inserisci il formato corretto");
+                                        } catch (Exception e) {
+                                            System.out.println(e.getMessage());
+                                        }
+                                        break;
+
+                                    case "4":
+                                        abbonamento = createAbbonamento(td);
+                                        System.out.println(abbonamento);
+                                        ad.save(abbonamento);
+                                        break;
+                                    case "5":
+                                        try {
+                                            System.out.println("Quale abbonamento vuoi cercare tramite id?");
+                                            String findId = sc.nextLine();
+                                            System.out.println(ad.getByID(findId));
+
+                                        } catch (NumberFormatException e) {
+                                            System.out.println("Inserisci il formato corretto\n");
+
+                                        } catch (Exception e) {
+                                            System.out.println(e.getMessage());
+                                        }
+                                        break;
+                                    case "6":
+                                        try {
+                                            System.out.println("Quale abbonamento vuoi eliminare tramite id?");
+                                            String findByIdAndDelete = sc.nextLine();
+                                            ad.deleteById(findByIdAndDelete);
+                                        } catch (NumberFormatException e) {
+                                            System.out.println("Inserisci il formato corretto");
+                                        } catch (Exception e) {
+                                            System.out.println(e.getMessage());
+                                        }
+                                        break;
+                                    case "0":
+                                        System.out.println("Uscita del programma in corso...");
+                                        return;
+                                    default:
+                                        System.out.println("il valore non è valido");
+                                        break;
+                                }
+
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
+                            }
+
                         }
-                        break;
-                    case "3":
-                        try {
-                            System.out.println("Quale punto di emissione vuoi eliminare tramite id?");
-                            String findByIdAndDelete = sc.nextLine();
-                            ped.deleteById(findByIdAndDelete);
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto");
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-                    case "4":
-                        utente = createUtente();
-                        System.out.println(utente);
-                        ud.save(utente);
-                        break;
-                    case "5":
-                        try {
-                            System.out.println("Quale utente vuoi cercare tramite id?");
-                            String findId = sc.nextLine();
-                            System.out.println(ud.getById(findId));
 
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto\n");
 
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-                    case "6":
-                        try {
-                            System.out.println("Quale utente vuoi eliminare tramite id?");
-                            String findByIdAndDelete = sc.nextLine();
-                            ud.deleteById(findByIdAndDelete);
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto");
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-                    case "7":
-                        biglietto = createBiglietto(td);
-                        System.out.println(biglietto);
-                        bd.save(biglietto);
-                        break;
-                    case "8":
-                        try {
-                            System.out.println("Quale biglietto vuoi cercare tramite id?");
-                            String findId = sc.nextLine();
-                            System.out.println(bd.getById(findId));
-
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto\n");
-
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-                    case "9":
-                        try {
-                            System.out.println("Quale biglietto vuoi eliminare tramite id?");
-                            String findByIdAndDelete = sc.nextLine();
-                            bd.deleteById(findByIdAndDelete);
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto");
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-
-                    case "10":
-                        tessera = createTessera(ud, ped);
-                        System.out.println(tessera);
-                        td.save(tessera);
-                        break;
-                    case "11":
-                        try {
-                            System.out.println("Quale tessera vuoi cercare tramite id?");
-                            String findId = sc.nextLine();
-                            System.out.println(td.getById(findId));
-
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto\n");
-
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-                    case "12":
-                        try {
-                            System.out.println("Quale tessera vuoi eliminare tramite id?");
-                            String findByIdAndDelete = sc.nextLine();
-                            td.deleteById(findByIdAndDelete);
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto");
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-
-                    case "13":
-                        abbonamento = createAbbonamento(td);
-                        System.out.println(abbonamento);
-                        ad.save(abbonamento);
-                        break;
-                    case "14":
-                        try {
-                            System.out.println("Quale abbonamento vuoi cercare tramite id?");
-                            String findId = sc.nextLine();
-                            System.out.println(ad.getByID(findId));
-
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto\n");
-
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-                    case "15":
-                        try {
-                            System.out.println("Quale abbonamento vuoi eliminare tramite id?");
-                            String findByIdAndDelete = sc.nextLine();
-                            ad.deleteById(findByIdAndDelete);
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto");
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-                    case "16":
-                        mezzo = createMezzo();
-                        System.out.println(mezzo);
-                        md.save(mezzo);
-                        break;
-                    case "17":
-                        try {
-                            System.out.println("Quale mezzo vuoi cercare tramite id?");
-                            String findId = sc.nextLine();
-                            System.out.println(md.getById(findId));
-
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto\n");
-
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-                    case "18":
-                        try {
-                            System.out.println("Quale mezzo vuoi eliminare tramite id?");
-                            String findByIdAndDelete = sc.nextLine();
-                            md.deleteById(findByIdAndDelete);
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto");
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-
-                    case "19":
-                        List<Mezzo> mezzoList = em.createQuery("SELECT m FROM Mezzo m", Mezzo.class).getResultList();
-                        tratta = createTratta(mezzoList);
-                        System.out.println(tratta);
-                        trd.save(tratta);
-                        break;
-
-                    case "20":
-                        try {
-                            System.out.println("Quale tratta vuoi cercare tramite id?");
-                            String findId = sc.nextLine();
-                            System.out.println(trd.getByID(findId));
-
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto\n");
-
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-                    case "21":
-                        try {
-                            System.out.println("Quale tratta vuoi eliminare tramite id?");
-                            String findByIdAndDelete = sc.nextLine();
-                            trd.deleteById(findByIdAndDelete);
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto");
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-                    case "22":
-                        giro = createGiro(trd, md);
-                        System.out.println(giro);
-                        gd.save(giro);
-                        break;
-                    case "23":
-                        try {
-                            System.out.println("Quale giro vuoi cercare tramite id?");
-                            String findId = sc.nextLine();
-                            System.out.println(gd.getByID(findId));
-
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto\n");
-
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-                    case "24":
-                        try {
-                            System.out.println("Quale giro vuoi eliminare tramite id?");
-                            String findByIdAndDelete = sc.nextLine();
-                            gd.deleteById(findByIdAndDelete);
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto");
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-
-                    case "25":
-                        manutenzione = createManutenzione(md);
-                        System.out.println(manutenzione);
-                        mnd.save(manutenzione);
-                        break;
-
-                    case "26":
-                        try {
-                            System.out.println("Quale manutenzione vuoi cercare tramite id?");
-                            String findId = sc.nextLine();
-                            System.out.println(mnd.getByID(findId));
-
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto\n");
-
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-                    case "27":
-                        try {
-                            System.out.println("Quale manutenzione vuoi eliminare tramite id?");
-                            String findByIdAndDelete = sc.nextLine();
-                            mnd.deleteById(findByIdAndDelete);
-                        } catch (NumberFormatException e) {
-                            System.out.println("Inserisci il formato corretto");
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        break;
-                    case "0":
-                        break;
                     default:
-                        System.out.println("il valore non è valido");
+                        System.out.println("scelta non valida riprova");
+                        i--;
                         break;
                 }
-                if (choice.equals("0")) {
-                    System.out.println("Uscita dal programma...");
-                    break;
-                }
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
             }
-
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+
         em.close();
         emf.close();
         sc.close();
@@ -676,7 +721,6 @@ public class Application {
                 dataFineServizio = LocalDate.parse(sc.nextLine());
                 System.out.println("Inserisci numero mezzo");
                 numeroMezzo = Integer.parseInt(sc.nextLine());
-
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("inserisci un numero valido");
@@ -698,19 +742,14 @@ public class Application {
         TipoMezzo tipoMezzo;
         LocalDate dataInizio;
         LocalDate dataFine;
-
-
         while (true) {
             try {
                 System.out.println("Inserisci tipo mezzo(AUTOBUS, TRAM)");
                 tipoMezzo = TipoMezzo.valueOf(sc.nextLine());
-                ;
                 System.out.println("Inserisci data inizio manutenzione");
                 dataInizio = LocalDate.parse(sc.nextLine());
                 System.out.println("Inserisci data fine manutenzione");
                 dataFine = LocalDate.parse(sc.nextLine());
-
-
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("inserisci un numero valido");
