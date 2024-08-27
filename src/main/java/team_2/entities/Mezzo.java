@@ -3,7 +3,7 @@ package team_2.entities;
 import jakarta.persistence.*;
 import team_2.enums.TipoMezzo;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,16 +23,16 @@ public class Mezzo {
     @Column(name = "in_servizio")
     private boolean inServizio;
     @Column(name = "data_inizio_servizio")
-    private Date dataInizioServizio;
+    private LocalDate dataInizioServizio;
     @Column(name = "data_fine_servizio")
-    private Date dataFineServizio;
+    private LocalDate dataFineServizio;
     @Column(name = "numero_mezzo")
     private int numeroMezzo;
 
     @OneToMany(mappedBy = "mezzo")
     private List<Giro> giroList;
 
-    @OneToMany(mappedBy = "mezzoList")
+    @ManyToMany(mappedBy = "mezzoList")
     private List<Tratta> trattaList;
 
     @OneToMany(mappedBy = "mezzo")
@@ -44,16 +44,13 @@ public class Mezzo {
         //COSTRUTTORE DI DEFAULT
     }
 
-    public Mezzo(TipoMezzo tipoMezzo, int capienza, boolean inServizio, Date dataInizioServizio, Date dataFineServizio, int numeroMezzo, long listaGiro, List<Giro> giroList, List<Tratta> trattaList, List<Manutenzione> manutenzioneList) {
+    public Mezzo(TipoMezzo tipoMezzo, int capienza, boolean inServizio, LocalDate dataInizioServizio, LocalDate dataFineServizio, int numeroMezzo) {
         this.tipoMezzo = tipoMezzo;
         this.capienza = capienza;
         this.inServizio = inServizio;
         this.dataInizioServizio = dataInizioServizio;
         this.dataFineServizio = dataFineServizio;
         this.numeroMezzo = numeroMezzo;
-        this.giroList = giroList;
-        this.trattaList = trattaList;
-        this.manutenzioneList = manutenzioneList;
     }
 
     //GETTER SETTER
@@ -66,6 +63,11 @@ public class Mezzo {
         this.tipoMezzo = tipoMezzo;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+
     public int getCapienza() {
         return capienza;
     }
@@ -73,7 +75,6 @@ public class Mezzo {
     public void setCapienza(int capienza) {
         this.capienza = capienza;
     }
-
 
     public boolean isInServizio() {
         return inServizio;
@@ -83,19 +84,19 @@ public class Mezzo {
         this.inServizio = inServizio;
     }
 
-    public Date getDataInizioServizio() {
+    public LocalDate getDataInizioServizio() {
         return dataInizioServizio;
     }
 
-    public void setDataInizioServizio(Date dataInizioServizio) {
+    public void setDataInizioServizio(LocalDate dataInizioServizio) {
         this.dataInizioServizio = dataInizioServizio;
     }
 
-    public Date getDataFineServizio() {
+    public LocalDate getDataFineServizio() {
         return dataFineServizio;
     }
 
-    public void setDataFineServizio(Date dataFineServizio) {
+    public void setDataFineServizio(LocalDate dataFineServizio) {
         this.dataFineServizio = dataFineServizio;
     }
 
@@ -123,8 +124,12 @@ public class Mezzo {
         this.trattaList = trattaList;
     }
 
-    public UUID getId() {
-        return id;
+    public List<Manutenzione> getManutenzioneList() {
+        return manutenzioneList;
+    }
+
+    public void setManutenzioneList(List<Manutenzione> manutenzioneList) {
+        this.manutenzioneList = manutenzioneList;
     }
 
 

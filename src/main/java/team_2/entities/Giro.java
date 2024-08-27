@@ -32,18 +32,21 @@ public class Giro {
         //COSTRUTTORE DEFAULT
     }
 
-    public Giro(List<Tessera> tesseraList, Tratta tratta, Mezzo mezzo) {
-        this.tesseraList = tesseraList;
+    public Giro(Tratta tratta, Mezzo mezzo) {
         this.tratta = tratta;
         this.mezzo = mezzo;
     }
 
     //SETTER E GETTER
 
+    public Giro(List<Tessera> tesseraList, UUID id) {
+        this.tesseraList = tesseraList;
+        this.id = id;
+    }
+
     public UUID getId() {
         return id;
     }
-
 
     public List<Tessera> getTesseraList() {
         return tesseraList;
@@ -65,16 +68,10 @@ public class Giro {
         return mezzo;
     }
 
-    public void setMezzo(Mezzo mezzo) {
-        this.mezzo = mezzo;
-    }
-
 
     //TO STRING
 
-
-    @Override
-    public String toString() {
-        return "Giro{" + "id=" + id + ", tesseraList=" + tesseraList + ", tratta=" + tratta + ", mezzo=" + mezzo + '}';
+    public void setMezzo(Mezzo mezzo) {
+        this.mezzo = mezzo;
     }
 }
