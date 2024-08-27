@@ -3,7 +3,7 @@ package team_2.entities;
 import jakarta.persistence.*;
 import team_2.enums.TipoMezzo;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,9 +23,9 @@ public class Mezzo {
     @Column(name = "in_servizio")
     private boolean inServizio;
     @Column(name = "data_inizio_servizio")
-    private Date dataInizioServizio;
+    private LocalDate dataInizioServizio;
     @Column(name = "data_fine_servizio")
-    private Date dataFineServizio;
+    private LocalDate dataFineServizio;
     @Column(name = "numero_mezzo")
     private int numeroMezzo;
 
@@ -44,7 +44,7 @@ public class Mezzo {
         //COSTRUTTORE DI DEFAULT
     }
 
-    public Mezzo(TipoMezzo tipoMezzo, int capienza, boolean inServizio, Date dataInizioServizio, Date dataFineServizio, int numeroMezzo, List<Giro> giroList, List<Tratta> trattaList, List<Manutenzione> manutenzioneList) {
+    public Mezzo(TipoMezzo tipoMezzo, int capienza, boolean inServizio, LocalDate dataInizioServizio, LocalDate dataFineServizio, int numeroMezzo, List<Giro> giroList, List<Tratta> trattaList, List<Manutenzione> manutenzioneList) {
         this.tipoMezzo = tipoMezzo;
         this.capienza = capienza;
         this.inServizio = inServizio;
@@ -83,19 +83,19 @@ public class Mezzo {
         this.inServizio = inServizio;
     }
 
-    public Date getDataInizioServizio() {
+    public LocalDate getDataInizioServizio() {
         return dataInizioServizio;
     }
 
-    public void setDataInizioServizio(Date dataInizioServizio) {
+    public void setDataInizioServizio(LocalDate dataInizioServizio) {
         this.dataInizioServizio = dataInizioServizio;
     }
 
-    public Date getDataFineServizio() {
+    public LocalDate getDataFineServizio() {
         return dataFineServizio;
     }
 
-    public void setDataFineServizio(Date dataFineServizio) {
+    public void setDataFineServizio(LocalDate dataFineServizio) {
         this.dataFineServizio = dataFineServizio;
     }
 
