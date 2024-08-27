@@ -63,7 +63,7 @@ public class TesseraDAO {
 
     public List<Tessera> trovaTesserePerPuntoDiEmissione(UUID puntoDiEmissioneId) {
         String jpql = "SELECT t FROM Tessera t WHERE t.puntoDiEmissione.id = :puntoDiEmissioneId";
-        Query query = em.createQuery(jpql);
+        TypedQuery<Tessera> query = em.createQuery(jpql, Tessera.class);
         query.setParameter("puntoDiEmissioneId", puntoDiEmissioneId);
         return query.getResultList();
     }
@@ -72,8 +72,17 @@ public class TesseraDAO {
 
     public List<Tessera> trovaTessereScadute() {
         String jpql = "SELECT t FROM Tessera t WHERE t.dataFine < :dataCorrente";
-        Query query = em.createQuery(jpql);
+        TypedQuery<Tessera> query = em.createQuery(jpql, Tessera.class);
         query.setParameter("dataCorrente", LocalDate.now());
         return query.getResultList();
     }
+
+    //4. Trovare tessere con una data di inizio specifica
+    public List<Tessera> trovaTesserePerDataInizio(LocalDate dataInizio) {
+        String jpql = "SELECT t FROM Tessera t WHERE t.dataInizio = :dataInizio";
+        TypedQuery<Tessera> query = em.createQuery(jpql, Tessera.class);
+        query.setParameter("dataInizio", dataInizio);
+        return query.getResultList();
+    }
+
 }
