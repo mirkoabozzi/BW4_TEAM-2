@@ -11,6 +11,7 @@ import team_2.enums.Tipo;
 
 import java.time.LocalDate;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -46,6 +47,13 @@ public class Application {
         return new Biglietto(vidimizzato, date, tessera);
     }
 
+    public static Giro giroCreateOne(List<Tessera> tesseraList, Tratta tratta, Mezzo mezzo) {
+        return new Giro(tesseraList, tratta, mezzo);
+    }
+
+//    public static Tratta trattaCreateOne(String zanaPartenza, String capolinea, double tempoPercorrenza, int listaMezzi, int listaNumeroGiri, double orarioPartenza, List<Giro> giroList, List<Mezzo> mezzoList) {
+//        return new Tratta(zanaPartenza, capolinea, tempoPercorrenza, listaMezzi, listaNumeroGiri, orarioPartenza, giroList, mezzoList);
+//    }
 
     public static void main(String[] args) {
         EntityManager em = emf.createEntityManager();
@@ -451,6 +459,60 @@ public class Application {
         }
         return biglietto;
     }
+
+    public static Giro createGiro(TrattaDAO td, MezzoDAO md, List<Tessera> tesseraList) {
+        Giro giro = null;
+        try {
+            System.out.println("inserisci id tratta ");
+            String id = sc.nextLine();
+            System.out.println("inserisci id mezzo ");
+            String id1 = sc.nextLine();
+            giro = giroCreateOne(tesseraList, td.getByID(id), md.getById(id1));
+            System.out.println("Biglietti creati con successo");
+        } catch (Exception e) {
+            System.out.println("Errore: " + e.getMessage());
+        }
+        return giro;
+    }
+
+//    public static Tratta createTratta(TesseraDAO td) {
+//        String zanaPartenza;
+//        String capolinea;
+//        double tempoPercorrenza;
+//        int listaMezzi;
+//        int listaNumeroGiri;
+//        double orarioPartenza;
+//        List<Giro> giroList;
+//        List<Mezzo> mezzoList;
+//        while (true) {
+//            try {
+//                System.out.println("Inserisci zona partenza");
+//                zanaPartenza = sc.nextLine();
+//                System.out.println("Inserisci capolinea");
+//                capolinea = sc.nextLine();
+//                System.out.println("Inserisci tempo percorrenza");
+//                tempoPercorrenza = Double.parseDouble(sc.nextLine());
+//                System.out.println("Inserisci orario di partenza");
+//                orarioPartenza = Double.parseDouble(sc.nextLine());
+//
+//                break;
+//            } catch (InputMismatchException e) {
+//                System.out.println("inserisci un numero valido");
+//            } catch (Exception e) {
+//                System.out.println("Errore: " + e.getMessage());
+//            }
+//        }
+//        try {
+//            System.out.println("inserisci id tessera ");
+//            String id = sc.nextLine();
+//            tratta = trattaCreateOne(vidimizzato, date, td.getById(id));
+//            System.out.println("Biglietti creati con successo");
+//        } catch (Exception e) {
+//            System.out.println("Errore: " + e.getMessage());
+//        }
+//        return tratta;
+//    }
+
 
 }
 
