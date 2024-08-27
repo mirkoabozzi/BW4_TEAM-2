@@ -42,6 +42,7 @@ public class Application {
     public static Tessera tesseraCreateOne(List<Utente> utenteList, List<PuntoDiEmissione> puntoDiEmissioneList) {
         LocalDate initialDate = fk.date().birthday(2, 5).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate endDate = fk.date().birthday(0, 2).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//        utenteList.get(r.nextInt(utenteList.size()));
         return new Tessera(initialDate, endDate, r.nextInt(0, 2) == 0, puntoDiEmissioneList.get(r.nextInt(puntoDiEmissioneList.size())));
     }
 
@@ -229,6 +230,10 @@ public class Application {
         List<Biglietto> bigliettoList = new ArrayList<>();
         List<Abbonamento> abbonamentoList = new ArrayList<>();
         List<Tessera> tesseraList = new ArrayList<>();
+        List<Giro> giroList = new ArrayList<>();
+        List<Mezzo> mezzoList = new ArrayList<>();
+        List<Tratta> trattaList = new ArrayList<>();
+        //manca manutenzione
 
         //liste aggiornate dal db
         puntoDiEmissioneList = em.createQuery("SELECT p FROM PuntoDiEmissione p", PuntoDiEmissione.class).getResultList();
@@ -236,7 +241,11 @@ public class Application {
         bigliettoList = em.createQuery("SELECT b FROM Biglietto b", Biglietto.class).getResultList();
         abbonamentoList = em.createQuery("SELECT a FROM Abbonamento a", Abbonamento.class).getResultList();
         tesseraList = em.createQuery("SELECT p FROM Tessera p", Tessera.class).getResultList();
-
+        giroList = em.createQuery("SELECT g FROM Giro g", Giro.class).getResultList();
+        mezzoList = em.createQuery("SELECT m FROM Mezzo m", Mezzo.class).getResultList();
+        trattaList = em.createQuery("SELECT t FROM Tratta t", Tratta.class).getResultList();
+        //manca manutenzione
+        
         while (true) {
             try {
                 System.out.println("Cosa vuoi creare?");
