@@ -8,6 +8,7 @@ import team_2.entities.*;
 import team_2.enums.StatoAbbonamento;
 import team_2.enums.StatoDistributori;
 import team_2.enums.Tipo;
+import team_2.enums.TipoMezzo;
 
 import java.time.LocalDate;
 import java.util.InputMismatchException;
@@ -24,8 +25,6 @@ public class Application {
     public static Abbonamento abbonamentoCreateOne(LocalDate date, StatoAbbonamento statoAbbonamento, Tipo tipo, Tessera tessera) {
         return new Abbonamento(date, statoAbbonamento, tipo, tessera);
     }
-
-    ;
 
     public static Utente utenteCreateOne(String name, String surname, LocalDate date) {
         return new Utente(name, surname, date);
@@ -47,13 +46,21 @@ public class Application {
         return new Biglietto(vidimizzato, date, tessera);
     }
 
-    public static Giro giroCreateOne(List<Tessera> tesseraList, Tratta tratta, Mezzo mezzo) {
-        return new Giro(tesseraList, tratta, mezzo);
+    public static Giro giroCreateOne(Tratta tratta, Mezzo mezzo) {
+        return new Giro(tratta, mezzo);
     }
 
-//    public static Tratta trattaCreateOne(String zanaPartenza, String capolinea, double tempoPercorrenza, int listaMezzi, int listaNumeroGiri, double orarioPartenza, List<Giro> giroList, List<Mezzo> mezzoList) {
-//        return new Tratta(zanaPartenza, capolinea, tempoPercorrenza, listaMezzi, listaNumeroGiri, orarioPartenza, giroList, mezzoList);
-//    }
+    public static Tratta trattaCreateOne(String zanaPartenza, String capolinea, double tempoPercorrenzaPrevisto, double tempoPercorrenzaEffettivo, double orarioPartenza, List<Mezzo> mezzoList) {
+        return new Tratta(zanaPartenza, capolinea, tempoPercorrenzaPrevisto, tempoPercorrenzaEffettivo, orarioPartenza, mezzoList);
+    }
+
+    public static Mezzo mezzoCreateOne(TipoMezzo tipoMezzo, int capienza, boolean inServizio, LocalDate dataInizioServizio, LocalDate dataFineServizio, int numeroMezzo) {
+        return new Mezzo(tipoMezzo, capienza, inServizio, dataInizioServizio, dataFineServizio, numeroMezzo);
+    }
+
+    public static Manutenzione manutenzioneCreateOne(TipoMezzo tipoMezzo, LocalDate dataInizio, LocalDate dataFine, Mezzo mezzo) {
+        return new Manutenzione(tipoMezzo, dataInizio, dataFine, mezzo);
+    }
 
     public static void main(String[] args) {
         EntityManager em = emf.createEntityManager();
@@ -63,6 +70,10 @@ public class Application {
         TesseraDAO td = new TesseraDAO(em);
         BigliettoDAO bd = new BigliettoDAO(em);
         AbbonamentoDAO ad = new AbbonamentoDAO(em);
+        GiroDAO gd = new GiroDAO(em);
+        MezzoDAO md = new MezzoDAO(em);
+        TrattaDAO trd = new TrattaDAO(em);
+        ManutenzioneDAO mnd = new ManutenzioneDAO(em);
         //Liste
 
         PuntoDiEmissione puntoDiEmissione = null;
@@ -83,14 +94,52 @@ public class Application {
 //        abbonamentoList = em.createQuery("SELECT a FROM Abbonamento a", Abbonamento.class).getResultList();
 //        tesseraList = em.createQuery("SELECT p FROM Tessera p", Tessera.class).getResultList();
 //        giroList = em.createQuery("SELECT g FROM Giro g", Giro.class).getResultList();
-//        mezzoList = em.createQuery("SELECT m FROM Mezzo m", Mezzo.class).getResultList();
+
 //        trattaList = em.createQuery("SELECT t FROM Tratta t", Tratta.class).getResultList();
-//        //manca manutenzione
+//        manutenzioneList = em.createQuery("SELECT m FROM Manutenzione m", Manutenzione.class).getResultList();
+
 
         while (true) {
             try {
                 System.out.println("Cosa vuoi creare?");
-                System.out.println("1. Crea punto di emissione \n2. Salva punto di emissione  \n3. Cerca punto di emissione tramite id \n4. Elimina punto di emissione\n5. Crea utente \n6. Salva utente  \n7. Cerca utente tramite id \n8. Elimina utente\n" + "9. Crea biglietto \n10. Salva biglietto  \n11. Cerca biglietto tramite id \n12. Elimina biglietto\n13. Crea tessera \n14. Salva tessera  \n15. Cerca tessera tramite id \n16. Elimina tessera\n" + "17. Crea abbonamento \n18. Salva abbonamento  \n19. Cerca abbonamento tramite id \n20. Elimina abbonamento\n0. Esci");
+                System.out.println("""
+                        1. Crea punto di emissione\s
+                        2. Salva punto di emissione \s
+                        3. Cerca punto di emissione tramite id\s
+                        4. Elimina punto di emissione
+                        5. Crea utente\s
+                        6. Salva utente \s
+                        7. Cerca utente tramite id\s
+                        8. Elimina utente
+                        9. Crea biglietto\s
+                        10. Salva biglietto \s
+                        11. Cerca biglietto tramite id\s
+                        12. Elimina biglietto
+                        13. Crea tessera\s
+                        14. Salva tessera \s
+                        15. Cerca tessera tramite id\s
+                        16. Elimina tessera
+                        17. Crea abbonamento\s
+                        18. Salva abbonamento \s
+                        19. Cerca abbonamento tramite id\s
+                        20. Elimina abbonamento
+                        21. Crea mezzo\s
+                        22. Salva mezzo \s
+                        23. Cerca mezzo tramite id\s
+                        24. Elimina mezzo
+                        25. Crea tratta\s
+                        26. Salva tratta \s
+                        27. Cerca tratta tramite id\s
+                        28. Elimina tratta
+                        29. Crea giro\s
+                        30. Salva giro \s
+                        31. Cerca giro tramite id\s
+                        32. Elimina giro
+                        33. Crea manutenzione\s
+                        34. Salva manutenzione \s
+                        35. Cerca manutenzione tramite id\s
+                        36. Elimina manutenzione
+                        0. Esci""");
                 String choice = sc.nextLine();
                 switch (choice) {
 
@@ -251,17 +300,133 @@ public class Application {
                             System.out.println(e.getMessage());
                         }
                         break;
+                    case "21":
+                        mezzo = createMezzo();
+                        System.out.println(mezzo);
+                        break;
+                    case "22":
+                        md.save(mezzo);
+                        break;
+                    case "23":
+                        try {
+                            System.out.println("Quale mezzo vuoi cercare tramite id?");
+                            String findId = sc.nextLine();
+                            System.out.println(md.getById(findId));
 
-//                    case "7":
-//                        users = em.createQuery("SELECT u FROM User u", User.class).getResultList();
-//                        catalogs = em.createQuery("SELECT u FROM Catalog u", Catalog.class).getResultList();
-//                        loans = createLoan(users.get(r.nextInt(users.size())), catalogs.get(r.nextInt(catalogs.size())));
-//                        System.out.println(loans);
-//                        break;
-//                    case "8":
-//                        ld.save(loans);
-//                        break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Inserisci il formato corretto\n");
 
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case "24":
+                        try {
+                            System.out.println("Quale mezzo vuoi eliminare tramite id?");
+                            String findByIdAndDelete = sc.nextLine();
+                            md.deleteById(findByIdAndDelete);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Inserisci il formato corretto");
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+
+                    case "25":
+                        List<Mezzo> mezzoList = em.createQuery("SELECT m FROM Mezzo m", Mezzo.class).getResultList();
+                        tratta = createTratta(mezzoList);
+                        System.out.println(tratta);
+                        break;
+                    case "26":
+                        trd.save(tratta);
+                        break;
+                    case "27":
+                        try {
+                            System.out.println("Quale tratta vuoi cercare tramite id?");
+                            String findId = sc.nextLine();
+                            System.out.println(trd.getByID(findId));
+
+                        } catch (NumberFormatException e) {
+                            System.out.println("Inserisci il formato corretto\n");
+
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case "28":
+                        try {
+                            System.out.println("Quale tratta vuoi eliminare tramite id?");
+                            String findByIdAndDelete = sc.nextLine();
+                            trd.deleteById(findByIdAndDelete);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Inserisci il formato corretto");
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case "29":
+                        giro = createGiro(trd, md);
+                        System.out.println(giro);
+                        break;
+                    case "30":
+                        gd.save(giro);
+                        break;
+                    case "31":
+                        try {
+                            System.out.println("Quale giro vuoi cercare tramite id?");
+                            String findId = sc.nextLine();
+                            System.out.println(gd.getByID(findId));
+
+                        } catch (NumberFormatException e) {
+                            System.out.println("Inserisci il formato corretto\n");
+
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case "32":
+                        try {
+                            System.out.println("Quale giro vuoi eliminare tramite id?");
+                            String findByIdAndDelete = sc.nextLine();
+                            gd.deleteById(findByIdAndDelete);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Inserisci il formato corretto");
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+
+                    case "33":
+//                        manutenzione = createManutenzione(td);
+                        System.out.println(manutenzione);
+                        break;
+                    case "34":
+                        mnd.save(manutenzione);
+                        break;
+                    case "35":
+                        try {
+                            System.out.println("Quale manutenzione vuoi cercare tramite id?");
+                            String findId = sc.nextLine();
+                            System.out.println(mnd.getByID(findId));
+
+                        } catch (NumberFormatException e) {
+                            System.out.println("Inserisci il formato corretto\n");
+
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case "36":
+                        try {
+                            System.out.println("Quale manutenzione vuoi eliminare tramite id?");
+                            String findByIdAndDelete = sc.nextLine();
+                            mnd.deleteById(findByIdAndDelete);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Inserisci il formato corretto");
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        break;
                     case "0":
                         break;
                     default:
@@ -275,6 +440,7 @@ public class Application {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+
         }
         em.close();
         emf.close();
@@ -460,58 +626,133 @@ public class Application {
         return biglietto;
     }
 
-    public static Giro createGiro(TrattaDAO td, MezzoDAO md, List<Tessera> tesseraList) {
+    public static Giro createGiro(TrattaDAO td, MezzoDAO md) {
         Giro giro = null;
         try {
             System.out.println("inserisci id tratta ");
             String id = sc.nextLine();
             System.out.println("inserisci id mezzo ");
             String id1 = sc.nextLine();
-            giro = giroCreateOne(tesseraList, td.getByID(id), md.getById(id1));
-            System.out.println("Biglietti creati con successo");
+            giro = giroCreateOne(td.getByID(id), md.getById(id1));
+            System.out.println("Giro creato con successo");
         } catch (Exception e) {
             System.out.println("Errore: " + e.getMessage());
         }
         return giro;
     }
 
-//    public static Tratta createTratta(TesseraDAO td) {
-//        String zanaPartenza;
-//        String capolinea;
-//        double tempoPercorrenza;
-//        int listaMezzi;
-//        int listaNumeroGiri;
-//        double orarioPartenza;
-//        List<Giro> giroList;
-//        List<Mezzo> mezzoList;
-//        while (true) {
-//            try {
-//                System.out.println("Inserisci zona partenza");
-//                zanaPartenza = sc.nextLine();
-//                System.out.println("Inserisci capolinea");
-//                capolinea = sc.nextLine();
-//                System.out.println("Inserisci tempo percorrenza");
-//                tempoPercorrenza = Double.parseDouble(sc.nextLine());
-//                System.out.println("Inserisci orario di partenza");
-//                orarioPartenza = Double.parseDouble(sc.nextLine());
-//
-//                break;
-//            } catch (InputMismatchException e) {
-//                System.out.println("inserisci un numero valido");
-//            } catch (Exception e) {
-//                System.out.println("Errore: " + e.getMessage());
-//            }
-//        }
-//        try {
-//            System.out.println("inserisci id tessera ");
-//            String id = sc.nextLine();
-//            tratta = trattaCreateOne(vidimizzato, date, td.getById(id));
-//            System.out.println("Biglietti creati con successo");
-//        } catch (Exception e) {
-//            System.out.println("Errore: " + e.getMessage());
-//        }
-//        return tratta;
-//    }
+    public static Tratta createTratta(List<Mezzo> mezzoList) {
+        Tratta tratta = null;
+        String zanaPartenza;
+        String capolinea;
+        double tempoPercorrenzaPrevisto;
+        double tempoPercorrenzaEffettivo;
+        double orarioPartenza;
+
+        while (true) {
+            try {
+                System.out.println("Inserisci zona partenza");
+                zanaPartenza = sc.nextLine();
+                System.out.println("Inserisci capolinea");
+                capolinea = sc.nextLine();
+                System.out.println("Inserisci tempo percorrenza previsto");
+                tempoPercorrenzaPrevisto = Double.parseDouble(sc.nextLine());
+                System.out.println("Inserisci tempo percorrenza effettivo");
+                tempoPercorrenzaEffettivo = Double.parseDouble(sc.nextLine());
+                System.out.println("Inserisci orario di partenza");
+                orarioPartenza = Double.parseDouble(sc.nextLine());
+
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("inserisci un numero valido");
+            } catch (Exception e) {
+                System.out.println("Errore: " + e.getMessage());
+            }
+        }
+        try {
+            tratta = trattaCreateOne(zanaPartenza, capolinea, tempoPercorrenzaPrevisto, tempoPercorrenzaEffettivo, orarioPartenza, mezzoList);
+            System.out.println("Tratta creata con successo");
+        } catch (Exception e) {
+            System.out.println("Errore: " + e.getMessage());
+        }
+        return tratta;
+    }
+
+    public static Mezzo createMezzo() {
+        Mezzo mezzo = null;
+        TipoMezzo tipoMezzo;
+        int capienza;
+        boolean inServizio;
+        LocalDate dataInizioServizio;
+        LocalDate dataFineServizio;
+        int numeroMezzo;
+
+        while (true) {
+            try {
+                System.out.println("Inserisci tipo mezzo(AUTOBUS, TRAM)");
+                tipoMezzo = TipoMezzo.valueOf(sc.nextLine());
+                System.out.println("Inserisci capienza");
+                capienza = Integer.parseInt(sc.nextLine());
+                System.out.println("Inserisci se il mezzo è in servizio (true,false)");
+                inServizio = Boolean.parseBoolean(sc.nextLine());
+                System.out.println("Inserisci data inizio servizio");
+                dataInizioServizio = LocalDate.parse(sc.nextLine());
+                System.out.println("Inserisci data fine servizio");
+                dataFineServizio = LocalDate.parse(sc.nextLine());
+                System.out.println("Inserisci numero mezzo");
+                numeroMezzo = Integer.parseInt(sc.nextLine());
+
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("inserisci un numero valido");
+            } catch (Exception e) {
+                System.out.println("Errore: " + e.getMessage());
+            }
+        }
+        try {
+            mezzo = mezzoCreateOne(tipoMezzo, capienza, inServizio, dataInizioServizio, dataFineServizio, numeroMezzo);
+            System.out.println("Mezzo creato con successo");
+        } catch (Exception e) {
+            System.out.println("Errore: " + e.getMessage());
+        }
+        return mezzo;
+    }
+
+    public static Manutenzione createManutenzione(MezzoDAO md) {
+        Manutenzione manutenzione = null;
+        TipoMezzo tipoMezzo;
+        LocalDate dataInizio;
+        LocalDate dataFine;
+
+
+        while (true) {
+            try {
+                System.out.println("Inserisci tipo mezzo(AUTOBUS, TRAM)");
+                tipoMezzo = TipoMezzo.valueOf(sc.nextLine());
+                ;
+                System.out.println("Inserisci data inizio manutenzione");
+                dataInizio = LocalDate.parse(sc.nextLine());
+                System.out.println("Inserisci data fine manutenzione");
+                dataFine = LocalDate.parse(sc.nextLine());
+
+
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("inserisci un numero valido");
+            } catch (Exception e) {
+                System.out.println("Errore: " + e.getMessage());
+            }
+        }
+        try {
+            System.out.println("inserisci id mezzo ");
+            String id = sc.nextLine();
+            manutenzione = manutenzioneCreateOne(tipoMezzo, dataInizio, dataFine, md.getById(id));
+            System.out.println("Manutenzione creata con successo");
+        } catch (Exception e) {
+            System.out.println("Errore: " + e.getMessage());
+        }
+        return manutenzione;
+    }
 
 
 }
