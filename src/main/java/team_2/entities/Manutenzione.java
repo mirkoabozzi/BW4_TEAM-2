@@ -10,9 +10,11 @@ import java.util.UUID;
 @Table(name = "manutenzione")
 public class Manutenzione {
     @Id
+    @GeneratedValue
     @Column(name = "id")
     private UUID id;
     @Column(name = "tipo_mezzo")
+    @Enumerated(EnumType.STRING)
     private TipoMezzo tipoMezzo;
     @Column(name = "data_inizio")
     private LocalDate dataInizio;
@@ -75,7 +77,7 @@ public class Manutenzione {
                 ", tipoMezzo=" + tipoMezzo +
                 ", dataInizio=" + dataInizio +
                 ", dataFine=" + dataFine +
-                ", mezzo=" + mezzo +
+                //", mezzo=" + mezzo +
                 '}';
     }
 }

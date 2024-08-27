@@ -104,41 +104,32 @@ public class Application {
                 System.out.println("Cosa vuoi creare?");
                 System.out.println("""
                         1. Crea punto di emissione\s
-                        2. Salva punto di emissione \s
-                        3. Cerca punto di emissione tramite id\s
-                        4. Elimina punto di emissione
-                        5. Crea utente\s
-                        6. Salva utente \s
-                        7. Cerca utente tramite id\s
-                        8. Elimina utente
-                        9. Crea biglietto\s
-                        10. Salva biglietto \s
-                        11. Cerca biglietto tramite id\s
-                        12. Elimina biglietto
-                        13. Crea tessera\s
-                        14. Salva tessera \s
-                        15. Cerca tessera tramite id\s
-                        16. Elimina tessera
-                        17. Crea abbonamento\s
-                        18. Salva abbonamento \s
-                        19. Cerca abbonamento tramite id\s
-                        20. Elimina abbonamento
-                        21. Crea mezzo\s
-                        22. Salva mezzo \s
-                        23. Cerca mezzo tramite id\s
-                        24. Elimina mezzo
-                        25. Crea tratta\s
-                        26. Salva tratta \s
-                        27. Cerca tratta tramite id\s
-                        28. Elimina tratta
-                        29. Crea giro\s
-                        30. Salva giro \s
-                        31. Cerca giro tramite id\s
-                        32. Elimina giro
-                        33. Crea manutenzione\s
-                        34. Salva manutenzione \s
-                        35. Cerca manutenzione tramite id\s
-                        36. Elimina manutenzione
+                        2. Cerca punto di emissione tramite id\s
+                        3. Elimina punto di emissione
+                        4. Crea utente\s
+                        5. Cerca utente tramite id\s
+                        6. Elimina utente
+                        7. Crea biglietto\s
+                        8. Cerca biglietto tramite id\s
+                        9. Elimina biglietto
+                        10. Crea tessera\s
+                        11. Cerca tessera tramite id\s
+                        12. Elimina tessera
+                        13. Crea abbonamento\s
+                        14. Cerca abbonamento tramite id\s
+                        15. Elimina abbonamento
+                        16. Crea mezzo\s
+                        17. Cerca mezzo tramite id\s
+                        18. Elimina mezzo
+                        19. Crea tratta\s
+                        20. Cerca tratta tramite id\s
+                        21. Elimina tratta
+                        22. Crea giro\s
+                        23. Cerca giro tramite id\s
+                        24. Elimina giro
+                        25. Crea manutenzione\s
+                        26. Cerca manutenzione tramite id\s
+                        27. Elimina manutenzione
                         0. Esci""");
                 String choice = sc.nextLine();
                 switch (choice) {
@@ -146,11 +137,9 @@ public class Application {
                     case "1":
                         puntoDiEmissione = createPuntoDiEmissione();
                         System.out.println(puntoDiEmissione);
-                        break;
-                    case "2":
                         ped.save(puntoDiEmissione);
                         break;
-                    case "3":
+                    case "2":
                         try {
                             System.out.println("Quale punto di emissione vuoi cercare tramite id?");
                             String findId = sc.nextLine();
@@ -163,7 +152,7 @@ public class Application {
                             System.out.println(e.getMessage());
                         }
                         break;
-                    case "4":
+                    case "3":
                         try {
                             System.out.println("Quale punto di emissione vuoi eliminare tramite id?");
                             String findByIdAndDelete = sc.nextLine();
@@ -174,14 +163,12 @@ public class Application {
                             System.out.println(e.getMessage());
                         }
                         break;
-                    case "5":
+                    case "4":
                         utente = createUtente();
                         System.out.println(utente);
-                        break;
-                    case "6":
                         ud.save(utente);
                         break;
-                    case "7":
+                    case "5":
                         try {
                             System.out.println("Quale utente vuoi cercare tramite id?");
                             String findId = sc.nextLine();
@@ -194,7 +181,7 @@ public class Application {
                             System.out.println(e.getMessage());
                         }
                         break;
-                    case "8":
+                    case "6":
                         try {
                             System.out.println("Quale utente vuoi eliminare tramite id?");
                             String findByIdAndDelete = sc.nextLine();
@@ -205,14 +192,12 @@ public class Application {
                             System.out.println(e.getMessage());
                         }
                         break;
-                    case "9":
+                    case "7":
                         biglietto = createBiglietto(td);
                         System.out.println(biglietto);
-                        break;
-                    case "10":
                         bd.save(biglietto);
                         break;
-                    case "11":
+                    case "8":
                         try {
                             System.out.println("Quale biglietto vuoi cercare tramite id?");
                             String findId = sc.nextLine();
@@ -225,7 +210,7 @@ public class Application {
                             System.out.println(e.getMessage());
                         }
                         break;
-                    case "12":
+                    case "9":
                         try {
                             System.out.println("Quale biglietto vuoi eliminare tramite id?");
                             String findByIdAndDelete = sc.nextLine();
@@ -237,14 +222,12 @@ public class Application {
                         }
                         break;
 
-                    case "13":
+                    case "10":
                         tessera = createTessera(ud, ped);
                         System.out.println(tessera);
-                        break;
-                    case "14":
                         td.save(tessera);
                         break;
-                    case "15":
+                    case "11":
                         try {
                             System.out.println("Quale tessera vuoi cercare tramite id?");
                             String findId = sc.nextLine();
@@ -257,7 +240,7 @@ public class Application {
                             System.out.println(e.getMessage());
                         }
                         break;
-                    case "16":
+                    case "12":
                         try {
                             System.out.println("Quale tessera vuoi eliminare tramite id?");
                             String findByIdAndDelete = sc.nextLine();
@@ -269,14 +252,12 @@ public class Application {
                         }
                         break;
 
-                    case "17":
+                    case "13":
                         abbonamento = createAbbonamento(td);
                         System.out.println(abbonamento);
-                        break;
-                    case "18":
                         ad.save(abbonamento);
                         break;
-                    case "19":
+                    case "14":
                         try {
                             System.out.println("Quale abbonamento vuoi cercare tramite id?");
                             String findId = sc.nextLine();
@@ -289,7 +270,7 @@ public class Application {
                             System.out.println(e.getMessage());
                         }
                         break;
-                    case "20":
+                    case "15":
                         try {
                             System.out.println("Quale abbonamento vuoi eliminare tramite id?");
                             String findByIdAndDelete = sc.nextLine();
@@ -300,14 +281,12 @@ public class Application {
                             System.out.println(e.getMessage());
                         }
                         break;
-                    case "21":
+                    case "16":
                         mezzo = createMezzo();
                         System.out.println(mezzo);
-                        break;
-                    case "22":
                         md.save(mezzo);
                         break;
-                    case "23":
+                    case "17":
                         try {
                             System.out.println("Quale mezzo vuoi cercare tramite id?");
                             String findId = sc.nextLine();
@@ -320,7 +299,7 @@ public class Application {
                             System.out.println(e.getMessage());
                         }
                         break;
-                    case "24":
+                    case "18":
                         try {
                             System.out.println("Quale mezzo vuoi eliminare tramite id?");
                             String findByIdAndDelete = sc.nextLine();
@@ -332,15 +311,14 @@ public class Application {
                         }
                         break;
 
-                    case "25":
+                    case "19":
                         List<Mezzo> mezzoList = em.createQuery("SELECT m FROM Mezzo m", Mezzo.class).getResultList();
                         tratta = createTratta(mezzoList);
                         System.out.println(tratta);
-                        break;
-                    case "26":
                         trd.save(tratta);
                         break;
-                    case "27":
+
+                    case "20":
                         try {
                             System.out.println("Quale tratta vuoi cercare tramite id?");
                             String findId = sc.nextLine();
@@ -353,7 +331,7 @@ public class Application {
                             System.out.println(e.getMessage());
                         }
                         break;
-                    case "28":
+                    case "21":
                         try {
                             System.out.println("Quale tratta vuoi eliminare tramite id?");
                             String findByIdAndDelete = sc.nextLine();
@@ -364,14 +342,12 @@ public class Application {
                             System.out.println(e.getMessage());
                         }
                         break;
-                    case "29":
+                    case "22":
                         giro = createGiro(trd, md);
                         System.out.println(giro);
-                        break;
-                    case "30":
                         gd.save(giro);
                         break;
-                    case "31":
+                    case "23":
                         try {
                             System.out.println("Quale giro vuoi cercare tramite id?");
                             String findId = sc.nextLine();
@@ -384,7 +360,7 @@ public class Application {
                             System.out.println(e.getMessage());
                         }
                         break;
-                    case "32":
+                    case "24":
                         try {
                             System.out.println("Quale giro vuoi eliminare tramite id?");
                             String findByIdAndDelete = sc.nextLine();
@@ -396,14 +372,13 @@ public class Application {
                         }
                         break;
 
-                    case "33":
-//                        manutenzione = createManutenzione(td);
+                    case "25":
+                        manutenzione = createManutenzione(md);
                         System.out.println(manutenzione);
-                        break;
-                    case "34":
                         mnd.save(manutenzione);
                         break;
-                    case "35":
+
+                    case "26":
                         try {
                             System.out.println("Quale manutenzione vuoi cercare tramite id?");
                             String findId = sc.nextLine();
@@ -416,7 +391,7 @@ public class Application {
                             System.out.println(e.getMessage());
                         }
                         break;
-                    case "36":
+                    case "27":
                         try {
                             System.out.println("Quale manutenzione vuoi eliminare tramite id?");
                             String findByIdAndDelete = sc.nextLine();
