@@ -42,13 +42,18 @@ public class Tratta {
     private List<Mezzo> mezzoList;
 
     //COSTRUTTORI
-    public Tratta(String zanaPartenza, String capolinea, double tempoPercorrenzaPrevisto, double tempoPercorrenzaEffettivo, double orarioPartenza, List<Giro> giroList, List<Mezzo> mezzoList) {
+
+
+    public Tratta() {
+
+    }
+
+    public Tratta(String zanaPartenza, String capolinea, double tempoPercorrenzaPrevisto, double tempoPercorrenzaEffettivo, double orarioPartenza, List<Mezzo> mezzoList) {
         this.zanaPartenza = zanaPartenza;
         this.capolinea = capolinea;
         this.tempoPercorrenzaPrevisto = tempoPercorrenzaPrevisto;
         this.tempoPercorrenzaEffettivo = tempoPercorrenzaEffettivo;
         this.orarioPartenza = orarioPartenza;
-        this.giroList = giroList;
         this.mezzoList = mezzoList;
     }
 
