@@ -8,6 +8,7 @@ import team_2.entities.Tessera;
 import team_2.exceptions.NotFoundException;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,8 +28,6 @@ public class TesseraDAO {
         transaction.commit();
         System.out.println("Tessera con id " + tessera.getId() + " salvata nel DB");
     }
-
-
 
 
     public Tessera getById(String id) {
@@ -87,6 +86,14 @@ public class TesseraDAO {
         TypedQuery<Tessera> query = em.createQuery(jpql, Tessera.class);
         query.setParameter("dataInizio", dataInizio);
         return query.getResultList();
+    }
+
+    //5. Inserisci tessera e visualizzi se l'abbonamento è attivo
+    public List<Tessera> validitàTessera(boolean idTessera) {
+        String jpql = "SELECT t FROM Tessera t WHERE t.id = :idTessera";
+        TypedQuery<Tessera> query = em.createQuery(jpql, Tessera.class);
+        query.setParameter("idTessera", idTessera);
+        return Collections.singletonList(query.getSingleResult());
     }
 
 }

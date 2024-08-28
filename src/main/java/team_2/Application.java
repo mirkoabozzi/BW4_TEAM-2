@@ -558,7 +558,7 @@ public class Application {
                 initialDate = LocalDate.parse(sc.nextLine());
                 System.out.println("Inserisci data di fine");
                 endDate = LocalDate.parse(sc.nextLine());
-                System.out.println("Inserisci se la tessera è velida o no (true, false)");
+                System.out.println("Inserisci se la tessera è valida o no (true, false)");
                 bool = Boolean.parseBoolean(sc.nextLine());
                 break;
             } catch (InputMismatchException e) {
