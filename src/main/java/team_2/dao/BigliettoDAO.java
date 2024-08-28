@@ -41,7 +41,7 @@ public class BigliettoDAO {
         System.out.println("Elemento con id " + elementFound.getId() + " eliminato");
     }
 
-    public List<Biglietto> filtraAbbonamentiPerStato(Boolean statoBiglietto) {
+    public List<Biglietto> filtraBigliettiPerStato(Boolean statoBiglietto) {
         TypedQuery<Biglietto> query = em.createQuery("SELECT b FROM Biglietto b WHERE b.vidimato = :stato", Biglietto.class);
         query.setParameter("stato", statoBiglietto);
         return query.getResultList();
@@ -57,14 +57,18 @@ public class BigliettoDAO {
         return risultatoQuery;
     }
 
-    public List<Biglietto> trovaBigliettiTramiteTessera(UUID tesseraId) {
+    public List<Biglietto> trovaBigliettiTramiteIdTessera(UUID tesseraId) {
         TypedQuery<Biglietto> query = em.createQuery("SELECT b FROM Biglietto b WHERE b.tessera.id = :tesseraId", Biglietto.class);
         query.setParameter("tesseraId", tesseraId);
-        return query.getResultList();
+        List<Biglietto> risultatoQuery = query.getResultList();
+        if (risultatoQuery.isEmpty())
+            System.out.println("Nessun biglietto trovato per la tessera con id " + tesseraId);
+        return risultatoQuery;
     }
 
-    public long contaBigliettiVidimati() {
-        TypedQuery<Long> query = em.createQuery("SELECT COUNT(b) FROM Biglietto b WHERE b.vidimato = true", Long.class);
+    public long contaBigliettiVidimati(Boolean statoBiglietto) {
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(b) FROM Biglietto b WHERE b.vidimato = :stato", Long.class);
+        query.setParameter("stato", statoBiglietto);
         return query.getSingleResult();
     }
 }
