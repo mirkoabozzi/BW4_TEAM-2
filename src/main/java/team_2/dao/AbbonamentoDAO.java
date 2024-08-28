@@ -2,6 +2,7 @@ package team_2.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import team_2.entities.Abbonamento;
 import team_2.enums.StatoAbbonamento;
@@ -87,5 +88,25 @@ public class AbbonamentoDAO {
         TypedQuery<Long> query = em.createQuery("SELECT COUNT(a) FROM Abbonamento a WHERE a.statoAbbonamento = :stato", Long.class);
         query.setParameter("stato", statoAbbonamento);
         return query.getSingleResult();
+    }
+
+    public List<Abbonamento> abbonamentiAttiviInScadenzaEntroGiorni(int giorni) {
+        LocalDate data = LocalDate.now().plusDays(giorni);
+        TypedQuery<Abbonamento> query = em.createQuery("SELECT a FROM Abbonamento a WHERE a.statoAbbonamento = ATTIVO AND a.dataUltimoRinnovo < :data", Abbonamento.class);
+        query.setParameter("data", data);
+        return query.getResultList();
+    }
+
+    public void rinnovaAbbonamentoEAttiva(UUID id, LocalDate newData) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        Query update = em.createQuery("UPDATE Abbonamento a SET a.dataUltimoRinnovo = :newData, a.statoAbbonamento = ATTIVO WHERE a.id = :id");
+        update.setParameter("newData", newData);
+        update.setParameter("id", id);
+        int modificati = update.executeUpdate();
+        transaction.commit();
+        if (modificati > 0) {
+            System.out.println("Abbonamento con id " + id + " rinnovato e attivato con successo");
+        } else System.out.println("Nessun abbonamento trovato con id " + id);
     }
 }
