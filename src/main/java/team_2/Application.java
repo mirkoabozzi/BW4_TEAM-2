@@ -22,8 +22,8 @@ public class Application {
     static Random r = new Random();
 
     //createOne
-    public static Abbonamento abbonamentoCreateOne(LocalDate date, StatoAbbonamento statoAbbonamento, TipoAbbonamento tipoAbbonamento, Tessera tessera) {
-        return new Abbonamento(date, statoAbbonamento, tipoAbbonamento, tessera);
+    public static Abbonamento abbonamentoCreateOne(LocalDate date, StatoAbbonamento statoAbbonamento, TipoAbbonamento tipo, Tessera tessera) {
+        return new Abbonamento(date, statoAbbonamento, tipo, tessera);
     }
 
     public static Utente utenteCreateOne(String name, String surname, LocalDate date) {
@@ -42,8 +42,8 @@ public class Application {
         return new Tessera(initialDate, endDate, bool, utente, puntoDiEmissione);
     }
 
-    public static Biglietto bigliettoCreateOne(boolean vidimato, LocalDate date, Tessera tessera) {
-        return new Biglietto(vidimato, date, tessera);
+    public static Biglietto bigliettoCreateOne(boolean vidimizzato, LocalDate date, Tessera tessera) {
+        return new Biglietto(vidimizzato, date, tessera);
     }
 
     public static Giro giroCreateOne(Tratta tratta, Mezzo mezzo) {
@@ -94,7 +94,6 @@ public class Application {
 //        abbonamentoList = em.createQuery("SELECT a FROM Abbonamento a", Abbonamento.class).getResultList();
 //        tesseraList = em.createQuery("SELECT p FROM Tessera p", Tessera.class).getResultList();
 //        giroList = em.createQuery("SELECT g FROM Giro g", Giro.class).getResultList();
-
 //        trattaList = em.createQuery("SELECT t FROM Tratta t", Tratta.class).getResultList();
 //        manutenzioneList = em.createQuery("SELECT m FROM Manutenzione m", Manutenzione.class).getResultList();
 
@@ -104,7 +103,7 @@ public class Application {
                 String choice = sc.nextLine();
                 switch (choice) {
                     case "1":
-                        System.out.println("Inserisci password");
+                        System.out.println("inserisci password");
                         String pass = sc.nextLine();
                         if (pass.equals("1234")) {
                             System.out.println("ok");
@@ -351,7 +350,7 @@ public class Application {
                                             System.out.println("Uscita dal programma...");
                                             return;
                                         default:
-                                            System.out.println("Il valore non è valido");
+                                            System.out.println("il valore non è valido");
                                             break;
                                     }
 
@@ -441,7 +440,7 @@ public class Application {
                                         System.out.println("Uscita del programma in corso...");
                                         return;
                                     default:
-                                        System.out.println("Il valore non è valido");
+                                        System.out.println("il valore non è valido");
                                         break;
                                 }
 
@@ -450,8 +449,10 @@ public class Application {
                             }
 
                         }
+
+
                     default:
-                        System.out.println("Scelta non valida riprova");
+                        System.out.println("scelta non valida riprova");
                         i--;
                         break;
                 }
@@ -482,7 +483,7 @@ public class Application {
                             statoDistributori = StatoDistributori.valueOf(sc.nextLine());
                             break;
                         } catch (InputMismatchException e) {
-                            System.out.println("Inserisci un numero valido");
+                            System.out.println("inserisci un numero valido");
                         } catch (Exception e) {
                             System.out.println("Errore: " + e.getMessage());
                         }
@@ -498,7 +499,7 @@ public class Application {
                             name = sc.nextLine();
                             break;
                         } catch (InputMismatchException e) {
-                            System.out.println("Inserisci un numero valido");
+                            System.out.println("inserisci un numero valido");
                         } catch (Exception e) {
                             System.out.println("Errore: " + e.getMessage());
                         }
@@ -510,12 +511,14 @@ public class Application {
                     System.out.println("Scelta non valida riprova!");
                     break;
             }
+
         } catch (InputMismatchException e) {
             System.out.println("Inserisci un numero valido");
 
         } catch (Exception e) {
             System.out.println("Errore: " + e.getMessage());
         }
+
         return puntoDiEmissione;
     }
 
@@ -534,7 +537,7 @@ public class Application {
                 date = LocalDate.parse(sc.nextLine());
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Inserisci un numero valido");
+                System.out.println("inserisci un numero valido");
             } catch (Exception e) {
                 System.out.println("Errore: " + e.getMessage());
             }
@@ -552,17 +555,19 @@ public class Application {
         LocalDate initialDate;
         LocalDate endDate;
         boolean bool;
+        Utente utente;
+        PuntoDiEmissione puntoDiEmissione;
         while (true) {
             try {
                 System.out.println("Inserisci data di inizio");
                 initialDate = LocalDate.parse(sc.nextLine());
                 System.out.println("Inserisci data di fine");
                 endDate = LocalDate.parse(sc.nextLine());
-                System.out.println("Inserisci se la tessera è valida o no (true, false)");
+                System.out.println("Inserisci se la tessera è velida o no (true, false)");
                 bool = Boolean.parseBoolean(sc.nextLine());
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Inserisci un numero valido");
+                System.out.println("inserisci un numero valido");
             } catch (Exception e) {
                 System.out.println("Errore: " + e.getMessage());
             }
@@ -585,7 +590,7 @@ public class Application {
         Abbonamento abbonamento = null;
         LocalDate date;
         StatoAbbonamento statoAbbonamento;
-        TipoAbbonamento tipoAbbonamento;
+        TipoAbbonamento tipo;
         while (true) {
             try {
                 System.out.println("Inserisci data ultimo rinnovo");
@@ -593,18 +598,18 @@ public class Application {
                 System.out.println("Inserisci stato abbonamento(ATTIVO,NON_ATTIVO)");
                 statoAbbonamento = StatoAbbonamento.valueOf(sc.nextLine());
                 System.out.println("Inserisci tipo abbonamento (SETTIMANALE,MENSILE)");
-                tipoAbbonamento = TipoAbbonamento.valueOf(sc.nextLine());
+                tipo = TipoAbbonamento.valueOf(sc.nextLine());
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Inserisci un numero valido");
+                System.out.println("inserisci un numero valido");
             } catch (Exception e) {
                 System.out.println("Errore: " + e.getMessage());
             }
         }
         try {
-            System.out.println("Inserisci id tessera ");
+            System.out.println("inserisci id tessera ");
             String id = sc.nextLine();
-            abbonamento = abbonamentoCreateOne(date, statoAbbonamento, tipoAbbonamento, td.getById(id));
+            abbonamento = abbonamentoCreateOne(date, statoAbbonamento, tipo, td.getById(id));
             System.out.println("Abbonamento creato con successo");
         } catch (Exception e) {
             System.out.println("Errore: " + e.getMessage());
@@ -614,26 +619,26 @@ public class Application {
 
     public static Biglietto createBiglietto(TesseraDAO td) {
         Biglietto biglietto = null;
-        boolean vidimato;
+        boolean vidimizzato;
         LocalDate date;
         while (true) {
             try {
-                System.out.println("Inserisci se il biglietto è stato vidimato (true,false)");
-                vidimato = Boolean.parseBoolean(sc.nextLine());
-                System.out.println("Inserisci data di vidimazione");
+                System.out.println("Inserisci se il biglietto è stato vidimizzato (true,false)");
+                vidimizzato = Boolean.parseBoolean(sc.nextLine());
+                System.out.println("Inserisci data di vidimizzazione");
                 date = LocalDate.parse(sc.nextLine());
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Inserisci un numero valido");
+                System.out.println("inserisci un numero valido");
             } catch (Exception e) {
                 System.out.println("Errore: " + e.getMessage());
             }
         }
         try {
-            System.out.println("Inserisci id tessera ");
+            System.out.println("inserisci id tessera ");
             String id = sc.nextLine();
-            biglietto = bigliettoCreateOne(vidimato, date, td.getById(id));
-            System.out.println("Biglietto creato con successo");
+            biglietto = bigliettoCreateOne(vidimizzato, date, td.getById(id));
+            System.out.println("Biglietti creati con successo");
         } catch (Exception e) {
             System.out.println("Errore: " + e.getMessage());
         }
@@ -643,9 +648,9 @@ public class Application {
     public static Giro createGiro(TrattaDAO td, MezzoDAO md) {
         Giro giro = null;
         try {
-            System.out.println("Inserisci id tratta ");
+            System.out.println("inserisci id tratta ");
             String id = sc.nextLine();
-            System.out.println("Inserisci id mezzo ");
+            System.out.println("inserisci id mezzo ");
             String id1 = sc.nextLine();
             giro = giroCreateOne(td.getByID(id), md.getById(id1));
             System.out.println("Giro creato con successo");
@@ -678,7 +683,7 @@ public class Application {
 
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Inserisci un numero valido");
+                System.out.println("inserisci un numero valido");
             } catch (Exception e) {
                 System.out.println("Errore: " + e.getMessage());
             }
@@ -717,7 +722,7 @@ public class Application {
                 numeroMezzo = Integer.parseInt(sc.nextLine());
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Inserisci un numero valido");
+                System.out.println("inserisci un numero valido");
             } catch (Exception e) {
                 System.out.println("Errore: " + e.getMessage());
             }
@@ -746,13 +751,13 @@ public class Application {
                 dataFine = LocalDate.parse(sc.nextLine());
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Inserisci un numero valido");
+                System.out.println("inserisci un numero valido");
             } catch (Exception e) {
                 System.out.println("Errore: " + e.getMessage());
             }
         }
         try {
-            System.out.println("Inserisci id mezzo ");
+            System.out.println("inserisci id mezzo ");
             String id = sc.nextLine();
             manutenzione = manutenzioneCreateOne(tipoMezzo, dataInizio, dataFine, md.getById(id));
             System.out.println("Manutenzione creata con successo");
@@ -761,4 +766,10 @@ public class Application {
         }
         return manutenzione;
     }
+
+
 }
+
+
+
+

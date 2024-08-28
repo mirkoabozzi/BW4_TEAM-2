@@ -5,6 +5,7 @@ import jakarta.persistence.EntityTransaction;
 import team_2.entities.Tratta;
 import team_2.exceptions.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,5 +87,13 @@ public class TrattaDAO {
         return em.createQuery("SELECT t FROM Tratta t ORDER BY t.tempoPercorrenzaPrevisto ASC", Tratta.class)
                 .setMaxResults(1)  // Limitiamo il risultato a una singola tratta
                 .getSingleResult();
+    }
+
+    // Ottenere la tratta con il tempo di percorrenza previsto più veloce in base a una data
+    public Tratta findTrattaPiuVeloceFromData(LocalDate data) {
+        return em.createQuery("SELECT t FROM Tratta t " + "JOIN t.mezzoList m " + "WHERE m.inServizio = true " +
+                        "AND :data BETWEEN m.dataInizioServizio AND COALESCE(m.dataFineServizio, :data) " +
+                        "ORDER BY t.tempoPercorrenzaPrevisto ASC", Tratta.class).setParameter("data", data)
+                .setMaxResults(1).getSingleResult();
     }
 }

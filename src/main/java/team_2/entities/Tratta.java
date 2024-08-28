@@ -133,8 +133,8 @@ public class Tratta {
                 ", tempoPercorrenzaPrevisto=" + tempoPercorrenzaPrevisto +
                 ", tempoPercorrenzaEffettivo=" + tempoPercorrenzaEffettivo +
                 ", orarioPartenza=" + orarioPartenza +
-                ", giroList=" + giroList +
-                ", mezzoList=" + mezzoList +
+                // ", giroList=" + giroList +
+                //", mezzoList=" + mezzoList +
                 '}';
     }
 }
