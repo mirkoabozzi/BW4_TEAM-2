@@ -91,7 +91,6 @@ public class Application {
 //        abbonamentoList = em.createQuery("SELECT a FROM Abbonamento a", Abbonamento.class).getResultList();
 //        tesseraList = em.createQuery("SELECT p FROM Tessera p", Tessera.class).getResultList();
 //        giroList = em.createQuery("SELECT g FROM Giro g", Giro.class).getResultList();
-
 //        trattaList = em.createQuery("SELECT t FROM Tratta t", Tratta.class).getResultList();
 //        manutenzioneList = em.createQuery("SELECT m FROM Manutenzione m", Manutenzione.class).getResultList();
 
@@ -701,7 +700,7 @@ public class Application {
 
     //create Object
     public static PuntoDiEmissione createPuntoDiEmissione() {
-        System.out.println("1. Crea distributori automatici \n 2. Crea rivenditori autorizzati");
+        System.out.println("1. Crea distributori automatici\n2. Crea rivenditori autorizzati");
         int choice;
         PuntoDiEmissione puntoDiEmissione = null;
 
@@ -713,7 +712,7 @@ public class Application {
                     while (true) {
                         try {
                             System.out.println("Inserisci lo stato dei distributori (ATTIVO, FUORI_SERVIZIO)");
-                            statoDistributori = StatoDistributori.valueOf(sc.nextLine());
+                            statoDistributori = StatoDistributori.valueOf(sc.nextLine().toUpperCase());
                             break;
                         } catch (InputMismatchException e) {
                             System.out.println("Inserisci un numero valido");
@@ -825,9 +824,9 @@ public class Application {
                 System.out.println("Inserisci data ultimo rinnovo");
                 date = LocalDate.parse(sc.nextLine());
                 System.out.println("Inserisci stato abbonamento(ATTIVO,NON_ATTIVO)");
-                statoAbbonamento = StatoAbbonamento.valueOf(sc.nextLine());
+                statoAbbonamento = StatoAbbonamento.valueOf(sc.nextLine().toUpperCase());
                 System.out.println("Inserisci tipo abbonamento (SETTIMANALE,MENSILE)");
-                tipoAbbonamento = TipoAbbonamento.valueOf(sc.nextLine());
+                tipoAbbonamento = TipoAbbonamento.valueOf(sc.nextLine().toUpperCase());
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Inserisci un numero valido");
@@ -938,7 +937,7 @@ public class Application {
         while (true) {
             try {
                 System.out.println("Inserisci tipo mezzo(AUTOBUS, TRAM)");
-                tipoMezzo = TipoMezzo.valueOf(sc.nextLine());
+                tipoMezzo = TipoMezzo.valueOf(sc.nextLine().toUpperCase());
                 System.out.println("Inserisci capienza");
                 capienza = Integer.parseInt(sc.nextLine());
                 System.out.println("Inserisci se il mezzo è in servizio (true,false)");
@@ -973,7 +972,7 @@ public class Application {
         while (true) {
             try {
                 System.out.println("Inserisci tipo mezzo(AUTOBUS, TRAM)");
-                tipoMezzo = TipoMezzo.valueOf(sc.nextLine());
+                tipoMezzo = TipoMezzo.valueOf(sc.nextLine().toUpperCase());
                 System.out.println("Inserisci data inizio manutenzione");
                 dataInizio = LocalDate.parse(sc.nextLine());
                 System.out.println("Inserisci data fine manutenzione");
