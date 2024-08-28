@@ -2,6 +2,7 @@ package team_2.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Query;
 import team_2.entities.Tessera;
 import team_2.entities.Utente;
 import team_2.exceptions.NotFoundException;
@@ -121,5 +122,53 @@ public class UtenteDAO {
         }
 
         return false;
+    }
+
+    public void aggiornaNomeUtente(UUID id, String newName) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        Query update = em.createQuery("UPDATE Utente u SET u.nome = :newName WHERE u.id = :id");
+        update.setParameter("newName", newName);
+        update.setParameter("id", id);
+        int modificati = update.executeUpdate();
+        if (modificati > 0) {
+            transaction.commit();
+            System.out.println("Nome utente modificato con successo, nuovo nome: " + newName);
+        } else {
+            transaction.rollback();
+            System.out.println("Nessun utente trovato con id " + id);
+        }
+    }
+
+    public void aggiornaCognomeUtente(UUID id, String newSurname) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        Query update = em.createQuery("UPDATE Utente u SET u.cognome = :newSurname WHERE u.id = :id");
+        update.setParameter("newSurname", newSurname);
+        update.setParameter("id", id);
+        int modificati = update.executeUpdate();
+        if (modificati > 0) {
+            transaction.commit();
+            System.out.println("Cognome utente modificato con successo, nuovo cognome: " + newSurname);
+        } else {
+            transaction.rollback();
+            System.out.println("Nessun utente trovato con id " + id);
+        }
+    }
+
+    public void aggiornaDataDiNascitaUtente(UUID id, LocalDate newData) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        Query update = em.createQuery("UPDATE Utente u SET u.dataDiNascita = :newData WHERE u.id = :id");
+        update.setParameter("newData", newData);
+        update.setParameter("id", id);
+        int modificati = update.executeUpdate();
+        if (modificati > 0) {
+            transaction.commit();
+            System.out.println("Data di nascita utente modificata con successo, nuovo data: " + newData);
+        } else {
+            transaction.rollback();
+            System.out.println("Nessun utente trovato con id " + id);
+        }
     }
 }

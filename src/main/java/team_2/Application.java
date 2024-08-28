@@ -566,6 +566,9 @@ public class Application {
                                         5. Cerca abbonamento tramite id
                                         6. Elimina abbonamento
                                         7. Rinnova abbonamento
+                                        8. Modifica nome utente
+                                        9. Modifica cognome utente
+                                        10. Modifica data di nascita utente
                                         0. Esci""");
                                 String choice2 = sc.nextLine();
                                 switch (choice2) {
@@ -632,6 +635,39 @@ public class Application {
                                             System.out.println("Inserisci la data di rinnovo");
                                             String data = sc.nextLine();
                                             ad.rinnovaAbbonamentoEAttiva(UUID.fromString(idAbbonamento), LocalDate.parse(data));
+                                        } catch (Exception ex) {
+                                            System.out.println("Input non valido " + ex.getMessage());
+                                        }
+                                        break;
+                                    case "8":
+                                        try {
+                                            System.out.println("Inserisci un id utente valido");
+                                            String idUtente = sc.nextLine();
+                                            System.out.println("Inserisci il nuovo nome");
+                                            String newName = sc.nextLine();
+                                            ud.aggiornaNomeUtente(UUID.fromString(idUtente), newName);
+                                        } catch (Exception ex) {
+                                            System.out.println("Input non valido " + ex.getMessage());
+                                        }
+                                        break;
+                                    case "9":
+                                        try {
+                                            System.out.println("Inserisci un id utente valido");
+                                            String idUtente = sc.nextLine();
+                                            System.out.println("Inserisci il nuovo cognome");
+                                            String newSurname = sc.nextLine();
+                                            ud.aggiornaCognomeUtente(UUID.fromString(idUtente), newSurname);
+                                        } catch (Exception ex) {
+                                            System.out.println("Input non valido " + ex.getMessage());
+                                        }
+                                        break;
+                                    case "10":
+                                        try {
+                                            System.out.println("Inserisci un id utente valido");
+                                            String idUtente = sc.nextLine();
+                                            System.out.println("Inserisci la nuova data di nascita");
+                                            LocalDate newData = LocalDate.parse(sc.nextLine());
+                                            ud.aggiornaDataDiNascitaUtente(UUID.fromString(idUtente), newData);
                                         } catch (Exception ex) {
                                             System.out.println("Input non valido " + ex.getMessage());
                                         }

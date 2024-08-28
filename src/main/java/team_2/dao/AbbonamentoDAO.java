@@ -104,9 +104,12 @@ public class AbbonamentoDAO {
         update.setParameter("newData", newData);
         update.setParameter("id", id);
         int modificati = update.executeUpdate();
-        transaction.commit();
         if (modificati > 0) {
+            transaction.commit();
             System.out.println("Abbonamento con id " + id + " rinnovato e attivato con successo");
-        } else System.out.println("Nessun abbonamento trovato con id " + id);
+        } else {
+            transaction.rollback();
+            System.out.println("Nessun abbonamento trovato con id " + id);
+        }
     }
 }

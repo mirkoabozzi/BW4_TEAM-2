@@ -78,10 +78,13 @@ public class ManutenzioneDAO {
         update.setParameter("data", newData);
         update.setParameter("id", id);
         int modificati = update.executeUpdate();
-        transaction.commit();
         if (modificati > 0) {
+            transaction.commit();
             System.out.println("Data fine manutenzione per il mezzo con id " + id + " aggiornata con successo");
-        } else System.out.println("Nessun mezzo trovato con id " + id);
+        } else {
+            transaction.rollback();
+            System.out.println("Nessun mezzo trovato con id " + id);
+        }
 
     }
 }
