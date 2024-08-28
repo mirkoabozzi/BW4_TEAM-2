@@ -303,6 +303,8 @@ public class Application {
                                                     18. Filtra mezzi per tipo
                                                     19. Conta mezzi in manutenzione
                                                     20. Conta mezzi in manutenzione per tipo
+                                                    21. Verifica se la tessera è valida
+                                                    22. Trova il percorso che fa il determinato giro
                                                     0. Esci""");
                                             String sceltaCercaElimina = sc.nextLine();
                                             switch (sceltaCercaElimina) {
@@ -503,9 +505,15 @@ public class Application {
                                                         System.out.println("Input non valido " + ex.getMessage());
                                                     }
                                                     break;
-                                                case "0":
-                                                    System.out.println("Uscita dal programma...");
-                                                    return;
+                                                case "21":
+                                                    try {
+                                                        System.out.println("Inserisci un id della tessera");
+                                                        String idTessera = sc.nextLine();
+                                                        td.validitàTessera(UUID.fromString(idTessera)).forEach(System.out::println);
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido " + ex.getMessage());
+                                                    }
+                                                    break;
                                                 default:
                                                     System.out.println("Il valore non è valido");
                                                     break;

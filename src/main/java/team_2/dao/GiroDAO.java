@@ -44,16 +44,19 @@ public class GiroDAO {
     //QUERY
 
     //TROVIAMO LA TRATTA CHE FA IL DETERMINATO GIRO
-    public List<Giro> trattaGiro(String trattaId) {
+    public List<Giro> trattaGiro(UUID trattaId) {
         TypedQuery<Giro> query = em.createQuery("SELECT g FROM Giro g WHERE g.tratta = :trattaId", Giro.class);
         query.setParameter("trattaId", trattaId);
-        return query.getResultList();
+        List<Giro> risultatoQuery = query.getResultList();
+        if (risultatoQuery.isEmpty())
+            System.out.println("Nessun abbonamento trovato per la tessera " + trattaId);
+        return risultatoQuery;
     }
 
     //TROVIAMO LE LISTE DI TESSERE (UTENTI) PRESENTI NEL GIRO
     public List<Giro> tessereGiro(String listaTessere) {
-        TypedQuery<Giro> query = em.createQuery("SELECT g FROM Giro g WHERE g.tesseraList = :listaTessere", Giro.class);
-        query.setParameter("listaTessere", listaTessere);
+        TypedQuery<Giro> query = em.createQuery("SELECT g FROM Giro g WHERE g.tesseraList = :listaPerTessere", Giro.class);
+        query.setParameter("listaPerTessere", listaTessere);
         return query.getResultList();
     }
 
@@ -63,6 +66,5 @@ public class GiroDAO {
         query.setParameter("mezzoGiro", mezzoGiro);
         return query.getResultList();
     }
-
 
 }

@@ -8,7 +8,6 @@ import team_2.entities.Tessera;
 import team_2.exceptions.NotFoundException;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -88,12 +87,15 @@ public class TesseraDAO {
         return query.getResultList();
     }
 
-    //5. Inserisci tessera e visualizzi se l'abbonamento è attivo
-    public List<Tessera> validitàTessera(boolean idTessera) {
+    //5. Inserisci l'id tessera e visualizzi se l'abbonamento è attivo
+    public List<Tessera> validitàTessera(UUID idTessera) {
         String jpql = "SELECT t FROM Tessera t WHERE t.id = :idTessera";
         TypedQuery<Tessera> query = em.createQuery(jpql, Tessera.class);
         query.setParameter("idTessera", idTessera);
-        return Collections.singletonList(query.getSingleResult());
+        List<Tessera> risultatoQuery = query.getResultList();
+        if (risultatoQuery.isEmpty())
+            System.out.println("Nessun tessera trovata con l'id inserito " + idTessera);
+        return risultatoQuery;
     }
 
 }
