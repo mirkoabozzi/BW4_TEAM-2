@@ -46,14 +46,20 @@ public class ManutenzioneDAO {
     public List<Mezzo> filtraMezziPerTipo(TipoMezzo tipoMezzo) {
         TypedQuery<Mezzo> query = em.createQuery("SELECT m FROM Mezzo m WHERE m.tipoMezzo = :tipo", Mezzo.class);
         query.setParameter("tipo", tipoMezzo);
-        return query.getResultList();
+        List<Mezzo> risultatoQuery = query.getResultList();
+        if (risultatoQuery.isEmpty())
+            System.out.println("Nessun mezzo trovato di tipo " + tipoMezzo);
+        return risultatoQuery;
     }
 
     public List<Mezzo> mezziInManutenzione() {
         LocalDate oggi = LocalDate.now();
         TypedQuery<Mezzo> query = em.createQuery("SELECT m.mezzo FROM Manutenzione m WHERE :oggi BETWEEN m.dataInizio AND m.dataFine", Mezzo.class);
         query.setParameter("oggi", oggi);
-        return query.getResultList();
+        List<Mezzo> risultatoQuery = query.getResultList();
+        if (risultatoQuery.isEmpty())
+            System.out.println("Nessun mezzo presente in officina");
+        return risultatoQuery;
     }
 
     public long contaMezziInManutenzionePerTipo(TipoMezzo tipoMezzo) {
