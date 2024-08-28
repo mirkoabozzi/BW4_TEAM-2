@@ -136,6 +136,13 @@ public class Application {
                                             25. Filtra abbonamenti tramite id tessera
                                             26. Conta abbonamenti per tipo
                                             27. Conta abbonamenti per stato
+                                            28. Filtra biglietti per stato
+                                            29. Filtra biglietti per data vidimazione
+                                            30. Trova biglietti tramite id tessera
+                                            31. Conta biglietti vidimati o non vidimati
+                                            32. Filtra mezzi per tipo
+                                            33. Conta mezzi in manutenzione
+                                            34. Conta mezzi in manutenzione per tipo
                                             0. Esci""");
                                     String choice1 = sc.nextLine();
                                     switch (choice1) {
@@ -404,6 +411,69 @@ public class Application {
                                                 System.out.println("Input non valido " + ex.getMessage());
                                             }
                                             break;
+                                        case "28":
+                                            try {
+                                                System.out.println("Inserisci true per i biglietti vidimati, false per i non vidimati");
+                                                Boolean stato = Boolean.valueOf(sc.nextLine());
+                                                bd.filtraBigliettiPerStato(stato).forEach(System.out::println);
+                                            } catch (Exception ex) {
+                                                System.out.println("Input non valido " + ex.getMessage());
+                                            }
+                                            break;
+                                        case "29":
+                                            try {
+                                                System.out.println("Inserisci una data valida");
+                                                String data = sc.nextLine();
+                                                bd.filtraBigliettiVidimatiInData(data).forEach(System.out::println);
+                                            } catch (Exception ex) {
+                                                System.out.println("Input non valido " + ex.getMessage());
+                                            }
+                                            break;
+                                        case "30":
+                                            try {
+                                                System.out.println("Inserisci un Id tessera valido");
+                                                String idTessera = sc.nextLine();
+                                                bd.trovaBigliettiTramiteIdTessera(UUID.fromString(idTessera)).forEach(System.out::println);
+                                            } catch (Exception ex) {
+                                                System.out.println("Input non valido " + ex.getMessage());
+                                            }
+                                            break;
+                                        case "31":
+                                            try {
+                                                System.out.println("Quali biglietti vuoi contare? true vidimati / false non vidimati");
+                                                Boolean stato = Boolean.valueOf(sc.nextLine());
+                                                System.out.println("Biglietti trovati " + bd.contaBigliettiVidimati(stato));
+                                            } catch (Exception ex) {
+                                                System.out.println("Input non valido " + ex.getMessage());
+                                            }
+                                            break;
+                                        case "32":
+                                            try {
+                                                System.out.println("Inserisci un tipo di mezzo valido AUTOBUS o TRAM");
+                                                String tipo = sc.nextLine().toUpperCase();
+                                                mnd.filtraMezziPerTipo(TipoMezzo.valueOf(tipo)).forEach(System.out::println);
+                                            } catch (Exception ex) {
+                                                System.out.println("Input non valido " + ex.getMessage());
+                                            }
+                                            break;
+                                        case "33":
+                                            try {
+                                                System.out.println("Mezzi ancora in manutenzione");
+                                                mnd.mezziInManutenzione().forEach(System.out::println);
+                                            } catch (Exception ex) {
+                                                System.out.println("Input non valido " + ex.getMessage());
+                                            }
+                                            break;
+                                        case "34":
+                                            try {
+                                                System.out.println("Inserisci un tipo mezzo valido AUTOBUS TRAM");
+                                                String tipo = sc.nextLine().toUpperCase();
+                                                System.out.println("Mezzi di tipo " + tipo + " presenti in officina " + mnd.contaMezziInManutenzionePerTipo(TipoMezzo.valueOf(tipo)));
+                                            } catch (Exception ex) {
+                                                System.out.println("Input non valido " + ex.getMessage());
+                                            }
+                                            break;
+
 
                                         case "0":
                                             System.out.println("Uscita dal programma...");
