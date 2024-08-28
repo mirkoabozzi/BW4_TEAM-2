@@ -514,8 +514,11 @@ public class Application {
                                                         System.out.println("Input non valido " + ex.getMessage());
                                                     }
                                                     break;
+                                                case "0":
+                                                    System.out.println("Uscita dal programma...");
+                                                    return;
                                                 default:
-                                                    System.out.println("Il valore non è valido");
+                                                    System.out.println("il valore non è valido");
                                                     break;
                                             }
                                         } catch (Exception ex) {
