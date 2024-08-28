@@ -60,19 +60,25 @@ public class AbbonamentoDAO {
     }
 
     public List<Abbonamento> filtraAbbonamentiPerTipo(TipoAbbonamento tipoAbbonamento) {
-        TypedQuery<Abbonamento> query = em.createQuery("SELECT a FROM Abbonamento a where a.tipo = :tipo", Abbonamento.class);
+        TypedQuery<Abbonamento> query = em.createQuery("SELECT a FROM Abbonamento a where a.tipoAbbonamento = :tipo", Abbonamento.class);
         query.setParameter("tipo", tipoAbbonamento);
-        return query.getResultList();
+        List<Abbonamento> risultatoQuery = query.getResultList();
+        if (risultatoQuery.isEmpty())
+            System.out.println("Nessun abbonamento trovato di tipo " + tipoAbbonamento);
+        return risultatoQuery;
     }
 
     public List<Abbonamento> trovaAbbonamentiTramiteTessera(UUID tesseraId) {
         TypedQuery<Abbonamento> query = em.createQuery("SELECT a FROM Abbonamento a WHERE a.tessera.id = :tesseraId", Abbonamento.class);
         query.setParameter("tesseraId", tesseraId);
-        return query.getResultList();
+        List<Abbonamento> risultatoQuery = query.getResultList();
+        if (risultatoQuery.isEmpty())
+            System.out.println("Nessun abbonamento trovato per la tessera " + tesseraId);
+        return risultatoQuery;
     }
 
     public Long contaAbbonamentiPerTipo(TipoAbbonamento tipoAbbonamento) {
-        TypedQuery<Long> query = em.createQuery("SELECT COUNT(a) FROM Abbonamento a WHERE a.tipo = :tipo", Long.class);
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(a) FROM Abbonamento a WHERE a.tipoAbbonamento = :tipo", Long.class);
         query.setParameter("tipo", tipoAbbonamento);
         return query.getSingleResult();
     }
@@ -82,5 +88,4 @@ public class AbbonamentoDAO {
         query.setParameter("stato", statoAbbonamento);
         return query.getSingleResult();
     }
-
 }

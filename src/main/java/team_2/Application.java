@@ -11,10 +11,7 @@ import team_2.enums.TipoAbbonamento;
 import team_2.enums.TipoMezzo;
 
 import java.time.LocalDate;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("bw4_team_2");
@@ -133,6 +130,12 @@ public class Application {
                                             19. Crea manutenzione\s
                                             20. Cerca manutenzione tramite id\s
                                             21. Elimina manutenzione
+                                            22. Filtra abbonamenti per stato
+                                            23. Filtra abbonamenti per data di rinnovo
+                                            24. Filtra abbonamenti per tipo
+                                            25. Filtra abbonamenti tramite id tessera
+                                            26. Conta abbonamenti per tipo
+                                            27. Conta abbonamenti per stato
                                             0. Esci""");
                                     String choice1 = sc.nextLine();
                                     switch (choice1) {
@@ -347,6 +350,61 @@ public class Application {
                                                 System.out.println(e.getMessage());
                                             }
                                             break;
+                                        case "22":
+                                            try {
+                                                System.out.println("Vuoi filtrare gli abbonamenti ATTIVO o NON_ATTIVO?");
+                                                String statoAbbonamento = sc.nextLine().toUpperCase();
+                                                ad.filtraAbbonamentiPerStato(StatoAbbonamento.valueOf(statoAbbonamento)).forEach(System.out::println);
+                                            } catch (Exception ex) {
+                                                System.out.println("Input non valido " + ex.getMessage());
+                                            }
+                                            break;
+                                        case "23":
+                                            try {
+                                                System.out.println("Inserisci la data per filtrare gli abbonamenti");
+                                                String data = sc.nextLine();
+                                                ad.filtraAbbonamentiRinnovatiInData(data).forEach(System.out::println);
+                                            } catch (Exception ex) {
+                                                System.out.println("Input non valido " + ex.getMessage());
+                                            }
+                                            break;
+                                        case "24":
+                                            try {
+                                                System.out.println("Inserisci il tipo di abbonamento (MENSILE o SETTIMANALE)");
+                                                String tipoAbbonamento = sc.nextLine().toUpperCase();
+                                                ad.filtraAbbonamentiPerTipo(TipoAbbonamento.valueOf(tipoAbbonamento)).forEach(System.out::println);
+                                            } catch (Exception ex) {
+                                                System.out.println("Input non valido " + ex.getMessage());
+                                            }
+                                            break;
+                                        case "25":
+                                            try {
+                                                System.out.println("Inserisci un ID tessera valido");
+                                                String numeroTessera = sc.nextLine();
+                                                ad.trovaAbbonamentiTramiteTessera(UUID.fromString(numeroTessera)).forEach(System.out::println);
+                                            } catch (Exception ex) {
+                                                System.out.println("Input non valido " + ex.getMessage());
+                                            }
+                                            break;
+                                        case "26":
+                                            try {
+                                                System.out.println("Inserisci il tipo SETTIMANALE o MENSILE");
+                                                String tipo = sc.nextLine().toUpperCase();
+                                                System.out.println("Abbonamenti di tipo " + tipo + " trovati: " + ad.contaAbbonamentiPerTipo(TipoAbbonamento.valueOf(tipo)));
+                                            } catch (Exception ex) {
+                                                System.out.println("Input non valido " + ex.getMessage());
+                                            }
+                                            break;
+                                        case "27":
+                                            try {
+                                                System.out.println("Inserisci uno stato ATTIVO o NON_ATTIVO");
+                                                String stato = sc.nextLine().toUpperCase();
+                                                System.out.println("Abbonamenti " + stato + " trovati: " + ad.contaAbbonamentiPerStato(StatoAbbonamento.valueOf(stato)));
+                                            } catch (Exception ex) {
+                                                System.out.println("Input non valido " + ex.getMessage());
+                                            }
+                                            break;
+
                                         case "0":
                                             System.out.println("Uscita dal programma...");
                                             return;
