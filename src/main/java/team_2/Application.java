@@ -105,7 +105,7 @@ public class Application {
                         String pass = sc.nextLine();
                         if (pass.equals("1234")) {
 
-                            System.out.println("1. Crea\n2. Elimina\n3. Cerca o filtra");
+                            System.out.println("1. Crea\n2. Elimina o modifica\n3. Cerca o filtra");
                             String scelta = sc.nextLine();
                             switch (scelta) {
                                 case "1" -> {
@@ -174,7 +174,7 @@ public class Application {
                                     }
                                 }
                                 case "2" -> {
-                                    System.out.println("Cosa vuoi eliminare?");
+                                    System.out.println("Cosa vuoi eliminare o modificare?");
                                     while (true) {
                                         try {
                                             System.out.println("""
@@ -185,6 +185,7 @@ public class Application {
                                                     5. Elimina tratta
                                                     6. Elimina giro
                                                     7. Elimina manutenzione
+                                                    8. Aggiorna / modifica data termine manutenzione
                                                     0. Esci""");
                                             String sceltaElimina = sc.nextLine();
                                             switch (sceltaElimina) {
@@ -265,6 +266,17 @@ public class Application {
                                                         System.out.println(e.getMessage());
                                                     }
                                                     break;
+                                                case "8":
+                                                    try {
+                                                        System.out.println("Inserisci un id manutenzione valida");
+                                                        String idMezzo = sc.nextLine();
+                                                        System.out.println("Inserisci la data di rinnovo");
+                                                        String data = sc.nextLine();
+                                                        mnd.estendiFineManutenzione(UUID.fromString(idMezzo), LocalDate.parse(data));
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido " + ex.getMessage());
+                                                    }
+                                                    break;
                                                 case "0":
                                                     System.out.println("Uscita dal programma...");
                                                     return;
@@ -305,6 +317,7 @@ public class Application {
                                                     20. Conta mezzi in manutenzione per tipo
                                                     21. Verifica se la tessera è valida
                                                     22. Trova il percorso che fa il determinato giro
+                                                    23. Verifica abbonamenti in scadenza entro tot giorni
                                                     0. Esci""");
                                             String sceltaCercaElimina = sc.nextLine();
                                             switch (sceltaCercaElimina) {
@@ -514,6 +527,15 @@ public class Application {
                                                         System.out.println("Input non valido " + ex.getMessage());
                                                     }
                                                     break;
+                                                case "22":
+                                                    try {
+                                                        System.out.println("Specifica il numero giorni");
+                                                        String giorni = sc.nextLine();
+                                                        ad.abbonamentiAttiviInScadenzaEntroGiorni(Integer.parseInt(giorni)).forEach(System.out::println);
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido " + ex.getMessage());
+                                                    }
+                                                    break;
                                                 case "0":
                                                     System.out.println("Uscita dal programma...");
                                                     return;
@@ -537,12 +559,13 @@ public class Application {
                             try {
                                 System.out.println("Cosa vuoi creare?");
                                 System.out.println("""
-                                        1. Crea biglietto\s
-                                        2. Cerca biglietto tramite id\s
+                                        1. Crea biglietto
+                                        2. Cerca biglietto tramite id
                                         3. Elimina biglietto
-                                        4. Crea abbonamento\s
-                                        5. Cerca abbonamento tramite id\s
+                                        4. Crea abbonamento
+                                        5. Cerca abbonamento tramite id
                                         6. Elimina abbonamento
+                                        7. Rinnova abbonamento
                                         0. Esci""");
                                 String choice2 = sc.nextLine();
                                 switch (choice2) {
@@ -600,6 +623,17 @@ public class Application {
                                             System.out.println("Inserisci il formato corretto");
                                         } catch (Exception e) {
                                             System.out.println(e.getMessage());
+                                        }
+                                        break;
+                                    case "7":
+                                        try {
+                                            System.out.println("Inserisci un id abbonamento valido");
+                                            String idAbbonamento = sc.nextLine();
+                                            System.out.println("Inserisci la data di rinnovo");
+                                            String data = sc.nextLine();
+                                            ad.rinnovaAbbonamentoEAttiva(UUID.fromString(idAbbonamento), LocalDate.parse(data));
+                                        } catch (Exception ex) {
+                                            System.out.println("Input non valido " + ex.getMessage());
                                         }
                                         break;
                                     case "0":
