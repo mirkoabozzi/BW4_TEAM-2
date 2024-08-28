@@ -2,6 +2,7 @@ package team_2.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import team_2.entities.Manutenzione;
 import team_2.entities.Mezzo;
@@ -68,5 +69,19 @@ public class ManutenzioneDAO {
         query.setParameter("oggi", oggi);
         query.setParameter("tipo", tipoMezzo);
         return query.getSingleResult();
+    }
+
+    public void estendiFineManutenzione(UUID id, LocalDate newData) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        Query update = em.createQuery("UPDATE Manutenzione m SET m.dataFine = :data WHERE m.id = :id");
+        update.setParameter("data", newData);
+        update.setParameter("id", id);
+        int modificati = update.executeUpdate();
+        transaction.commit();
+        if (modificati > 0) {
+            System.out.println("Data fine manutenzione per il mezzo con id " + id + " aggiornata con successo");
+        } else System.out.println("Nessun mezzo trovato con id " + id);
+
     }
 }
