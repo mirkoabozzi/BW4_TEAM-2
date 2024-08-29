@@ -932,6 +932,7 @@ public class Application {
                                         9. Modifica cognome utente
                                         10. Modifica data di nascita utente
                                         11. Verifica se hai un abbonamento attivo
+                                        12. Gestisci tratte
                                         0. Torna al menu principale""");
                                 String sceltaCrea = sc.nextLine();
                                 switch (sceltaCrea) {
@@ -1055,7 +1056,103 @@ public class Application {
                                             System.out.println("Errore imprevisto: " + ex.getMessage());
                                         }
                                         break;
-                                    case "0":
+                                    case "12":
+                                        while (true) {
+                                            System.out.println("Gestisci Tratte");
+                                            System.out.println("""
+                                1. Crea Tratta
+                                2. Cerca Tratta tramite id
+                                3. Elimina Tratta
+                                4. Ottenere tutte le Tratte
+                                5. Ottenere Tratte con una zona di partenza specifica
+                                6. Ottenere Tratte che partono in un orario specifico
+                                7. Ottenere Tratte associate a un determinato mezzo di trasporto
+                                8. Ottenere Tratte tra una zona di partenza e un capolinea specifico
+                                9. Ottenere tutte le Tratte ordinate per tempo di percorrenza previsto
+                                10. Ottenere la Tratta con il tempo di percorrenza previsto più veloce
+                                0. Torna al menu precedente""");
+
+                                            String sceltaTratte = sc.nextLine();
+                                            TrattaDAO trattaDAO = new TrattaDAO(em);
+
+                                            switch (sceltaTratte) {
+                                                case "1":
+                                                    Tratta nuovaTratta = new Tratta();
+                                                    trattaDAO.save(nuovaTratta);
+                                                    break;
+
+                                                case "2":
+                                                    System.out.println("Inserisci l'ID della tratta:");
+                                                    String idTratta = sc.nextLine();
+                                                    Tratta trattaTrovata = trattaDAO.getByID(idTratta);
+                                                    System.out.println(trattaTrovata);
+                                                    break;
+
+                                                case "3":
+                                                    System.out.println("Inserisci l'ID della tratta da eliminare:");
+                                                    String idTrattaDaEliminare = sc.nextLine();
+                                                    trattaDAO.deleteById(idTrattaDaEliminare);
+                                                    break;
+
+                                                case "4":
+                                                    List<Tratta> tutteLeTratte = trattaDAO.getAllTratte();
+                                                    tutteLeTratte.forEach(System.out::println);
+                                                    break;
+
+                                                case "5":
+                                                    System.out.println("Inserisci la zona di partenza:");
+                                                    String zonaPartenza = sc.nextLine();
+                                                    List<Tratta> tratteZona = trattaDAO.getTratteByZonaPartenza(zonaPartenza);
+                                                    tratteZona.forEach(System.out::println);
+                                                    break;
+
+                                                case "6":
+
+                                                    System.out.println("Inserisci l'orario di partenza:");
+                                                    double orarioPartenza = sc.nextDouble();
+                                                    sc.nextLine();
+                                                    List<Tratta> tratteOrario = trattaDAO.getTratteByOrarioPartenza(orarioPartenza);
+                                                    tratteOrario.forEach(System.out::println);
+                                                    break;
+
+                                                case "7":
+
+                                                    System.out.println("Inserisci l'ID del mezzo di trasporto:");
+                                                    UUID mezzoId = UUID.fromString(sc.nextLine());
+                                                    List<Tratta> tratteMezzo = trattaDAO.getTratteByMezzoId(mezzoId);
+                                                    tratteMezzo.forEach(System.out::println);
+                                                    break;
+
+                                                case "8":
+
+                                                    System.out.println("Inserisci la zona di partenza:");
+                                                    String zonaPartenzaSpecifico = sc.nextLine();
+                                                    System.out.println("Inserisci il capolinea:");
+                                                    String capolinea = sc.nextLine();
+                                                    List<Tratta> tratteSpecifiche = trattaDAO.getTratteByZonaPartenzaAndCapolinea(zonaPartenzaSpecifico, capolinea);
+                                                    tratteSpecifiche.forEach(System.out::println);
+                                                    break;
+
+                                                case "9":
+
+                                                    List<Tratta> tratteOrdinate = trattaDAO.getTratteOrderByTempoPercorrenza();
+                                                    tratteOrdinate.forEach(System.out::println);
+                                                    break;
+
+                                                case "10":
+                                                    Tratta trattaVeloce = trattaDAO.getTrattaConTempoPercorrenzaPiuVeloce();
+                                                    System.out.println(trattaVeloce);
+                                                    break;
+
+                                                case "0":
+                                                    return;
+
+                                                default:
+                                                    System.out.println("Scelta non valida. Riprova.");
+                                            }
+                                        }
+
+                                        case "0":
                                         System.out.println("Torna al menu principale");
                                         break;
                                     default:
