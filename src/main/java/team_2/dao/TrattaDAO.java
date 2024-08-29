@@ -106,15 +106,4 @@ public class TrattaDAO {
                         + "GROUP BY t " + "ORDER BY COUNT(lb) DESC", Tratta.class)
                 .setMaxResults(1).getSingleResult();
     }
-
-    //Ottenere la tratta con il numero più alto di abbonamenti
-    public Tratta findTrattaConIlNumeroPiuAltoDiAbbonamenti() {
-        return em.createQuery("SELECT t FROM Tratta t " +
-                        "JOIN t.giroList g "
-                        + "JOIN g.tesseraList te " +
-                        "JOIN te.listaAbbonamento la   "
-                        + "GROUP BY t " + "ORDER BY COUNT(la) DESC", Tratta.class)
-                .setMaxResults(1).getSingleResult();
-    }
-
 }

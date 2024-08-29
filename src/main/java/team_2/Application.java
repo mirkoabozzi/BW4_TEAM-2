@@ -327,8 +327,6 @@ public class Application {
                                                     30. Calcola quanti Distributori Automatici ci sono
                                                     31. Trova i Rivenditori Autorizzati tramite nome
                                                     32. Calcola quanti Distributori Automatici hanno stato Attivo
-                                                    33. Trova la tratta con il numero più alto di biglietti vidimati
-                                                    34. Trova la tratta con il numero più alto di abbonamenti
                                                     0. Torna al menu principale""");
                                             String sceltaCercaElimina = sc.nextLine();
                                             switch (sceltaCercaElimina) {
@@ -551,7 +549,7 @@ public class Application {
                                                     try {
                                                         System.out.println("Inserisci una data");
                                                         LocalDate data = LocalDate.parse(sc.nextLine());
-                                                        System.out.println(trd.findTrattaPiuVeloceFromData(data));
+                                                        trd.findTrattaPiuVeloceFromData(data);
                                                     } catch (Exception ex) {
                                                         System.out.println("Input non valido " + ex.getMessage());
                                                     }
@@ -632,21 +630,6 @@ public class Application {
                                                         System.out.println("Totale Distributori Automatici attivi: " + ped.DistributoriAutomaticiAttivi());
                                                     } catch (Exception ex) {
                                                         System.out.println("Input non valido: " + ex.getMessage());
-                                                    }
-                                                    break;
-
-                                                case "33":
-                                                    try {
-                                                        System.out.println(trd.findTrattaConIlNumeroPiuAltoDiBigliettiVidimati());
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Errore: " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "34":
-                                                    try {
-                                                        System.out.println(trd.findTrattaConIlNumeroPiuAltoDiAbbonamenti());
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Errore: " + ex.getMessage());
                                                     }
                                                     break;
 
