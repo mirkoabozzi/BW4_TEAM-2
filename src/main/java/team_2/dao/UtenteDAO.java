@@ -103,7 +103,7 @@ public class UtenteDAO {
                 .getResultList();
     }
 
-    //  verificare se un utente ha un abbonamento attivo
+    //  verificare se un utente ha un abbonamento attivo (parte utente)
     public boolean hasAbbonamentoAttivo(String utenteId) {
 
         Utente utente = getById(utenteId);
