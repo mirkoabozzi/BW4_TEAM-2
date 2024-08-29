@@ -338,6 +338,9 @@ public class Application {
                                                     41. Trova la tratta del giro tramite id
                                                     42. Trova le tessere associate al giro
                                                     43. Trova il mezzo che sta facendo il giro
+                                                    44. Differenza abbonamenti per tipo
+                                                    45. Differenza biglietti per stato
+                                                    46. Differenza manutenzioni per tipo mezzo
                                                     0. Torna al menu principale""");
                                             String sceltaCercaElimina = sc.nextLine();
                                             switch (sceltaCercaElimina) {
@@ -751,6 +754,28 @@ public class Application {
                                                         System.out.println("Input non valido " + ex.getMessage());
                                                     }
                                                     break;
+                                                case "44":
+                                                    try {
+                                                        ad.differenzaAbbonamentiAttiviNonAttivi();
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "45":
+                                                    try {
+                                                        bd.differenzaBigliettiPerVidimazione();
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "46":
+                                                    try {
+                                                        mnd.differenzaMezziInManutenzionePerTipo();
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                    
 
                                                 case "0":
                                                     System.out.println("Torna al menu principale");
