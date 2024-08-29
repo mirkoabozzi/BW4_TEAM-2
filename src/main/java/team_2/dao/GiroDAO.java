@@ -4,6 +4,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import team_2.entities.Giro;
+import team_2.entities.Mezzo;
+import team_2.entities.Tessera;
 import team_2.exceptions.NotFoundException;
 
 import java.util.List;
@@ -44,27 +46,24 @@ public class GiroDAO {
     //QUERY
 
     //TROVIAMO LA TRATTA CHE FA IL DETERMINATO GIRO
-    public List<Giro> trattaGiro(UUID trattaId) {
-        TypedQuery<Giro> query = em.createQuery("SELECT g FROM Giro g WHERE g.tratta = :trattaId", Giro.class);
-        query.setParameter("trattaId", trattaId);
-        List<Giro> risultatoQuery = query.getResultList();
-        if (risultatoQuery.isEmpty())
-            System.out.println("Nessun abbonamento trovato per la tessera " + trattaId);
-        return risultatoQuery;
+    public Giro trovaTrattaPerGiro(UUID giroId) {
+        TypedQuery<Giro> query = em.createQuery("SELECT g FROM Giro g WHERE g.id = :giroId", Giro.class);
+        query.setParameter("giroId", giroId);
+        return query.getSingleResult();
     }
 
     //TROVIAMO LE LISTE DI TESSERE (UTENTI) PRESENTI NEL GIRO
-    public List<Giro> tessereGiro(String listaTessere) {
-        TypedQuery<Giro> query = em.createQuery("SELECT g FROM Giro g WHERE g.tesseraList = :listaPerTessere", Giro.class);
-        query.setParameter("listaPerTessere", listaTessere);
+    public List<Tessera> trovaTesserePerGiro(UUID giroId) {
+        TypedQuery<Tessera> query = em.createQuery("SELECT t FROM Tessera t WHERE t.giroId.id = :giroId", Tessera.class);
+        query.setParameter("giroId", giroId);
         return query.getResultList();
     }
 
     //TROVIAMO CHE MEZZO STA FACENDO IL GIRO
-    public List<Giro> mezzoGiro(String mezzoGiro) {
-        TypedQuery<Giro> query = em.createQuery("SELECT g FROM Giro g WHERE g.mezzo = :mezzoGiro", Giro.class);
-        query.setParameter("mezzoGiro", mezzoGiro);
-        return query.getResultList();
+    public Mezzo trovaMezzoPerGiro(UUID giroId) {
+        TypedQuery<Mezzo> query = em.createQuery("SELECT g.mezzo FROM Giro g WHERE g.id = :giroId", Mezzo.class);
+        query.setParameter("giroId", giroId);
+        return query.getSingleResult();
     }
 
 }
