@@ -344,7 +344,6 @@ public class Application {
                                                     46. Differenza manutenzioni per tipo mezzo
                                                     47. Trova la tratta con il tempo di percorrenza previsto più veloce in base a una data
                                                     48. Trova la tratta con il numero più alto di biglietti vidimati
-
                                                     49. Conta i biglietti associati a una determinata tessera.
                                                     50. Cerca utenti per nome.
                                                     51. Cerca utenti per cognome.
@@ -353,9 +352,7 @@ public class Application {
                                                     54. Cerca utenti tramite numero tessera.
                                                     55. Cerca utenti tramite id tessera.
                                                     56. Mostra tutti gli utenti.
-                                                    
-                                                  
-
+                                                    57. Trova lista biglietti per id tratta
                                                     0. Torna al menu principale""");
                                             String sceltaCercaElimina = sc.nextLine();
                                             switch (sceltaCercaElimina) {
@@ -794,7 +791,6 @@ public class Application {
                                                 case "47":
                                                     try {
                                                         System.out.println(trd.findTrattaConIlNumeroPiuAltoDiBigliettiVidimati());
-                                                        ;
                                                     } catch (Exception ex) {
                                                         System.out.println("Errore: " + ex.getMessage());
                                                     }
@@ -802,22 +798,17 @@ public class Application {
                                                 case "48":
                                                     try {
                                                         System.out.println(trd.findTrattaConIlNumeroPiuAltoDiAbbonamenti());
-                                                        ;
                                                     } catch (Exception ex) {
                                                         System.out.println("Errore: " + ex.getMessage());
                                                     }
                                                     break;
-
-
                                                 case "49":
                                                     try {
                                                         System.out.println("Inserisci ID tessera");
                                                         String tesseraIdInput = sc.nextLine();
                                                         UUID idTessera = UUID.fromString(tesseraIdInput);
                                                         long ticketCount = td.contaBigliettiAssociati(idTessera);
-
                                                         System.out.println("Numero di biglietti associati alla tessera con id " + idTessera + ": " + ticketCount);
-
                                                     } catch (Exception ex) {
                                                         System.out.println("Input non valido: " + ex.getMessage());
                                                     }
@@ -832,7 +823,6 @@ public class Application {
                                                         System.out.println("Errore durante la ricerca degli utenti per nome: " + e.getMessage());
                                                     }
                                                     break;
-
                                                 case "51":
                                                     try {
                                                         System.out.println("Inserisci il cognome da cercare:");
@@ -880,7 +870,6 @@ public class Application {
                                                         System.out.println("Errore durante la ricerca degli utenti per numero tessera: " + e.getMessage());
                                                     }
                                                     break;
-
                                                 case "55":
                                                     try {
                                                         System.out.println("Inserisci l'id della tessera:");
@@ -893,7 +882,6 @@ public class Application {
                                                         System.out.println("Errore durante la ricerca degli utenti per ID tessera: " + e.getMessage());
                                                     }
                                                     break;
-
                                                 case "56":
                                                     try {
                                                         System.out.println("Elenco di tutti gli utenti:");
@@ -903,12 +891,15 @@ public class Application {
                                                         System.out.println("Errore durante il recupero degli utenti: " + e.getMessage());
                                                     }
                                                     break;
-
-
-
-
-
-
+                                                case "57":
+                                                    try {
+                                                        System.out.println("Inserisci id tratta");
+                                                        String idTratta = sc.nextLine();
+                                                        bd.trovaListaBigliettiPassatiInTratta(UUID.fromString(idTratta)).forEach(System.out::println);
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido: " + ex.getMessage());
+                                                    }
+                                                    break;
                                                 case "0":
                                                     System.out.println("Torna al menu principale");
                                                     break;
@@ -930,18 +921,18 @@ public class Application {
                             try {
                                 System.out.println("Cosa vuoi creare?");
                                 System.out.println("""
-                    1. Crea biglietto
-                    2. Cerca biglietto tramite id
-                    3. Elimina biglietto
-                    4. Crea abbonamento
-                    5. Cerca abbonamento tramite id
-                    6. Elimina abbonamento
-                    7. Rinnova abbonamento
-                    8. Modifica nome utente
-                    9. Modifica cognome utente
-                    10. Modifica data di nascita utente
-                    11. Verifica se hai un abbonamento attivo
-                    0. Torna al menu principale""");
+                                        1. Crea biglietto
+                                        2. Cerca biglietto tramite id
+                                        3. Elimina biglietto
+                                        4. Crea abbonamento
+                                        5. Cerca abbonamento tramite id
+                                        6. Elimina abbonamento
+                                        7. Rinnova abbonamento
+                                        8. Modifica nome utente
+                                        9. Modifica cognome utente
+                                        10. Modifica data di nascita utente
+                                        11. Verifica se hai un abbonamento attivo
+                                        0. Torna al menu principale""");
                                 String sceltaCrea = sc.nextLine();
                                 switch (sceltaCrea) {
                                     case "1":
