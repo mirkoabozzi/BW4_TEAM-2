@@ -56,7 +56,7 @@ public class TesseraDAO {
     // 1. Contare numero tessere valide
 
     public Long contaTessereValide() {
-        String jpql = "SELECT COUNT(t) FROM Tessera t WHERE t.validitaTessera = true";
+        String jpql = "SELECT COUNT(t) FROM Tessera t WHERE t.validitàTessera = true";
         Query query = em.createQuery(jpql);
         return (Long) query.getSingleResult();
     }

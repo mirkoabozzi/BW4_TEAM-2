@@ -318,6 +318,8 @@ public class Application {
                                                     21. Verifica se la tessera è valida
                                                     22. Verifica abbonamenti in scadenza entro tot giorni
                                                     23. Trova tratta più veloce tramite una data
+                                                    24. Contare numero tessere valide
+                                                    25. Ottenere tessere per un determinato punto di emissione
                                                     0. Torna al menu principale""");
                                             String sceltaCercaElimina = sc.nextLine();
                                             switch (sceltaCercaElimina) {
@@ -543,6 +545,25 @@ public class Application {
                                                         trd.findTrattaPiuVeloceFromData(data);
                                                     } catch (Exception ex) {
                                                         System.out.println("Input non valido " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "24":
+                                                    try {
+                                                        System.out.println("Totale tessere valide: " + td.contaTessereValide());
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido: " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "25":
+                                                    try {
+                                                        System.out.println("Inserisci punto di Emissione:");
+                                                        UUID puntoDiEmissioneId = UUID.fromString(sc.nextLine());
+
+                                                        List<Tessera> tessere = td.trovaTesserePerPuntoDiEmissione(puntoDiEmissioneId);
+
+                                                        System.out.println("Tessere trovate: " + tessere.toString());
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido: " + ex.getMessage());
                                                     }
                                                     break;
                                                 case "0":
