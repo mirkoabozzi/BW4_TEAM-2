@@ -35,8 +35,8 @@ public class Application {
         return new RivenditoriAutorizzati(name);
     }
 
-    public static Tessera tesseraCreateOne(LocalDate initialDate, LocalDate endDate, boolean bool, Utente utente, PuntoDiEmissione puntoDiEmissione) {
-        return new Tessera(initialDate, endDate, bool, utente, puntoDiEmissione);
+    public static Tessera tesseraCreateOne(LocalDate initialDate, LocalDate endDate, boolean bool, Utente utente, PuntoDiEmissione puntoDiEmissione, Giro giroId) {
+        return new Tessera(initialDate, endDate, bool, utente, puntoDiEmissione, giroId);
     }
 
     public static Biglietto bigliettoCreateOne(boolean vidimato, LocalDate date, Tessera tessera) {
@@ -132,7 +132,7 @@ public class Application {
                                                     ud.save(utente);
                                                     break;
                                                 case "3":
-                                                    tessera = createTessera(ud, ped);
+                                                    tessera = createTessera(ud, ped, gd);
                                                     System.out.println(tessera);
                                                     td.save(tessera);
                                                     break;
@@ -724,7 +724,6 @@ public class Application {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
         em.close();
         emf.close();
         sc.close();
@@ -813,7 +812,7 @@ public class Application {
         return utente;
     }
 
-    public static Tessera createTessera(UtenteDAO ud, PuntoDiEmissioneDAO ped) {
+    public static Tessera createTessera(UtenteDAO ud, PuntoDiEmissioneDAO ped, GiroDAO gd) {
         LocalDate initialDate;
         LocalDate endDate;
         boolean bool;
@@ -838,7 +837,9 @@ public class Application {
             String id = sc.nextLine();
             System.out.println("Inserisci id punto di emissione da abbinare alla tessera");
             String id1 = sc.nextLine();
-            tessera = tesseraCreateOne(initialDate, endDate, bool, ud.getById(id), ped.getById(id1));
+            System.out.println("Inserisci id giro da abbinare alla tessera");
+            String id2 = sc.nextLine();
+            tessera = tesseraCreateOne(initialDate, endDate, bool, ud.getById(id), ped.getById(id1), gd.getByID(id2));
             System.out.println("Tessere create con successo");
         } catch (Exception e) {
             System.out.println("Errore: " + e.getMessage());

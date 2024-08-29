@@ -96,4 +96,14 @@ public class TrattaDAO {
                         "ORDER BY t.tempoPercorrenzaPrevisto ASC", Tratta.class).setParameter("data", data)
                 .setMaxResults(1).getSingleResult();
     }
+
+    //Ottenere la tratta con il numero più alto di biglietti vidimati
+    public Tratta findTrattaConIlNumeroPiuAltoDiBigliettiVidimati() {
+        return em.createQuery("SELECT t FROM Tratta t " +
+                        "JOIN t.giroList g "
+                        + "JOIN g.tesseraList te " +
+                        "JOIN te.listaBiglietto lb WHERE lb.vidimato=true  "
+                        + "GROUP BY t " + "ORDER BY COUNT(lb) DESC", Tratta.class)
+                .setMaxResults(1).getSingleResult();
+    }
 }

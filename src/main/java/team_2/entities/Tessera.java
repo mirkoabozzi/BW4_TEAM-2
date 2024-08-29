@@ -40,12 +40,13 @@ public class Tessera {
         //COSTRUTTORE DI DEFAULT
     }
 
-    public Tessera(LocalDate dataInizio, LocalDate dataFine, boolean validitàTessera, Utente utente, PuntoDiEmissione puntoDiEmissione) {
+    public Tessera(LocalDate dataInizio, LocalDate dataFine, boolean validitàTessera, Utente utente, PuntoDiEmissione puntoDiEmissione, Giro giroId) {
         this.dataInizio = dataInizio;
         this.dataFine = dataFine;
         this.validitàTessera = validitàTessera;
         this.utente = utente;
         this.puntoDiEmissione = puntoDiEmissione;
+        this.giroId = giroId;
     }
 
     public UUID getId() {
