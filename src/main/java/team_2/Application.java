@@ -341,6 +341,8 @@ public class Application {
                                                     44. Differenza abbonamenti per tipo
                                                     45. Differenza biglietti per stato
                                                     46. Differenza manutenzioni per tipo mezzo
+                                                    47. Trova la tratta con il tempo di percorrenza previsto più veloce in base a una data
+                                                    48. Trova la tratta con il numero più alto di biglietti vidimati
                                                     0. Torna al menu principale""");
                                             String sceltaCercaElimina = sc.nextLine();
                                             switch (sceltaCercaElimina) {
@@ -563,7 +565,7 @@ public class Application {
                                                     try {
                                                         System.out.println("Inserisci una data");
                                                         LocalDate data = LocalDate.parse(sc.nextLine());
-                                                        trd.findTrattaPiuVeloceFromData(data);
+                                                        System.out.println(trd.findTrattaPiuVeloceFromData(data));
                                                     } catch (Exception ex) {
                                                         System.out.println("Input non valido " + ex.getMessage());
                                                     }
@@ -775,7 +777,23 @@ public class Application {
                                                         System.out.println("Input non valido " + ex.getMessage());
                                                     }
                                                     break;
-                                                    
+                                                case "47":
+                                                    try {
+                                                        System.out.println(trd.findTrattaConIlNumeroPiuAltoDiBigliettiVidimati());
+                                                        ;
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Errore: " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "48":
+                                                    try {
+                                                        System.out.println(trd.findTrattaConIlNumeroPiuAltoDiAbbonamenti());
+                                                        ;
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Errore: " + ex.getMessage());
+                                                    }
+                                                    break;
+
 
                                                 case "0":
                                                     System.out.println("Torna al menu principale");
