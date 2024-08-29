@@ -1145,13 +1145,14 @@ public class Application {
                                                     break;
 
                                                 case "0":
-                                                    return;
+                                                    break;
 
                                                 default:
                                                     System.out.println("Scelta non valida. Riprova.");
+                                            break;
                                             }
+                                            break;
                                         }
-
                                         case "0":
                                         System.out.println("Torna al menu principale");
                                         break;
