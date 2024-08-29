@@ -9,6 +9,7 @@ import team_2.enums.StatoAbbonamento;
 import team_2.enums.StatoDistributori;
 import team_2.enums.TipoAbbonamento;
 import team_2.enums.TipoMezzo;
+import team_2.exceptions.NotFoundException;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -649,23 +650,24 @@ public class Application {
                                 }
                             }
                         }
-                        break;
+                        break; //yo
                     case "2":
                         while (true) {
                             try {
                                 System.out.println("Cosa vuoi creare?");
                                 System.out.println("""
-                                        1. Crea biglietto
-                                        2. Cerca biglietto tramite id
-                                        3. Elimina biglietto
-                                        4. Crea abbonamento
-                                        5. Cerca abbonamento tramite id
-                                        6. Elimina abbonamento
-                                        7. Rinnova abbonamento
-                                        8. Modifica nome utente
-                                        9. Modifica cognome utente
-                                        10. Modifica data di nascita utente
-                                        0. Torna al menu principale""");
+                    1. Crea biglietto
+                    2. Cerca biglietto tramite id
+                    3. Elimina biglietto
+                    4. Crea abbonamento
+                    5. Cerca abbonamento tramite id
+                    6. Elimina abbonamento
+                    7. Rinnova abbonamento
+                    8. Modifica nome utente
+                    9. Modifica cognome utente
+                    10. Modifica data di nascita utente
+                    11. Verifica se hai un abbonamento attivo
+                    0. Torna al menu principale""");
                                 String sceltaCrea = sc.nextLine();
                                 switch (sceltaCrea) {
                                     case "1":
@@ -678,7 +680,6 @@ public class Application {
                                             System.out.println("Quale biglietto vuoi cercare tramite id?");
                                             String findId = sc.nextLine();
                                             System.out.println(bd.getById(findId));
-
                                         } catch (NumberFormatException e) {
                                             System.out.println("Inserisci il formato corretto\n");
                                         } catch (Exception e) {
@@ -696,7 +697,6 @@ public class Application {
                                             System.out.println(e.getMessage());
                                         }
                                         break;
-
                                     case "4":
                                         abbonamento = createAbbonamento(td);
                                         System.out.println(abbonamento);
@@ -766,6 +766,28 @@ public class Application {
                                             ud.aggiornaDataDiNascitaUtente(UUID.fromString(idUtente), newData);
                                         } catch (Exception ex) {
                                             System.out.println("Input non valido " + ex.getMessage());
+                                        }
+                                        break;
+                                    case "11":
+                                        try {
+                                            System.out.println("Inserisci un id utente valido");
+                                            String idUtente = sc.nextLine();
+                                            // Controlla se l'ID utente è un UUID valido
+                                            UUID uuid = UUID.fromString(idUtente);
+                                            // Controlla se l'utente esiste
+                                            Utente utente1 = ud.getById(idUtente);
+                                            boolean isActive = ud.hasAbbonamentoAttivo(idUtente);
+                                            if (isActive) {
+                                                System.out.println("hai un abbonamento attivo.");
+                                            } else {
+                                                System.out.println("non hai un abbonamento attivo.");
+                                            }
+                                        } catch (IllegalArgumentException ex) {
+                                            System.out.println("ID utente non valido: formato UUID non corretto.");
+                                        } catch (NotFoundException ex) {
+                                            System.out.println("Utente non trovato con l'ID specificato.");
+                                        } catch (Exception ex) {
+                                            System.out.println("Errore imprevisto: " + ex.getMessage());
                                         }
                                         break;
                                     case "0":
