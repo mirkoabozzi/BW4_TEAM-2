@@ -98,4 +98,14 @@ public class TesseraDAO {
         return risultatoQuery;
     }
 
+    //6. Quanti biglietti sono associati a una tessera.
+
+    public long countBigliettiAssociati(UUID idTessera) {
+        String jpql = "SELECT COUNT(b) FROM Biglietto b WHERE b.tessera.id = :idTessera"; // Adjust according to your entity mapping
+        TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+        query.setParameter("idTessera", idTessera);
+        long count = query.getSingleResult();
+        System.out.println("Numero di biglietti associati alla tessera con id " + idTessera + ": " + count);
+        return count;
+    }
 }
