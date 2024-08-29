@@ -346,6 +346,15 @@ public class Application {
                                                     48. Trova la tratta con il numero più alto di biglietti vidimati
 
                                                     49. Conta i biglietti associati a una determinata tessera.
+                                                    50. Cerca utenti per nome.
+                                                    51. Cerca utenti per cognome.
+                                                    52. Cerca utenti per nome e cognome.
+                                                    53. Filtra utenti con età maggiore di
+                                                    54. Cerca utenti tramite numero tessera.
+                                                    55. Cerca utenti tramite id tessera.
+                                                    56. Mostra tutti gli utenti.
+                                                    
+                                                  
 
                                                     0. Torna al menu principale""");
                                             String sceltaCercaElimina = sc.nextLine();
@@ -813,6 +822,91 @@ public class Application {
                                                         System.out.println("Input non valido: " + ex.getMessage());
                                                     }
                                                     break;
+                                                case "50":
+                                                    try {
+                                                        System.out.println("Inserisci il nome da cercare:");
+                                                        String nome = sc.nextLine();
+                                                        List<Utente> utentiPerNome = ud.getUtentiByNome(nome);
+                                                        utentiPerNome.forEach(System.out::println);
+                                                    } catch (Exception e) {
+                                                        System.out.println("Errore durante la ricerca degli utenti per nome: " + e.getMessage());
+                                                    }
+                                                    break;
+
+                                                case "51":
+                                                    try {
+                                                        System.out.println("Inserisci il cognome da cercare:");
+                                                        String cognome = sc.nextLine();
+                                                        List<Utente> utentiPerCognome = ud.getUtentiByCognome(cognome);
+                                                        utentiPerCognome.forEach(System.out::println);
+                                                    } catch (Exception e) {
+                                                        System.out.println("Errore durante la ricerca degli utenti per cognome: " + e.getMessage());
+                                                    }
+                                                    break;
+                                                case "52":
+                                                    try {
+                                                        System.out.println("Inserisci il nome da cercare:");
+                                                        String nomeCognomeNome = sc.nextLine();
+                                                        System.out.println("Inserisci il cognome da cercare:");
+                                                        String nomeCognomeCognome = sc.nextLine();
+                                                        List<Utente> utentiPerNomeECognome = ud.getUtentiByNomeECognome(nomeCognomeNome, nomeCognomeCognome);
+                                                        utentiPerNomeECognome.forEach(System.out::println);
+                                                    } catch (Exception e) {
+                                                        System.out.println("Errore durante la ricerca degli utenti per nome e cognome: " + e.getMessage());
+                                                    }
+                                                    break;
+                                                case "53":
+                                                    try {
+                                                        System.out.println("Inserisci l'età minima:");
+                                                        int eta = Integer.parseInt(sc.nextLine());
+                                                        List<Utente> utentiPerEta = ud.getUtentiByEtaMaggioreDi(eta);
+                                                        utentiPerEta.forEach(System.out::println);
+                                                    } catch (NumberFormatException e) {
+                                                        System.out.println("Inserisci un'età valida (numero intero).");
+                                                    } catch (Exception e) {
+                                                        System.out.println("Errore durante il filtraggio degli utenti per età: " + e.getMessage());
+                                                    }
+                                                    break;
+
+                                                case "54":
+                                                    try {
+                                                        System.out.println("Inserisci il numero tessera da cercare:");
+                                                        int numeroTessera = Integer.parseInt(sc.nextLine());
+                                                        List<Utente> utentiPerNumeroTessera = ud.getUtentiByNumeroTessera(numeroTessera);
+                                                        utentiPerNumeroTessera.forEach(System.out::println);
+                                                    } catch (NumberFormatException e) {
+                                                        System.out.println("Inserisci un numero tessera valido (numero intero).");
+                                                    } catch (Exception e) {
+                                                        System.out.println("Errore durante la ricerca degli utenti per numero tessera: " + e.getMessage());
+                                                    }
+                                                    break;
+
+                                                case "55":
+                                                    try {
+                                                        System.out.println("Inserisci l'id della tessera:");
+                                                        UUID tesseraId = UUID.fromString(sc.nextLine());
+                                                        List<Utente> utentiPerTesseraId = ud.getUtentiByTesseraId(tesseraId);
+                                                        utentiPerTesseraId.forEach(System.out::println);
+                                                    } catch (IllegalArgumentException e) {
+                                                        System.out.println("Formato ID tessera non valido. Riprova.");
+                                                    } catch (Exception e) {
+                                                        System.out.println("Errore durante la ricerca degli utenti per ID tessera: " + e.getMessage());
+                                                    }
+                                                    break;
+
+                                                case "56":
+                                                    try {
+                                                        System.out.println("Elenco di tutti gli utenti:");
+                                                        List<Utente> allUtenti = ud.getAllUtenti();
+                                                        allUtenti.forEach(System.out::println);
+                                                    } catch (Exception e) {
+                                                        System.out.println("Errore durante il recupero degli utenti: " + e.getMessage());
+                                                    }
+                                                    break;
+
+
+
+
 
 
                                                 case "0":
