@@ -121,4 +121,10 @@ public class AbbonamentoDAO {
         else if (attivi < nonAttivi) System.out.println("Ci sono più abbonamenti con stato NON_ATTIVO");
         else System.out.println("Il numero di abbonamenti ATTIVI è uguale ai NON_ATTIVI");
     }
+
+    public String nomeProprietarioAbbonamento(UUID idAbbonamento) {
+        TypedQuery<String> query = em.createQuery("SELECT CONCAT(u.nome,' ',u.cognome) FROM Abbonamento a JOIN a.tessera t JOIN t.utente u WHERE a.id = :idAbbonamento", String.class);
+        query.setParameter("idAbbonamento", idAbbonamento);
+        return query.getSingleResult();
+    }
 }
