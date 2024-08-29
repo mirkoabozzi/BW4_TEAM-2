@@ -343,6 +343,9 @@ public class Application {
                                                     46. Differenza manutenzioni per tipo mezzo
                                                     47. Trova la tratta con il tempo di percorrenza previsto più veloce in base a una data
                                                     48. Trova la tratta con il numero più alto di biglietti vidimati
+
+                                                    49. Conta i biglietti associati a una determinata tessera.
+
                                                     0. Torna al menu principale""");
                                             String sceltaCercaElimina = sc.nextLine();
                                             switch (sceltaCercaElimina) {
@@ -777,6 +780,7 @@ public class Application {
                                                         System.out.println("Input non valido " + ex.getMessage());
                                                     }
                                                     break;
+
                                                 case "47":
                                                     try {
                                                         System.out.println(trd.findTrattaConIlNumeroPiuAltoDiBigliettiVidimati());
@@ -791,6 +795,21 @@ public class Application {
                                                         ;
                                                     } catch (Exception ex) {
                                                         System.out.println("Errore: " + ex.getMessage());
+                                                    }
+                                                    break;
+
+
+                                                case "49":
+                                                    try {
+                                                        System.out.println("Inserisci ID tessera");
+                                                        String tesseraIdInput = sc.nextLine();
+                                                        UUID idTessera = UUID.fromString(tesseraIdInput);
+                                                        long ticketCount = td.contaBigliettiAssociati(idTessera);
+
+                                                        System.out.println("Numero di biglietti associati alla tessera con id " + idTessera + ": " + ticketCount);
+
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido: " + ex.getMessage());
                                                     }
                                                     break;
 
