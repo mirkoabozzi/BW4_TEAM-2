@@ -316,9 +316,8 @@ public class Application {
                                                     19. Conta mezzi in manutenzione
                                                     20. Conta mezzi in manutenzione per tipo
                                                     21. Verifica se la tessera è valida
-                                                    22. Trova il percorso che fa il determinato giro
-                                                    23. Verifica abbonamenti in scadenza entro tot giorni
-                                                    24. Trova tratta più veloce tramite una data
+                                                    22. Verifica abbonamenti in scadenza entro tot giorni
+                                                    23. Trova tratta più veloce tramite una data
                                                     0. Torna al menu principale""");
                                             String sceltaCercaElimina = sc.nextLine();
                                             switch (sceltaCercaElimina) {
