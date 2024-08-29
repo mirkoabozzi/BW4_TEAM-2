@@ -80,4 +80,10 @@ public class BigliettoDAO {
         else if (vidimati < nonVidimati) System.out.println("Ci sono più biglietti NON_VIDIMATI");
         else System.out.println("Il numero di biglietti VIDIMATI è uguale ai NON_VIDIMATI");
     }
+
+    public List<Biglietto> trovaListaBigliettiPassatiInTratta(UUID trattaId) {
+        TypedQuery<Biglietto> query = em.createQuery("SELECT b FROM Biglietto b JOIN b.tessera t JOIN t.giroId g JOIN g.tratta ti WHERE ti.id = :trattaID", Biglietto.class);
+        query.setParameter("trattaID", trattaId);
+        return query.getResultList();
+    }
 }
