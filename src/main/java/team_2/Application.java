@@ -95,15 +95,14 @@ public class Application {
 //        manutenzioneList = em.createQuery("SELECT m FROM Manutenzione m", Manutenzione.class).getResultList();
 
         try {
-            for (int i = 0; i < 1; i++) {
-                System.out.println("1. Amministratore\n2. Utente");
+            while (true) {
+                System.out.println("1. Amministratore\n2. Utente\n3. Esci dal programma");
                 String choice = sc.nextLine();
                 switch (choice) {
                     case "1":
                         System.out.println("Inserisci password");
                         String pass = sc.nextLine();
                         if (pass.equals("1234")) {
-
                             System.out.println("1. Crea\n2. Elimina o modifica\n3. Cerca o filtra");
                             String scelta = sc.nextLine();
                             switch (scelta) {
@@ -119,9 +118,9 @@ public class Application {
                                                     5. Crea tratta\s
                                                     6. Crea giro\s
                                                     7. Crea manutenzione\s
-                                                    0. Esci""");
-                                            String choice1 = sc.nextLine();
-                                            switch (choice1) {
+                                                    0. Torna al menu precedente""");
+                                            String sceltaCrea = sc.nextLine();
+                                            switch (sceltaCrea) {
                                                 case "1":
                                                     puntoDiEmissione = createPuntoDiEmissione();
                                                     System.out.println(puntoDiEmissione);
@@ -161,12 +160,13 @@ public class Application {
                                                     mnd.save(manutenzione);
                                                     break;
                                                 case "0":
-                                                    System.out.println("Uscita dal programma...");
-                                                    return;
+                                                    System.out.println("Torna al menu principale");
+                                                    break;
                                                 default:
                                                     System.out.println("Il valore non è valido");
                                                     break;
                                             }
+                                            if (sceltaCrea.equals("0")) break;
                                         } catch (Exception e) {
                                             System.out.println(e.getMessage());
                                         }
@@ -185,7 +185,7 @@ public class Application {
                                                     6. Elimina giro
                                                     7. Elimina manutenzione
                                                     8. Aggiorna / modifica data termine manutenzione
-                                                    0. Esci""");
+                                                    0. Torna al menu principale""");
                                             String sceltaElimina = sc.nextLine();
                                             switch (sceltaElimina) {
                                                 case "1":
@@ -277,12 +277,13 @@ public class Application {
                                                     }
                                                     break;
                                                 case "0":
-                                                    System.out.println("Uscita dal programma...");
-                                                    return;
+                                                    System.out.println("Torna al menu principale");
+                                                    break;
                                                 default:
                                                     System.out.println("Il valore non è valido");
                                                     break;
                                             }
+                                            if (sceltaElimina.equals("0")) break;
                                         } catch (Exception ex) {
                                             System.out.println(ex.getMessage());
                                         }
@@ -317,7 +318,7 @@ public class Application {
                                                     21. Verifica se la tessera è valida
                                                     22. Trova il percorso che fa il determinato giro
                                                     23. Verifica abbonamenti in scadenza entro tot giorni
-                                                    0. Esci""");
+                                                    0. Torna al menu principale""");
                                             String sceltaCercaElimina = sc.nextLine();
                                             switch (sceltaCercaElimina) {
                                                 case "1":
@@ -536,21 +537,19 @@ public class Application {
                                                     }
                                                     break;
                                                 case "0":
-                                                    System.out.println("Uscita dal programma...");
-                                                    return;
+                                                    System.out.println("Torna al menu principale");
+                                                    break;
                                                 default:
                                                     System.out.println("il valore non è valido");
                                                     break;
                                             }
+                                            if (sceltaCercaElimina.equals("0")) break;
                                         } catch (Exception ex) {
                                             System.out.println(ex.getMessage());
                                         }
                                     }
                                 }
                             }
-
-                        } else {
-                            i--;
                         }
                         break;
                     case "2":
@@ -568,9 +567,9 @@ public class Application {
                                         8. Modifica nome utente
                                         9. Modifica cognome utente
                                         10. Modifica data di nascita utente
-                                        0. Esci""");
-                                String choice2 = sc.nextLine();
-                                switch (choice2) {
+                                        0. Torna al menu principale""");
+                                String sceltaCrea = sc.nextLine();
+                                switch (sceltaCrea) {
                                     case "1":
                                         biglietto = createBiglietto(td);
                                         System.out.println(biglietto);
@@ -672,20 +671,23 @@ public class Application {
                                         }
                                         break;
                                     case "0":
-                                        System.out.println("Uscita del programma in corso...");
-                                        return;
+                                        System.out.println("Torna al menu principale");
+                                        break;
                                     default:
-                                        System.out.println("Il valore non è valido");
+                                        System.out.println("Scelta non valida");
                                         break;
                                 }
+                                if (sceltaCrea.equals("0")) break;
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
-
                         }
+                        break;
+                    case "3":
+                        System.out.println("Uscita dal programma in corso...");
+                        return;
                     default:
                         System.out.println("Scelta non valida riprova");
-                        i--;
                         break;
                 }
             }
