@@ -71,4 +71,13 @@ public class BigliettoDAO {
         query.setParameter("stato", statoBiglietto);
         return query.getSingleResult();
     }
+
+    public void differenzaBigliettiPerVidimazione() {
+        long vidimati = this.contaBigliettiVidimati(true);
+        long nonVidimati = this.contaBigliettiVidimati(false);
+        if (vidimati == 0 && nonVidimati == 0) System.out.println("Non ci sono biglietti");
+        else if (vidimati > nonVidimati) System.out.println("Ci sono più biglietti VIDIMATI");
+        else if (vidimati < nonVidimati) System.out.println("Ci sono più biglietti NON_VIDIMATI");
+        else System.out.println("Il numero di biglietti VIDIMATI è uguale ai NON_VIDIMATI");
+    }
 }

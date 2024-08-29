@@ -112,4 +112,13 @@ public class AbbonamentoDAO {
             System.out.println("Nessun abbonamento trovato con id " + id);
         }
     }
+
+    public void differenzaAbbonamentiAttiviNonAttivi() {
+        long attivi = this.contaAbbonamentiPerStato(StatoAbbonamento.ATTIVO);
+        long nonAttivi = this.contaAbbonamentiPerStato(StatoAbbonamento.NON_ATTIVO);
+        if (attivi == 0 && nonAttivi == 0) System.out.println("Non ci sono abbonamenti");
+        else if (attivi > nonAttivi) System.out.println("Ci sono più abbonamenti con stato ATTIVO");
+        else if (attivi < nonAttivi) System.out.println("Ci sono più abbonamenti con stato NON_ATTIVO");
+        else System.out.println("Il numero di abbonamenti ATTIVI è uguale ai NON_ATTIVI");
+    }
 }
