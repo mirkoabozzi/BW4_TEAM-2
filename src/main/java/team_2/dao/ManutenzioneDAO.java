@@ -85,6 +85,14 @@ public class ManutenzioneDAO {
             transaction.rollback();
             System.out.println("Nessun mezzo trovato con id " + id);
         }
+    }
 
+    public void differenzaMezziInManutenzionePerTipo() {
+        long tram = this.contaMezziInManutenzionePerTipo(TipoMezzo.TRAM);
+        long autobus = this.contaMezziInManutenzionePerTipo(TipoMezzo.AUTOBUS);
+        if (tram == 0 && autobus == 0) System.out.println("L'officina è vuota");
+        else if (tram > autobus) System.out.println("Ci sono più TRAM in officina");
+        else if (tram < autobus) System.out.println("Ci sono più AUTOBUS in officina");
+        else System.out.println("Il numero di AUTOBUS e TRAM presenti in officina è uguale");
     }
 }
