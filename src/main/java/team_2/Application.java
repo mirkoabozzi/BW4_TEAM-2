@@ -318,6 +318,7 @@ public class Application {
                                                     21. Verifica se la tessera è valida
                                                     22. Trova il percorso che fa il determinato giro
                                                     23. Verifica abbonamenti in scadenza entro tot giorni
+                                                    24. Trova tratta più veloce tramite una data
                                                     0. Torna al menu principale""");
                                             String sceltaCercaElimina = sc.nextLine();
                                             switch (sceltaCercaElimina) {
@@ -532,6 +533,15 @@ public class Application {
                                                         System.out.println("Specifica il numero giorni");
                                                         String giorni = sc.nextLine();
                                                         ad.abbonamentiAttiviInScadenzaEntroGiorni(Integer.parseInt(giorni)).forEach(System.out::println);
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "23":
+                                                    try {
+                                                        System.out.println("Inserisci una data");
+                                                        LocalDate data = LocalDate.parse(sc.nextLine());
+                                                        trd.findTrattaPiuVeloceFromData(data);
                                                     } catch (Exception ex) {
                                                         System.out.println("Input non valido " + ex.getMessage());
                                                     }
