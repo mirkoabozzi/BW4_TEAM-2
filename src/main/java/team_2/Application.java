@@ -320,6 +320,13 @@ public class Application {
                                                     23. Trova tratta più veloce tramite una data
                                                     24. Contare numero tessere valide
                                                     25. Ottenere tessere per un determinato punto di emissione
+                                                    26. Trovare tutte le tessere scadute
+                                                    27. Trovare tessere con una data di inizio specifica
+                                                    28. Calcola quanti punti di Emissione ci sono
+                                                    29. Calcola quanti Rivenditori Autorizzati ci sono
+                                                    30. Calcola quanti Distributori Automatici ci sono
+                                                    31. Trova i Rivenditori Autorizzati tramite nome
+                                                    32. Calcola quanti Distributori Automatici hanno stato Attivo
                                                     0. Torna al menu principale""");
                                             String sceltaCercaElimina = sc.nextLine();
                                             switch (sceltaCercaElimina) {
@@ -566,6 +573,67 @@ public class Application {
                                                         System.out.println("Input non valido: " + ex.getMessage());
                                                     }
                                                     break;
+                                                case "26":
+                                                    try {
+                                                        System.out.println("Inserisci giorni da oggi per cercare tessere scadute:");
+                                                        int giorni = Integer.parseInt(sc.nextLine());
+                                                        LocalDate dataCorrente = LocalDate.now().minusDays(giorni);
+                                                        List<Tessera> tessereScadute = td.trovaTessereScadute(dataCorrente);
+                                                        tessereScadute.forEach(System.out::println);
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido: " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "27":
+                                                    try {
+                                                        System.out.println("Inserisci la data di inizio");
+                                                        String dataInizio = sc.nextLine();
+                                                        td.trovaTesserePerDataInizio(LocalDate.parse(dataInizio)).forEach(System.out::println);
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido " + ex.getMessage());
+                                                    }
+                                                case "28":
+                                                    try {
+                                                        System.out.println("Totale Punti di emissione: " + ped.contaPuntiDiEmissione());
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido: " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "29":
+                                                    try {
+                                                        System.out.println("Totale Rivenditori Autorizzati: " + ped.contaRivenditoriAutorizzati());
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido: " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "30":
+                                                    try {
+                                                        System.out.println("Totale Distributori Automatici: " + ped.contaDistributoriAutomatici());
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido: " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "31":
+                                                    try {
+                                                        System.out.println("Inserisci il nome di un Rivenditore:");
+                                                        String name = sc.nextLine();
+                                                        List<RivenditoriAutorizzati> rivenditori = ped.cercaRivenditoriAutorizzatiPerNome(name);
+                                                        rivenditori.forEach(System.out::println);
+                                                        System.out.println("Rivenditori trovati: " + rivenditori.size());
+
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido: " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "32":
+                                                    try {
+                                                        System.out.println("Totale Distributori Automatici attivi: " + ped.DistributoriAutomaticiAttivi());
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido: " + ex.getMessage());
+                                                    }
+                                                    break;
+
+
                                                 case "0":
                                                     System.out.println("Torna al menu principale");
                                                     break;

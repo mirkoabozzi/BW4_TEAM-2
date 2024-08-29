@@ -71,9 +71,9 @@ public class PuntoDiEmissioneDAO {
     // 3. Cerca un RivenditoriAutorizzati tramite il nome
 
     public List<RivenditoriAutorizzati> cercaRivenditoriAutorizzatiPerNome(String name) {
-        String jpql = "SELECT r FROM RivenditoriAutorizzati r WHERE r.name = :name";
+        String jpql = "SELECT r FROM RivenditoriAutorizzati r WHERE r.name LIKE :name";
         TypedQuery<RivenditoriAutorizzati> query = em.createQuery(jpql, RivenditoriAutorizzati.class);
-        query.setParameter("name", name);
+        query.setParameter("name", "%" + name + "%");
         return query.getResultList();
     }
 
@@ -86,7 +86,7 @@ public class PuntoDiEmissioneDAO {
         return (Long) query.getSingleResult();
     }
 
-    
+
 }
 
 

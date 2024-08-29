@@ -72,7 +72,7 @@ public class TesseraDAO {
 
     // 3. Trovare tutte le tessere scadute
 
-    public List<Tessera> trovaTessereScadute() {
+    public List<Tessera> trovaTessereScadute(LocalDate dataCorrente) {
         String jpql = "SELECT t FROM Tessera t WHERE t.dataFine < :dataCorrente";
         TypedQuery<Tessera> query = em.createQuery(jpql, Tessera.class);
         query.setParameter("dataCorrente", LocalDate.now());
