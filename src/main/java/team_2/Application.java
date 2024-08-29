@@ -914,7 +914,7 @@ public class Application {
                                     }
                                 }
                             }
-                        }
+                        } else System.out.println("Password errata");
                         break; //yo
                     case "2":
                         while (true) {
