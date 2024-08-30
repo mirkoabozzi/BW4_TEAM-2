@@ -293,6 +293,8 @@ public class Application {
                                                         2. Gestione utenti
                                                         3. Gestione tessere
                                                         4. Gestione mezzi
+                                                        5. Gestione abbonamenti
+                                                        6. Gestione biglietti
                                                         0. Torna al menu precedente""");
                                                 String menuAvanzato = sc.nextLine();
                                                 switch (menuAvanzato) {
@@ -801,6 +803,7 @@ public class Application {
                                                                         5. Conta abbonamenti per stato
                                                                         6. Verifica abbonamenti in scadenza entro tot giorni
                                                                         7. Differenza abbonamenti per tipo
+                                                                        8. Trova il proprietario dell'abbonamento
                                                                         0. Torna al menu precedente
                                                                         """);
                                                                 String gestioneAbbonamenti = sc.nextLine();
@@ -866,6 +869,16 @@ public class Application {
                                                                             System.out.println("Input non valido " + ex.getMessage());
                                                                         }
                                                                         break;
+                                                                    case "8":
+                                                                        try {
+                                                                            System.out.println("Inserisci l'id dell'abbonamento:");
+                                                                            String abbonamentoId = sc.nextLine();
+                                                                            System.out.println(ad.nomeProprietarioAbbonamento(UUID.fromString(abbonamentoId)));
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+
                                                                     case "0":
                                                                         System.out.println("Torna al menu principale");
                                                                         break;
