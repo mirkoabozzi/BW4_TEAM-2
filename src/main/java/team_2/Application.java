@@ -12,12 +12,14 @@ import team_2.enums.TipoMezzo;
 import team_2.exceptions.NotFoundException;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
+import java.util.UUID;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("bw4_team_2");
     static Scanner sc = new Scanner(System.in);
-    static Random r = new Random();
 
     //createOne
     public static Abbonamento abbonamentoCreateOne(LocalDate date, StatoAbbonamento statoAbbonamento, TipoAbbonamento tipoAbbonamento, Tessera tessera) {
@@ -62,6 +64,7 @@ public class Application {
 
     public static void main(String[] args) {
         EntityManager em = emf.createEntityManager();
+
         //dao
         PuntoDiEmissioneDAO ped = new PuntoDiEmissioneDAO(em);
         UtenteDAO ud = new UtenteDAO(em);
@@ -72,7 +75,7 @@ public class Application {
         MezzoDAO md = new MezzoDAO(em);
         TrattaDAO trd = new TrattaDAO(em);
         ManutenzioneDAO mnd = new ManutenzioneDAO(em);
-        //Liste
+
 
         PuntoDiEmissione puntoDiEmissione = null;
         Utente utente = null;
@@ -85,837 +88,887 @@ public class Application {
         Manutenzione manutenzione = null;
 
 
-        //liste aggiornate dal db
-//        puntoDiEmissioneList = em.createQuery("SELECT p FROM PuntoDiEmissione p", PuntoDiEmissione.class).getResultList();
-//        utenteList = em.createQuery("SELECT u FROM Utente u", Utente.class).getResultList();
-//        bigliettoList = em.createQuery("SELECT b FROM Biglietto b", Biglietto.class).getResultList();
-//        abbonamentoList = em.createQuery("SELECT a FROM Abbonamento a", Abbonamento.class).getResultList();
-//        tesseraList = em.createQuery("SELECT p FROM Tessera p", Tessera.class).getResultList();
-//        giroList = em.createQuery("SELECT g FROM Giro g", Giro.class).getResultList();
-//        trattaList = em.createQuery("SELECT t FROM Tratta t", Tratta.class).getResultList();
-//        manutenzioneList = em.createQuery("SELECT m FROM Manutenzione m", Manutenzione.class).getResultList();
-
         try {
             while (true) {
-                System.out.println("1. Amministratore\n2. Utente\n3. Esci dal programma");
+                System.out.println("1. Amministratore\n2. Utente\n0. Esci dal programma");
                 String choice = sc.nextLine();
                 switch (choice) {
                     case "1":
                         System.out.println("Inserisci password");
                         String pass = sc.nextLine();
                         if (pass.equals("1234")) {
-                            System.out.println("1. Crea\n2. Elimina o modifica\n3. Cerca o filtra");
-                            String scelta = sc.nextLine();
-                            switch (scelta) {
-                                case "1" -> {
-                                    System.out.println("Cosa vuoi creare?");
-                                    while (true) {
-                                        try {
-                                            System.out.println("""
-                                                    1. Crea punto di emissione\s
-                                                    2. Crea utente\s
-                                                    3. Crea tessera\s
-                                                    4. Crea mezzo\s
-                                                    5. Crea tratta\s
-                                                    6. Crea giro\s
-                                                    7. Crea manutenzione\s
-                                                    0. Torna al menu precedente""");
-                                            String sceltaCrea = sc.nextLine();
-                                            switch (sceltaCrea) {
-                                                case "1":
-                                                    puntoDiEmissione = createPuntoDiEmissione();
-                                                    System.out.println(puntoDiEmissione);
-                                                    ped.save(puntoDiEmissione);
-                                                    break;
-                                                case "2":
-                                                    utente = createUtente();
-                                                    System.out.println(utente);
-                                                    ud.save(utente);
-                                                    break;
-                                                case "3":
-                                                    tessera = createTessera(ud, ped, gd);
-                                                    System.out.println(tessera);
-                                                    td.save(tessera);
-                                                    break;
+                            while (true) {
 
-                                                case "4":
-                                                    mezzo = createMezzo();
-                                                    System.out.println(mezzo);
-                                                    md.save(mezzo);
-                                                    break;
-                                                case "5":
-                                                    List<Mezzo> mezzoList = em.createQuery("SELECT m FROM Mezzo m", Mezzo.class).getResultList();
-                                                    tratta = createTratta(mezzoList);
-                                                    System.out.println(tratta);
-                                                    trd.save(tratta);
-                                                    break;
-
-                                                case "6":
-                                                    giro = createGiro(trd, md);
-                                                    System.out.println(giro);
-                                                    gd.save(giro);
-                                                    break;
-                                                case "7":
-                                                    manutenzione = createManutenzione(md);
-                                                    System.out.println(manutenzione);
-                                                    mnd.save(manutenzione);
-                                                    break;
-                                                case "0":
-                                                    System.out.println("Torna al menu principale");
-                                                    break;
-                                                default:
-                                                    System.out.println("Il valore non è valido");
-                                                    break;
+                                System.out.println("1. Crea\n2. Elimina o modifica\n3. Menu avanzato\n4. Torna al menu precedente\n0. Esci dal programma");
+                                String scelta = sc.nextLine();
+                                switch (scelta) {
+                                    case "1" -> {
+                                        System.out.println("Cosa vuoi creare?");
+                                        while (true) {
+                                            try {
+                                                System.out.println("""
+                                                        1. Crea punto di emissione\s
+                                                        2. Crea utente\s
+                                                        3. Crea tessera\s
+                                                        4. Crea mezzo\s
+                                                        5. Crea tratta\s
+                                                        6. Crea giro\s
+                                                        7. Crea manutenzione\s
+                                                        0. Torna al menu precedente""");
+                                                String sceltaCrea = sc.nextLine();
+                                                switch (sceltaCrea) {
+                                                    case "1":
+                                                        puntoDiEmissione = createPuntoDiEmissione();
+                                                        System.out.println(puntoDiEmissione);
+                                                        ped.save(puntoDiEmissione);
+                                                        break;
+                                                    case "2":
+                                                        utente = createUtente();
+                                                        System.out.println(utente);
+                                                        ud.save(utente);
+                                                        break;
+                                                    case "3":
+                                                        tessera = createTessera(ud, ped, gd);
+                                                        System.out.println(tessera);
+                                                        td.save(tessera);
+                                                        break;
+                                                    case "4":
+                                                        mezzo = createMezzo();
+                                                        System.out.println(mezzo);
+                                                        md.save(mezzo);
+                                                        break;
+                                                    case "5":
+                                                        List<Mezzo> mezzoList = em.createQuery("SELECT m FROM Mezzo m", Mezzo.class).getResultList();
+                                                        tratta = createTratta(mezzoList);
+                                                        System.out.println(tratta);
+                                                        trd.save(tratta);
+                                                        break;
+                                                    case "6":
+                                                        giro = createGiro(trd, md);
+                                                        System.out.println(giro);
+                                                        gd.save(giro);
+                                                        break;
+                                                    case "7":
+                                                        manutenzione = createManutenzione(md);
+                                                        System.out.println(manutenzione);
+                                                        mnd.save(manutenzione);
+                                                        break;
+                                                    case "0":
+                                                        System.out.println("Torna al menu principale");
+                                                        break;
+                                                    default:
+                                                        System.out.println("Il valore non è valido");
+                                                        break;
+                                                }
+                                                if (sceltaCrea.equals("0")) break;
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
                                             }
-                                            if (sceltaCrea.equals("0")) break;
-                                        } catch (Exception e) {
-                                            System.out.println(e.getMessage());
                                         }
                                     }
-                                }
-                                case "2" -> {
-                                    System.out.println("Cosa vuoi eliminare o modificare?");
-                                    while (true) {
-                                        try {
-                                            System.out.println("""
-                                                    1. Elimina punto di emissione
-                                                    2. Elimina utente
-                                                    3. Elimina tessera
-                                                    4. Elimina mezzo
-                                                    5. Elimina tratta
-                                                    6. Elimina giro
-                                                    7. Elimina manutenzione
-                                                    8. Aggiorna / modifica data termine manutenzione
-                                                    0. Torna al menu principale""");
-                                            String sceltaElimina = sc.nextLine();
-                                            switch (sceltaElimina) {
-                                                case "1":
-                                                    try {
-                                                        System.out.println("Quale punto di emissione vuoi eliminare tramite id?");
-                                                        String findByIdAndDelete = sc.nextLine();
-                                                        ped.deleteById(findByIdAndDelete);
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci il formato corretto");
-                                                    } catch (Exception e) {
-                                                        System.out.println(e.getMessage());
-                                                    }
-                                                    break;
-                                                case "2":
-                                                    try {
-                                                        System.out.println("Quale utente vuoi eliminare tramite id?");
-                                                        String findByIdAndDelete = sc.nextLine();
-                                                        ud.deleteById(findByIdAndDelete);
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci il formato corretto");
-                                                    } catch (Exception e) {
-                                                        System.out.println(e.getMessage());
-                                                    }
-                                                    break;
-                                                case "3":
-                                                    try {
-                                                        System.out.println("Quale tessera vuoi eliminare tramite id?");
-                                                        String findByIdAndDelete = sc.nextLine();
-                                                        td.deleteById(findByIdAndDelete);
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci il formato corretto");
-                                                    } catch (Exception e) {
-                                                        System.out.println(e.getMessage());
-                                                    }
-                                                    break;
-                                                case "4":
-                                                    try {
-                                                        System.out.println("Quale mezzo vuoi eliminare tramite id?");
-                                                        String findByIdAndDelete = sc.nextLine();
-                                                        md.deleteById(findByIdAndDelete);
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci il formato corretto");
-                                                    } catch (Exception e) {
-                                                        System.out.println(e.getMessage());
-                                                    }
-                                                    break;
-                                                case "5":
-                                                    try {
-                                                        System.out.println("Quale tratta vuoi eliminare tramite id?");
-                                                        String findByIdAndDelete = sc.nextLine();
-                                                        trd.deleteById(findByIdAndDelete);
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci il formato corretto");
-                                                    } catch (Exception e) {
-                                                        System.out.println(e.getMessage());
-                                                    }
-                                                    break;
-                                                case "6":
-                                                    try {
-                                                        System.out.println("Quale giro vuoi eliminare tramite id?");
-                                                        String findByIdAndDelete = sc.nextLine();
-                                                        gd.deleteById(findByIdAndDelete);
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci il formato corretto");
-                                                    } catch (Exception e) {
-                                                        System.out.println(e.getMessage());
-                                                    }
-                                                    break;
-                                                case "7":
-                                                    try {
-                                                        System.out.println("Quale manutenzione vuoi eliminare tramite id?");
-                                                        String findByIdAndDelete = sc.nextLine();
-                                                        mnd.deleteById(findByIdAndDelete);
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci il formato corretto");
-                                                    } catch (Exception e) {
-                                                        System.out.println(e.getMessage());
-                                                    }
-                                                    break;
-                                                case "8":
-                                                    try {
-                                                        System.out.println("Inserisci un id manutenzione valida");
-                                                        String idMezzo = sc.nextLine();
-                                                        System.out.println("Inserisci la data di rinnovo");
-                                                        String data = sc.nextLine();
-                                                        mnd.estendiFineManutenzione(UUID.fromString(idMezzo), LocalDate.parse(data));
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "0":
-                                                    System.out.println("Torna al menu principale");
-                                                    break;
-                                                default:
-                                                    System.out.println("Il valore non è valido");
-                                                    break;
+                                    case "2" -> {
+                                        System.out.println("Cosa vuoi eliminare o modificare?");
+                                        while (true) {
+                                            try {
+                                                System.out.println("""
+                                                        1. Elimina punto di emissione
+                                                        2. Elimina utente
+                                                        3. Elimina tessera
+                                                        4. Elimina mezzo
+                                                        5. Elimina tratta
+                                                        6. Elimina giro
+                                                        7. Elimina manutenzione
+                                                        8. Aggiorna / modifica data termine manutenzione
+                                                        0. Torna al menu precedente""");
+                                                String sceltaElimina = sc.nextLine();
+                                                switch (sceltaElimina) {
+                                                    case "1":
+                                                        try {
+                                                            System.out.println("Quale punto di emissione vuoi eliminare tramite id?");
+                                                            String findByIdAndDelete = sc.nextLine();
+                                                            ped.deleteById(findByIdAndDelete);
+                                                        } catch (NumberFormatException e) {
+                                                            System.out.println("Inserisci il formato corretto");
+                                                        } catch (Exception e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+                                                        break;
+                                                    case "2":
+                                                        try {
+                                                            System.out.println("Quale utente vuoi eliminare tramite id?");
+                                                            String findByIdAndDelete = sc.nextLine();
+                                                            ud.deleteById(findByIdAndDelete);
+                                                        } catch (NumberFormatException e) {
+                                                            System.out.println("Inserisci il formato corretto");
+                                                        } catch (Exception e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+                                                        break;
+                                                    case "3":
+                                                        try {
+                                                            System.out.println("Quale tessera vuoi eliminare tramite id?");
+                                                            String findByIdAndDelete = sc.nextLine();
+                                                            td.deleteById(findByIdAndDelete);
+                                                        } catch (NumberFormatException e) {
+                                                            System.out.println("Inserisci il formato corretto");
+                                                        } catch (Exception e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+                                                        break;
+                                                    case "4":
+                                                        try {
+                                                            System.out.println("Quale mezzo vuoi eliminare tramite id?");
+                                                            String findByIdAndDelete = sc.nextLine();
+                                                            md.deleteById(findByIdAndDelete);
+                                                        } catch (NumberFormatException e) {
+                                                            System.out.println("Inserisci il formato corretto");
+                                                        } catch (Exception e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+                                                        break;
+                                                    case "5":
+                                                        try {
+                                                            System.out.println("Quale tratta vuoi eliminare tramite id?");
+                                                            String findByIdAndDelete = sc.nextLine();
+                                                            trd.deleteById(findByIdAndDelete);
+                                                        } catch (NumberFormatException e) {
+                                                            System.out.println("Inserisci il formato corretto");
+                                                        } catch (Exception e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+                                                        break;
+                                                    case "6":
+                                                        try {
+                                                            System.out.println("Quale giro vuoi eliminare tramite id?");
+                                                            String findByIdAndDelete = sc.nextLine();
+                                                            gd.deleteById(findByIdAndDelete);
+                                                        } catch (NumberFormatException e) {
+                                                            System.out.println("Inserisci il formato corretto");
+                                                        } catch (Exception e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+                                                        break;
+                                                    case "7":
+                                                        try {
+                                                            System.out.println("Quale manutenzione vuoi eliminare tramite id?");
+                                                            String findByIdAndDelete = sc.nextLine();
+                                                            mnd.deleteById(findByIdAndDelete);
+                                                        } catch (NumberFormatException e) {
+                                                            System.out.println("Inserisci il formato corretto");
+                                                        } catch (Exception e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+                                                        break;
+                                                    case "8":
+                                                        try {
+                                                            System.out.println("Inserisci un id manutenzione valida");
+                                                            String idMezzo = sc.nextLine();
+                                                            System.out.println("Inserisci la data di rinnovo");
+                                                            String data = sc.nextLine();
+                                                            mnd.estendiFineManutenzione(UUID.fromString(idMezzo), LocalDate.parse(data));
+                                                        } catch (Exception ex) {
+                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                        }
+                                                        break;
+                                                    case "0":
+                                                        System.out.println("Torna al menu principale");
+                                                        break;
+                                                    default:
+                                                        System.out.println("Il valore non è valido");
+                                                        break;
+                                                }
+                                                if (sceltaElimina.equals("0")) break;
+                                            } catch (Exception ex) {
+                                                System.out.println(ex.getMessage());
                                             }
-                                            if (sceltaElimina.equals("0")) break;
-                                        } catch (Exception ex) {
-                                            System.out.println(ex.getMessage());
                                         }
                                     }
-                                }
-                                case "3" -> {
-                                    System.out.println("Cosa vuoi cercare o filtrare?");
+                                    case "3" -> {
+                                        System.out.println("Menu avanzato");
 
-                                    while (true) {
-                                        try {
-                                            System.out.println("""
-                                                    1. Cerca punto di emissione tramite id\s
-                                                    2. Cerca utente tramite id\s
-                                                    3. Cerca tessera tramite id\s
-                                                    4. Cerca mezzo tramite id\s
-                                                    5. Cerca tratta tramite id\s
-                                                    6. Cerca giro tramite id\s
-                                                    7. Cerca manutenzione tramite id\s
-                                                    8. Filtra abbonamenti per stato
-                                                    9. Filtra abbonamenti per data di rinnovo
-                                                    10. Filtra abbonamenti per tipo
-                                                    11. Filtra abbonamenti tramite id tessera
-                                                    12. Conta abbonamenti per tipo
-                                                    13. Conta abbonamenti per stato
-                                                    14. Filtra biglietti per stato
-                                                    15. Filtra biglietti per data vidimazione
-                                                    16. Trova biglietti tramite id tessera
-                                                    17. Conta biglietti vidimati o non vidimati
-                                                    18. Filtra mezzi per tipo
-                                                    19. Conta mezzi in manutenzione
-                                                    20. Conta mezzi in manutenzione per tipo
-                                                    21. Verifica se la tessera è valida
-                                                    22. Verifica abbonamenti in scadenza entro tot giorni
-                                                    23. Trova tratta più veloce tramite una data
-                                                    24. Contare numero tessere valide
-                                                    25. Ottenere tessere per un determinato punto di emissione
-                                                    26. Trovare tutte le tessere scadute
-                                                    27. Trovare tessere con una data di inizio specifica
-                                                    28. Calcola quanti punti di Emissione ci sono
-                                                    29. Calcola quanti Rivenditori Autorizzati ci sono
-                                                    30. Calcola quanti Distributori Automatici ci sono
-                                                    31. Trova i Rivenditori Autorizzati tramite nome
-                                                    32. Calcola quanti Distributori Automatici hanno stato Attivo
-                                                    33. Trova capienza del mezzo tramite id
-                                                    34. Verifica se il mezzo è in servizio
-                                                    35. Trova la data di inizio servizio del mezzo
-                                                    36. Trova la data di fine servizio del mezzo
-                                                    37. Trova il numero del mezzo tramite id
-                                                    38. Trova il tipo del mezzo
-                                                    39. Trova tutte le manutenzioni ricevute dal mezzo
-                                                    40. Trova il numero di giri in una determinata tratta
-                                                    41. Trova la tratta del giro tramite id
-                                                    42. Trova le tessere associate al giro
-                                                    43. Trova il mezzo che sta facendo il giro
-                                                    44. Differenza abbonamenti per tipo
-                                                    45. Differenza biglietti per stato
-                                                    46. Differenza manutenzioni per tipo mezzo
-                                                    47. Trova la tratta con il tempo di percorrenza previsto più veloce in base a una data
-                                                    48. Trova la tratta con il numero più alto di biglietti vidimati
-                                                    49. Conta i biglietti associati a una determinata tessera.
-                                                    50. Cerca utenti per nome.
-                                                    51. Cerca utenti per cognome.
-                                                    52. Cerca utenti per nome e cognome.
-                                                    53. Filtra utenti con età maggiore di
-                                                    54. Cerca utenti tramite numero tessera.
-                                                    55. Cerca utenti tramite id tessera.
-                                                    56. Mostra tutti gli utenti.
-                                                    57. Trova lista biglietti per id tratta
-                                                    0. Torna al menu principale""");
-                                            String sceltaCercaElimina = sc.nextLine();
-                                            switch (sceltaCercaElimina) {
-                                                case "1":
-                                                    try {
-                                                        System.out.println("Quale punto di emissione vuoi cercare tramite id?");
-                                                        String findId = sc.nextLine();
-                                                        System.out.println(ped.getById(findId));
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci il formato corretto\n");
-                                                    } catch (Exception e) {
-                                                        System.out.println(e.getMessage());
-                                                    }
-                                                    break;
-                                                case "2":
-                                                    try {
-                                                        System.out.println("Quale utente vuoi cercare tramite id?");
-                                                        String findId = sc.nextLine();
-                                                        System.out.println(ud.getById(findId));
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci il formato corretto\n");
-                                                    } catch (Exception e) {
-                                                        System.out.println(e.getMessage());
-                                                    }
-                                                    break;
-                                                case "3":
-                                                    try {
-                                                        System.out.println("Quale tessera vuoi cercare tramite id?");
-                                                        String findId = sc.nextLine();
-                                                        System.out.println(td.getById(findId));
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci il formato corretto\n");
-                                                    } catch (Exception e) {
-                                                        System.out.println(e.getMessage());
-                                                    }
-                                                    break;
-                                                case "4":
-                                                    try {
-                                                        System.out.println("Quale mezzo vuoi cercare tramite id?");
-                                                        String findId = sc.nextLine();
-                                                        System.out.println(md.getById(findId));
+                                        while (true) {
+                                            try {
+                                                System.out.println("""
+                                                        1. Gestione punti Emissione
+                                                        2. Gestione utenti
+                                                        3. Gestione tessere
+                                                        4. Gestione mezzi
+                                                        0. Torna al menu precedente""");
+                                                String menuAvanzato = sc.nextLine();
+                                                switch (menuAvanzato) {
+                                                    case "1":
+                                                        System.out.println("Gestione punti emissione");
+                                                        while (true) {
+                                                            try {
+                                                                System.out.println("""
+                                                                        1. Cerca punto di emissione tramite id
+                                                                        2. Ottenere tessere per un determinato punto di emissione
+                                                                        3. Calcola quanti punti di Emissione ci sono
+                                                                        4. Calcola quanti Rivenditori Autorizzati ci sono
+                                                                        5. Calcola quanti Distributori Automatici ci sono
+                                                                        6. Trova i Rivenditori Autorizzati tramite nome
+                                                                        7. Calcola quanti Distributori Automatici hanno stato Attivo
+                                                                        0. Torna al menu principale""");
+                                                                String gestionePuntiEmissione = sc.nextLine();
+                                                                switch (gestionePuntiEmissione) {
+                                                                    case "1":
+                                                                        try {
+                                                                            System.out.println("Quale punto di emissione vuoi cercare tramite id?");
+                                                                            String findId = sc.nextLine();
+                                                                            System.out.println(ped.getById(findId));
+                                                                        } catch (NumberFormatException e) {
+                                                                            System.out.println("Inserisci il formato corretto\n");
+                                                                        } catch (Exception e) {
+                                                                            System.out.println(e.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "2":
+                                                                        try {
+                                                                            System.out.println("Inserisci punto di Emissione:");
+                                                                            UUID puntoDiEmissioneId = UUID.fromString(sc.nextLine());
+                                                                            List<Tessera> tessere = td.trovaTesserePerPuntoDiEmissione(puntoDiEmissioneId);
+                                                                            System.out.println("Tessere trovate: " + tessere.toString());
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido: " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "3":
+                                                                        try {
+                                                                            System.out.println("Totale Punti di emissione: " + ped.contaPuntiDiEmissione());
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido: " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "4":
+                                                                        try {
+                                                                            System.out.println("Totale Rivenditori Autorizzati: " + ped.contaRivenditoriAutorizzati());
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido: " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "5":
+                                                                        try {
+                                                                            System.out.println("Totale Distributori Automatici: " + ped.contaDistributoriAutomatici());
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido: " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "6":
+                                                                        try {
+                                                                            System.out.println("Inserisci il nome di un Rivenditore:");
+                                                                            String name = sc.nextLine();
+                                                                            List<RivenditoriAutorizzati> rivenditori = ped.cercaRivenditoriAutorizzatiPerNome(name);
+                                                                            rivenditori.forEach(System.out::println);
+                                                                            System.out.println("Rivenditori trovati: " + rivenditori.size());
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido: " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "7":
+                                                                        try {
+                                                                            System.out.println("Totale Distributori Automatici attivi: " + ped.DistributoriAutomaticiAttivi());
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido: " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "0":
+                                                                        System.out.println("Torna al menu principale");
+                                                                        break;
+                                                                    default:
+                                                                        System.out.println("il valore non è valido");
+                                                                        break;
+                                                                }
+                                                                if (gestionePuntiEmissione.equals("0")) break;
+                                                            } catch (Exception ex) {
+                                                                System.out.println(ex.getMessage());
+                                                            }
+                                                        }
+                                                        break;
+                                                    case "2":
+                                                        System.out.println("Gestione utenti");
+                                                        while (true) {
+                                                            try {
+                                                                System.out.println("""
+                                                                        1. Cerca utente tramite id
+                                                                        2. Cerca utenti per nome.
+                                                                        3. Cerca utenti per cognome.
+                                                                        4. Cerca utenti per nome e cognome.
+                                                                        5. Filtra utenti con età maggiore di
+                                                                        6. Cerca utenti tramite numero tessera.
+                                                                        7. Cerca utenti tramite id tessera.
+                                                                        8. Mostra tutti gli utenti.
+                                                                        0. Torna al menu precedente""");
+                                                                String gestioneUtenti = sc.nextLine();
+                                                                switch (gestioneUtenti) {
+                                                                    case "1":
+                                                                        try {
+                                                                            System.out.println("Quale utente vuoi cercare tramite id?");
+                                                                            String findId = sc.nextLine();
+                                                                            System.out.println(ud.getById(findId));
+                                                                        } catch (NumberFormatException e) {
+                                                                            System.out.println("Inserisci il formato corretto\n");
+                                                                        } catch (Exception e) {
+                                                                            System.out.println(e.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "2":
+                                                                        try {
+                                                                            System.out.println("Inserisci il nome da cercare:");
+                                                                            String nome = sc.nextLine();
+                                                                            List<Utente> utentiPerNome = ud.getUtentiByNome(nome);
+                                                                            utentiPerNome.forEach(System.out::println);
+                                                                        } catch (Exception e) {
+                                                                            System.out.println("Errore durante la ricerca degli utenti per nome: " + e.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "3":
+                                                                        try {
+                                                                            System.out.println("Inserisci il cognome da cercare:");
+                                                                            String cognome = sc.nextLine();
+                                                                            List<Utente> utentiPerCognome = ud.getUtentiByCognome(cognome);
+                                                                            utentiPerCognome.forEach(System.out::println);
+                                                                        } catch (Exception e) {
+                                                                            System.out.println("Errore durante la ricerca degli utenti per cognome: " + e.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "4":
+                                                                        try {
+                                                                            System.out.println("Inserisci il nome da cercare:");
+                                                                            String nomeCognomeNome = sc.nextLine();
+                                                                            System.out.println("Inserisci il cognome da cercare:");
+                                                                            String nomeCognomeCognome = sc.nextLine();
+                                                                            List<Utente> utentiPerNomeECognome = ud.getUtentiByNomeECognome(nomeCognomeNome, nomeCognomeCognome);
+                                                                            utentiPerNomeECognome.forEach(System.out::println);
+                                                                        } catch (Exception e) {
+                                                                            System.out.println("Errore durante la ricerca degli utenti per nome e cognome: " + e.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "5":
+                                                                        try {
+                                                                            System.out.println("Inserisci l'età minima:");
+                                                                            int eta = Integer.parseInt(sc.nextLine());
+                                                                            List<Utente> utentiPerEta = ud.getUtentiByEtaMaggioreDi(eta);
+                                                                            utentiPerEta.forEach(System.out::println);
+                                                                        } catch (NumberFormatException e) {
+                                                                            System.out.println("Inserisci un'età valida (numero intero).");
+                                                                        } catch (Exception e) {
+                                                                            System.out.println("Errore durante il filtraggio degli utenti per età: " + e.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "6":
+                                                                        try {
+                                                                            System.out.println("Inserisci il numero tessera da cercare:");
+                                                                            int numeroTessera = Integer.parseInt(sc.nextLine());
+                                                                            List<Utente> utentiPerNumeroTessera = ud.getUtentiByNumeroTessera(numeroTessera);
+                                                                            utentiPerNumeroTessera.forEach(System.out::println);
+                                                                        } catch (NumberFormatException e) {
+                                                                            System.out.println("Inserisci un numero tessera valido (numero intero).");
+                                                                        } catch (Exception e) {
+                                                                            System.out.println("Errore durante la ricerca degli utenti per numero tessera: " + e.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "7":
+                                                                        try {
+                                                                            System.out.println("Inserisci l'id della tessera:");
+                                                                            UUID tesseraId = UUID.fromString(sc.nextLine());
+                                                                            List<Utente> utentiPerTesseraId = ud.getUtentiByTesseraId(tesseraId);
+                                                                            utentiPerTesseraId.forEach(System.out::println);
+                                                                        } catch (IllegalArgumentException e) {
+                                                                            System.out.println("Formato ID tessera non valido. Riprova.");
+                                                                        } catch (Exception e) {
+                                                                            System.out.println("Errore durante la ricerca degli utenti per ID tessera: " + e.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "8":
+                                                                        try {
+                                                                            System.out.println("Elenco di tutti gli utenti:");
+                                                                            List<Utente> allUtenti = ud.getAllUtenti();
+                                                                            allUtenti.forEach(System.out::println);
+                                                                        } catch (Exception e) {
+                                                                            System.out.println("Errore durante il recupero degli utenti: " + e.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "0":
+                                                                        System.out.println("Torna al menu principale");
+                                                                        break;
+                                                                    default:
+                                                                        System.out.println("il valore non è valido");
+                                                                        break;
+                                                                }
+                                                                if (gestioneUtenti.equals("0")) break;
+                                                            } catch (Exception ex) {
+                                                                System.out.println(ex.getMessage());
+                                                            }
+                                                        }
+                                                        break;
+                                                    case "3":
+                                                        System.out.println("Gestione tessere");
+                                                        while (true) {
+                                                            try {
+                                                                System.out.println("""
+                                                                         1. Cerca tessera tramite id
+                                                                         2. Filtra abbonamenti tramite id tessera
+                                                                         3. Trova biglietti tramite id tessera
+                                                                         4. Verifica se la tessera è valida
+                                                                         5. Contare numero tessere valide
+                                                                         6. Trovare tutte le tessere scadute
+                                                                         7. Trovare tessere con una data di inizio specifica
+                                                                         8. Trova le tessere associate al giro
+                                                                         9. Conta i biglietti associati a una determinata tessera.
+                                                                         0. Torna al menu precedente
+                                                                        """);
+                                                                String gestioneTessere = sc.nextLine();
+                                                                switch (gestioneTessere) {
+                                                                    case "1":
+                                                                        try {
+                                                                            System.out.println("Quale tessera vuoi cercare tramite id?");
+                                                                            String findId = sc.nextLine();
+                                                                            System.out.println(td.getById(findId));
+                                                                        } catch (NumberFormatException e) {
+                                                                            System.out.println("Inserisci il formato corretto\n");
+                                                                        } catch (Exception e) {
+                                                                            System.out.println(e.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "2":
+                                                                        try {
+                                                                            System.out.println("Inserisci un ID tessera valido");
+                                                                            String numeroTessera = sc.nextLine();
+                                                                            ad.trovaAbbonamentiTramiteTessera(UUID.fromString(numeroTessera)).forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "3":
+                                                                        try {
+                                                                            System.out.println("Inserisci un Id tessera valido");
+                                                                            String idTessera = sc.nextLine();
+                                                                            bd.trovaBigliettiTramiteIdTessera(UUID.fromString(idTessera)).forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "4":
+                                                                        try {
+                                                                            System.out.println("Inserisci un id della tessera");
+                                                                            String idTessera = sc.nextLine();
+                                                                            td.validitàTessera(UUID.fromString(idTessera)).forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "5":
+                                                                        try {
+                                                                            System.out.println("Totale tessere valide: " + td.contaTessereValide());
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido: " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "6":
+                                                                        try {
+                                                                            System.out.println("Inserisci giorni da oggi per cercare tessere scadute:");
+                                                                            int giorni = Integer.parseInt(sc.nextLine());
+                                                                            LocalDate dataCorrente = LocalDate.now().minusDays(giorni);
+                                                                            List<Tessera> tessereScadute = td.trovaTessereScadute(dataCorrente);
+                                                                            tessereScadute.forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido: " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "7":
+                                                                        try {
+                                                                            System.out.println("Inserisci la data di inizio");
+                                                                            String dataInizio = sc.nextLine();
+                                                                            td.trovaTesserePerDataInizio(LocalDate.parse(dataInizio)).forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "8":
+                                                                        try {
+                                                                            System.out.println("Inserisci l'id del giro per trovare le tessere associate:");
+                                                                            String giroId = sc.nextLine();
+                                                                            gd.trovaTesserePerGiro(UUID.fromString(giroId)).forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "9":
+                                                                        try {
+                                                                            System.out.println("Inserisci ID tessera");
+                                                                            String tesseraIdInput = sc.nextLine();
+                                                                            UUID idTessera = UUID.fromString(tesseraIdInput);
+                                                                            long ticketCount = td.contaBigliettiAssociati(idTessera);
+                                                                            System.out.println("Numero di biglietti associati alla tessera con id " + idTessera + ": " + ticketCount);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido: " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "0":
+                                                                        System.out.println("Torna al menu principale");
+                                                                        break;
+                                                                    default:
+                                                                        System.out.println("il valore non è valido");
+                                                                        break;
+                                                                }
+                                                                if (gestioneTessere.equals("0")) break;
+                                                            } catch (Exception ex) {
+                                                                System.out.println(ex.getMessage());
+                                                            }
+                                                        }
+                                                        break;
+                                                    case "4":
+                                                        System.out.println("Gestione mezzi");
+                                                        while (true) {
+                                                            try {
+                                                                System.out.println("""
+                                                                        1. Cerca mezzo tramite id
+                                                                        2. Filtra mezzi per tipo
+                                                                        3. Conta mezzi in manutenzione
+                                                                        4. Conta mezzi in manutenzione per tipo
+                                                                        5. Trova capienza del mezzo tramite id
+                                                                        6. Verifica se il mezzo è in servizio
+                                                                        7. Trova la data di inizio servizio del mezzo
+                                                                        8. Trova la data di fine servizio del mezzo
+                                                                        9. Trova il numero del mezzo tramite id
+                                                                        10. Trova il tipo del mezzo
+                                                                        11. Trova tutte le manutenzioni ricevute dal mezzo
+                                                                        12. Trova il mezzo che sta facendo il giro
+                                                                        13. Differenza manutenzioni per tipo mezzo
+                                                                        14. Cerca manutenzione tramite id\s
+                                                                        0. Torna al menu precedente
+                                                                        """);
+                                                                String gestioneMezzi = sc.nextLine();
+                                                                switch (gestioneMezzi) {
+                                                                    case "1":
+                                                                        try {
+                                                                            System.out.println("Quale mezzo vuoi cercare tramite id?");
+                                                                            String findId = sc.nextLine();
+                                                                            System.out.println(md.getById(findId));
 
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci il formato corretto\n");
+                                                                        } catch (NumberFormatException e) {
+                                                                            System.out.println("Inserisci il formato corretto\n");
 
-                                                    } catch (Exception e) {
-                                                        System.out.println(e.getMessage());
-                                                    }
-                                                    break;
-                                                case "5":
-                                                    try {
-                                                        System.out.println("Quale tratta vuoi cercare tramite id?");
-                                                        String findId = sc.nextLine();
-                                                        System.out.println(trd.getByID(findId));
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci il formato corretto\n");
-
-                                                    } catch (Exception e) {
-                                                        System.out.println(e.getMessage());
-                                                    }
-                                                    break;
-                                                case "6":
-                                                    try {
-                                                        System.out.println("Quale giro vuoi cercare tramite id?");
-                                                        String findId = sc.nextLine();
-                                                        System.out.println(gd.getByID(findId));
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci il formato corretto\n");
-
-                                                    } catch (Exception e) {
-                                                        System.out.println(e.getMessage());
-                                                    }
-                                                    break;
-                                                case "7":
-                                                    try {
-                                                        System.out.println("Quale manutenzione vuoi cercare tramite id?");
-                                                        String findId = sc.nextLine();
-                                                        System.out.println(mnd.getByID(findId));
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci il formato corretto\n");
-                                                    } catch (Exception e) {
-                                                        System.out.println(e.getMessage());
-                                                    }
-                                                    break;
-                                                case "8":
-                                                    try {
-                                                        System.out.println("Vuoi filtrare gli abbonamenti ATTIVO o NON_ATTIVO?");
-                                                        String statoAbbonamento = sc.nextLine().toUpperCase();
-                                                        ad.filtraAbbonamentiPerStato(StatoAbbonamento.valueOf(statoAbbonamento)).forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "9":
-                                                    try {
-                                                        System.out.println("Inserisci la data per filtrare gli abbonamenti");
-                                                        String data = sc.nextLine();
-                                                        ad.filtraAbbonamentiRinnovatiInData(data).forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "10":
-                                                    try {
-                                                        System.out.println("Inserisci il tipo di abbonamento (MENSILE o SETTIMANALE)");
-                                                        String tipoAbbonamento = sc.nextLine().toUpperCase();
-                                                        ad.filtraAbbonamentiPerTipo(TipoAbbonamento.valueOf(tipoAbbonamento)).forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "11":
-                                                    try {
-                                                        System.out.println("Inserisci un ID tessera valido");
-                                                        String numeroTessera = sc.nextLine();
-                                                        ad.trovaAbbonamentiTramiteTessera(UUID.fromString(numeroTessera)).forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "12":
-                                                    try {
-                                                        System.out.println("Inserisci il tipo SETTIMANALE o MENSILE");
-                                                        String tipo = sc.nextLine().toUpperCase();
-                                                        System.out.println("Abbonamenti di tipo " + tipo + " trovati: " + ad.contaAbbonamentiPerTipo(TipoAbbonamento.valueOf(tipo)));
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "13":
-                                                    try {
-                                                        System.out.println("Inserisci uno stato ATTIVO o NON_ATTIVO");
-                                                        String stato = sc.nextLine().toUpperCase();
-                                                        System.out.println("Abbonamenti " + stato + " trovati: " + ad.contaAbbonamentiPerStato(StatoAbbonamento.valueOf(stato)));
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "14":
-                                                    try {
-                                                        System.out.println("Inserisci true per i biglietti vidimati, false per i non vidimati");
-                                                        Boolean stato = Boolean.valueOf(sc.nextLine());
-                                                        bd.filtraBigliettiPerStato(stato).forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "15":
-                                                    try {
-                                                        System.out.println("Inserisci una data valida");
-                                                        String data = sc.nextLine();
-                                                        bd.filtraBigliettiVidimatiInData(data).forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "16":
-                                                    try {
-                                                        System.out.println("Inserisci un Id tessera valido");
-                                                        String idTessera = sc.nextLine();
-                                                        bd.trovaBigliettiTramiteIdTessera(UUID.fromString(idTessera)).forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "17":
-                                                    try {
-                                                        System.out.println("Quali biglietti vuoi contare? true vidimati / false non vidimati");
-                                                        Boolean stato = Boolean.valueOf(sc.nextLine());
-                                                        System.out.println("Biglietti trovati " + bd.contaBigliettiVidimati(stato));
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "18":
-                                                    try {
-                                                        System.out.println("Inserisci un tipo di mezzo valido AUTOBUS o TRAM");
-                                                        String tipo = sc.nextLine().toUpperCase();
-                                                        mnd.filtraMezziPerTipo(TipoMezzo.valueOf(tipo)).forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "19":
-                                                    try {
-                                                        System.out.println("Mezzi ancora in manutenzione");
-                                                        mnd.mezziInManutenzione().forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "20":
-                                                    try {
-                                                        System.out.println("Inserisci un tipo mezzo valido AUTOBUS TRAM");
-                                                        String tipo = sc.nextLine().toUpperCase();
-                                                        System.out.println("Mezzi di tipo " + tipo + " presenti in officina " + mnd.contaMezziInManutenzionePerTipo(TipoMezzo.valueOf(tipo)));
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "21":
-                                                    try {
-                                                        System.out.println("Inserisci un id della tessera");
-                                                        String idTessera = sc.nextLine();
-                                                        td.validitàTessera(UUID.fromString(idTessera)).forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "22":
-                                                    try {
-                                                        System.out.println("Specifica il numero giorni");
-                                                        String giorni = sc.nextLine();
-                                                        ad.abbonamentiAttiviInScadenzaEntroGiorni(Integer.parseInt(giorni)).forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "23":
-                                                    try {
-                                                        System.out.println("Inserisci una data");
-                                                        LocalDate data = LocalDate.parse(sc.nextLine());
-                                                        System.out.println(trd.findTrattaPiuVeloceFromData(data));
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "24":
-                                                    try {
-                                                        System.out.println("Totale tessere valide: " + td.contaTessereValide());
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido: " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "25":
-                                                    try {
-                                                        System.out.println("Inserisci punto di Emissione:");
-                                                        UUID puntoDiEmissioneId = UUID.fromString(sc.nextLine());
-
-                                                        List<Tessera> tessere = td.trovaTesserePerPuntoDiEmissione(puntoDiEmissioneId);
-
-                                                        System.out.println("Tessere trovate: " + tessere.toString());
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido: " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "26":
-                                                    try {
-                                                        System.out.println("Inserisci giorni da oggi per cercare tessere scadute:");
-                                                        int giorni = Integer.parseInt(sc.nextLine());
-                                                        LocalDate dataCorrente = LocalDate.now().minusDays(giorni);
-                                                        List<Tessera> tessereScadute = td.trovaTessereScadute(dataCorrente);
-                                                        tessereScadute.forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido: " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "27":
-                                                    try {
-                                                        System.out.println("Inserisci la data di inizio");
-                                                        String dataInizio = sc.nextLine();
-                                                        td.trovaTesserePerDataInizio(LocalDate.parse(dataInizio)).forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                case "28":
-                                                    try {
-                                                        System.out.println("Totale Punti di emissione: " + ped.contaPuntiDiEmissione());
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido: " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "29":
-                                                    try {
-                                                        System.out.println("Totale Rivenditori Autorizzati: " + ped.contaRivenditoriAutorizzati());
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido: " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "30":
-                                                    try {
-                                                        System.out.println("Totale Distributori Automatici: " + ped.contaDistributoriAutomatici());
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido: " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "31":
-                                                    try {
-                                                        System.out.println("Inserisci il nome di un Rivenditore:");
-                                                        String name = sc.nextLine();
-                                                        List<RivenditoriAutorizzati> rivenditori = ped.cercaRivenditoriAutorizzatiPerNome(name);
-                                                        rivenditori.forEach(System.out::println);
-                                                        System.out.println("Rivenditori trovati: " + rivenditori.size());
-
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido: " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "32":
-                                                    try {
-                                                        System.out.println("Totale Distributori Automatici attivi: " + ped.DistributoriAutomaticiAttivi());
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido: " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "33":
-                                                    try {
-                                                        System.out.println("Inserisci l'id del mezzo per trovare la capienza:");
-                                                        String mezzoId = sc.nextLine();
-                                                        int capienza = md.trovaCapienzaMezzo(UUID.fromString(mezzoId));
-                                                        System.out.println("Capienza del mezzo con id " + mezzoId + ": " + capienza);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "34":
-                                                    try {
-                                                        System.out.println("Inserisci l'id del mezzo per verificare se è in servizio:");
-                                                        String mezzoId = sc.nextLine();
-                                                        boolean inServizio = md.trovaStatoInServizioMezzo(UUID.fromString(mezzoId));
-                                                        System.out.println("Il mezzo con id " + mezzoId + " è " + (inServizio ? "in servizio" : "fuori servizio"));
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "35":
-                                                    try {
-                                                        System.out.println("Inserisci l'id del mezzo per trovare la data di inizio servizio:");
-                                                        String mezzoId = sc.nextLine();
-                                                        LocalDate dataInizio = md.trovaDataInizioServizio(UUID.fromString(mezzoId));
-                                                        System.out.println("Data di inizio servizio del mezzo con id " + mezzoId + ": " + dataInizio);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "36":
-                                                    try {
-                                                        System.out.println("Inserisci l'id del mezzo per trovare la data di fine servizio:");
-                                                        String mezzoId = sc.nextLine();
-                                                        LocalDate dataFine = md.trovaDataFineServizio(UUID.fromString(mezzoId));
-                                                        System.out.println("Data di fine servizio del mezzo con id " + mezzoId + ": " + dataFine);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "37":
-                                                    try {
-                                                        System.out.println("Inserisci l'id del mezzo per trovare il numero del mezzo:");
-                                                        String mezzoId = sc.nextLine();
-                                                        int numeroMezzo = md.trovaNumeroMezzo(UUID.fromString(mezzoId));
-                                                        System.out.println("Numero del mezzo con id " + mezzoId + ": " + numeroMezzo);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "38":
-                                                    try {
-                                                        System.out.println("Inserisci l'id del mezzo per trovare il tipo del mezzo:");
-                                                        String mezzoId = sc.nextLine();
-                                                        TipoMezzo tipoMezzo = md.trovaTipoMezzo(UUID.fromString(mezzoId));
-                                                        System.out.println("Tipo del mezzo con id " + mezzoId + ": " + tipoMezzo);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "39":
-                                                    try {
-                                                        System.out.println("Inserisci l'id del mezzo per trovare tutte le manutenzioni ricevute:");
-                                                        String mezzoId = sc.nextLine();
-                                                        md.trovaManutenzioniPerMezzo(UUID.fromString(mezzoId)).forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "40":
-                                                    try {
-                                                        System.out.println("Inserisci l'id della tratta per trovare il numero di giri:");
-                                                        String trattaId = sc.nextLine();
-                                                        Long numeroGiri = md.trovaNumeroDiGiriInTratta(UUID.fromString(trattaId));
-                                                        System.out.println("Numero di giri nella tratta con id " + trattaId + ": " + numeroGiri);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "41":
-                                                    try {
-                                                        System.out.println("Inserisci l'id del giro per trovare la tratta associata:");
-                                                        String giroId = sc.nextLine();
-                                                        Giro giro1 = gd.trovaTrattaPerGiro(UUID.fromString(giroId));
-                                                        System.out.println("Tratta associata al giro con id " + giroId + ": " + giro1);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "42":
-                                                    try {
-                                                        System.out.println("Inserisci l'id del giro per trovare le tessere associate:");
-                                                        String giroId = sc.nextLine();
-                                                        gd.trovaTesserePerGiro(UUID.fromString(giroId)).forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "43":
-                                                    try {
-                                                        System.out.println("Inserisci l'id del giro per trovare il mezzo che sta facendo il giro:");
-                                                        String giroId = sc.nextLine();
-                                                        Mezzo mezzo1 = gd.trovaMezzoPerGiro(UUID.fromString(giroId));
-                                                        System.out.println("Mezzo che sta facendo il giro con id " + giroId + ": " + mezzo1);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "44":
-                                                    try {
-                                                        ad.differenzaAbbonamentiAttiviNonAttivi();
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "45":
-                                                    try {
-                                                        bd.differenzaBigliettiPerVidimazione();
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "46":
-                                                    try {
-                                                        mnd.differenzaMezziInManutenzionePerTipo();
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido " + ex.getMessage());
-                                                    }
-                                                    break;
-
-                                                case "47":
-                                                    try {
-                                                        System.out.println(trd.findTrattaConIlNumeroPiuAltoDiBigliettiVidimati());
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Errore: " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "48":
-                                                    try {
-                                                        System.out.println(trd.findTrattaConIlNumeroPiuAltoDiAbbonamenti());
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Errore: " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "49":
-                                                    try {
-                                                        System.out.println("Inserisci ID tessera");
-                                                        String tesseraIdInput = sc.nextLine();
-                                                        UUID idTessera = UUID.fromString(tesseraIdInput);
-                                                        long ticketCount = td.contaBigliettiAssociati(idTessera);
-                                                        System.out.println("Numero di biglietti associati alla tessera con id " + idTessera + ": " + ticketCount);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido: " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "50":
-                                                    try {
-                                                        System.out.println("Inserisci il nome da cercare:");
-                                                        String nome = sc.nextLine();
-                                                        List<Utente> utentiPerNome = ud.getUtentiByNome(nome);
-                                                        utentiPerNome.forEach(System.out::println);
-                                                    } catch (Exception e) {
-                                                        System.out.println("Errore durante la ricerca degli utenti per nome: " + e.getMessage());
-                                                    }
-                                                    break;
-                                                case "51":
-                                                    try {
-                                                        System.out.println("Inserisci il cognome da cercare:");
-                                                        String cognome = sc.nextLine();
-                                                        List<Utente> utentiPerCognome = ud.getUtentiByCognome(cognome);
-                                                        utentiPerCognome.forEach(System.out::println);
-                                                    } catch (Exception e) {
-                                                        System.out.println("Errore durante la ricerca degli utenti per cognome: " + e.getMessage());
-                                                    }
-                                                    break;
-                                                case "52":
-                                                    try {
-                                                        System.out.println("Inserisci il nome da cercare:");
-                                                        String nomeCognomeNome = sc.nextLine();
-                                                        System.out.println("Inserisci il cognome da cercare:");
-                                                        String nomeCognomeCognome = sc.nextLine();
-                                                        List<Utente> utentiPerNomeECognome = ud.getUtentiByNomeECognome(nomeCognomeNome, nomeCognomeCognome);
-                                                        utentiPerNomeECognome.forEach(System.out::println);
-                                                    } catch (Exception e) {
-                                                        System.out.println("Errore durante la ricerca degli utenti per nome e cognome: " + e.getMessage());
-                                                    }
-                                                    break;
-                                                case "53":
-                                                    try {
-                                                        System.out.println("Inserisci l'età minima:");
-                                                        int eta = Integer.parseInt(sc.nextLine());
-                                                        List<Utente> utentiPerEta = ud.getUtentiByEtaMaggioreDi(eta);
-                                                        utentiPerEta.forEach(System.out::println);
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci un'età valida (numero intero).");
-                                                    } catch (Exception e) {
-                                                        System.out.println("Errore durante il filtraggio degli utenti per età: " + e.getMessage());
-                                                    }
-                                                    break;
-
-                                                case "54":
-                                                    try {
-                                                        System.out.println("Inserisci il numero tessera da cercare:");
-                                                        int numeroTessera = Integer.parseInt(sc.nextLine());
-                                                        List<Utente> utentiPerNumeroTessera = ud.getUtentiByNumeroTessera(numeroTessera);
-                                                        utentiPerNumeroTessera.forEach(System.out::println);
-                                                    } catch (NumberFormatException e) {
-                                                        System.out.println("Inserisci un numero tessera valido (numero intero).");
-                                                    } catch (Exception e) {
-                                                        System.out.println("Errore durante la ricerca degli utenti per numero tessera: " + e.getMessage());
-                                                    }
-                                                    break;
-                                                case "55":
-                                                    try {
-                                                        System.out.println("Inserisci l'id della tessera:");
-                                                        UUID tesseraId = UUID.fromString(sc.nextLine());
-                                                        List<Utente> utentiPerTesseraId = ud.getUtentiByTesseraId(tesseraId);
-                                                        utentiPerTesseraId.forEach(System.out::println);
-                                                    } catch (IllegalArgumentException e) {
-                                                        System.out.println("Formato ID tessera non valido. Riprova.");
-                                                    } catch (Exception e) {
-                                                        System.out.println("Errore durante la ricerca degli utenti per ID tessera: " + e.getMessage());
-                                                    }
-                                                    break;
-                                                case "56":
-                                                    try {
-                                                        System.out.println("Elenco di tutti gli utenti:");
-                                                        List<Utente> allUtenti = ud.getAllUtenti();
-                                                        allUtenti.forEach(System.out::println);
-                                                    } catch (Exception e) {
-                                                        System.out.println("Errore durante il recupero degli utenti: " + e.getMessage());
-                                                    }
-                                                    break;
-                                                case "57":
-                                                    try {
-                                                        System.out.println("Inserisci id tratta");
-                                                        String idTratta = sc.nextLine();
-                                                        bd.trovaListaBigliettiPassatiInTratta(UUID.fromString(idTratta)).forEach(System.out::println);
-                                                    } catch (Exception ex) {
-                                                        System.out.println("Input non valido: " + ex.getMessage());
-                                                    }
-                                                    break;
-                                                case "0":
-                                                    System.out.println("Torna al menu principale");
-                                                    break;
-                                                default:
-                                                    System.out.println("il valore non è valido");
-                                                    break;
+                                                                        } catch (Exception e) {
+                                                                            System.out.println(e.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "2":
+                                                                        try {
+                                                                            System.out.println("Inserisci un tipo di mezzo valido AUTOBUS o TRAM");
+                                                                            String tipo = sc.nextLine().toUpperCase();
+                                                                            mnd.filtraMezziPerTipo(TipoMezzo.valueOf(tipo)).forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "3":
+                                                                        try {
+                                                                            System.out.println("Mezzi ancora in manutenzione");
+                                                                            mnd.mezziInManutenzione().forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "4":
+                                                                        try {
+                                                                            System.out.println("Inserisci un tipo mezzo valido AUTOBUS TRAM");
+                                                                            String tipo = sc.nextLine().toUpperCase();
+                                                                            System.out.println("Mezzi di tipo " + tipo + " presenti in officina " + mnd.contaMezziInManutenzionePerTipo(TipoMezzo.valueOf(tipo)));
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "5":
+                                                                        try {
+                                                                            System.out.println("Inserisci l'id del mezzo per trovare la capienza:");
+                                                                            String mezzoId = sc.nextLine();
+                                                                            int capienza = md.trovaCapienzaMezzo(UUID.fromString(mezzoId));
+                                                                            System.out.println("Capienza del mezzo con id " + mezzoId + ": " + capienza);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "6":
+                                                                        try {
+                                                                            System.out.println("Inserisci l'id del mezzo per verificare se è in servizio:");
+                                                                            String mezzoId = sc.nextLine();
+                                                                            boolean inServizio = md.trovaStatoInServizioMezzo(UUID.fromString(mezzoId));
+                                                                            System.out.println("Il mezzo con id " + mezzoId + " è " + (inServizio ? "in servizio" : "fuori servizio"));
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "7":
+                                                                        try {
+                                                                            System.out.println("Inserisci l'id del mezzo per trovare la data di inizio servizio:");
+                                                                            String mezzoId = sc.nextLine();
+                                                                            LocalDate dataInizio = md.trovaDataInizioServizio(UUID.fromString(mezzoId));
+                                                                            System.out.println("Data di inizio servizio del mezzo con id " + mezzoId + ": " + dataInizio);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "8":
+                                                                        try {
+                                                                            System.out.println("Inserisci l'id del mezzo per trovare la data di fine servizio:");
+                                                                            String mezzoId = sc.nextLine();
+                                                                            LocalDate dataFine = md.trovaDataFineServizio(UUID.fromString(mezzoId));
+                                                                            System.out.println("Data di fine servizio del mezzo con id " + mezzoId + ": " + dataFine);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "9":
+                                                                        try {
+                                                                            System.out.println("Inserisci l'id del mezzo per trovare il numero del mezzo:");
+                                                                            String mezzoId = sc.nextLine();
+                                                                            int numeroMezzo = md.trovaNumeroMezzo(UUID.fromString(mezzoId));
+                                                                            System.out.println("Numero del mezzo con id " + mezzoId + ": " + numeroMezzo);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "10":
+                                                                        try {
+                                                                            System.out.println("Inserisci l'id del mezzo per trovare il tipo del mezzo:");
+                                                                            String mezzoId = sc.nextLine();
+                                                                            TipoMezzo tipoMezzo = md.trovaTipoMezzo(UUID.fromString(mezzoId));
+                                                                            System.out.println("Tipo del mezzo con id " + mezzoId + ": " + tipoMezzo);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "11":
+                                                                        try {
+                                                                            System.out.println("Inserisci l'id del mezzo per trovare tutte le manutenzioni ricevute:");
+                                                                            String mezzoId = sc.nextLine();
+                                                                            md.trovaManutenzioniPerMezzo(UUID.fromString(mezzoId)).forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "12":
+                                                                        try {
+                                                                            System.out.println("Inserisci l'id del giro per trovare il mezzo che sta facendo il giro:");
+                                                                            String giroId = sc.nextLine();
+                                                                            Mezzo mezzo1 = gd.trovaMezzoPerGiro(UUID.fromString(giroId));
+                                                                            System.out.println("Mezzo che sta facendo il giro con id " + giroId + ": " + mezzo1);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "13":
+                                                                        try {
+                                                                            mnd.differenzaMezziInManutenzionePerTipo();
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "14":
+                                                                        try {
+                                                                            System.out.println("Quale manutenzione vuoi cercare tramite id?");
+                                                                            String findId = sc.nextLine();
+                                                                            System.out.println(mnd.getByID(findId));
+                                                                        } catch (NumberFormatException e) {
+                                                                            System.out.println("Inserisci il formato corretto\n");
+                                                                        } catch (Exception e) {
+                                                                            System.out.println(e.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "0":
+                                                                        System.out.println("Torna al menu principale");
+                                                                        break;
+                                                                    default:
+                                                                        System.out.println("il valore non è valido");
+                                                                        break;
+                                                                }
+                                                                if (gestioneMezzi.equals("0")) break;
+                                                            } catch (Exception ex) {
+                                                                System.out.println(ex.getMessage());
+                                                            }
+                                                        }
+                                                        break;
+                                                    case "5":
+                                                        System.out.println("Gestione abbonamenti");
+                                                        while (true) {
+                                                            try {
+                                                                System.out.println("""
+                                                                        1. Filtra abbonamenti per stato
+                                                                        2. Filtra abbonamenti per data di rinnovo
+                                                                        3. Filtra abbonamenti per tipo
+                                                                        4. Conta abbonamenti per tipo
+                                                                        5. Conta abbonamenti per stato
+                                                                        6. Verifica abbonamenti in scadenza entro tot giorni
+                                                                        7. Differenza abbonamenti per tipo
+                                                                        0. Torna al menu precedente
+                                                                        """);
+                                                                String gestioneAbbonamenti = sc.nextLine();
+                                                                switch (gestioneAbbonamenti) {
+                                                                    case "1":
+                                                                        try {
+                                                                            System.out.println("Vuoi filtrare gli abbonamenti ATTIVO o NON_ATTIVO?");
+                                                                            String statoAbbonamento = sc.nextLine().toUpperCase();
+                                                                            ad.filtraAbbonamentiPerStato(StatoAbbonamento.valueOf(statoAbbonamento)).forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "2":
+                                                                        try {
+                                                                            System.out.println("Inserisci la data per filtrare gli abbonamenti");
+                                                                            String data = sc.nextLine();
+                                                                            ad.filtraAbbonamentiRinnovatiInData(data).forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "3":
+                                                                        try {
+                                                                            System.out.println("Inserisci il tipo di abbonamento (MENSILE o SETTIMANALE)");
+                                                                            String tipoAbbonamento = sc.nextLine().toUpperCase();
+                                                                            ad.filtraAbbonamentiPerTipo(TipoAbbonamento.valueOf(tipoAbbonamento)).forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "4":
+                                                                        try {
+                                                                            System.out.println("Inserisci il tipo SETTIMANALE o MENSILE");
+                                                                            String tipo = sc.nextLine().toUpperCase();
+                                                                            System.out.println("Abbonamenti di tipo " + tipo + " trovati: " + ad.contaAbbonamentiPerTipo(TipoAbbonamento.valueOf(tipo)));
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "5":
+                                                                        try {
+                                                                            System.out.println("Inserisci uno stato ATTIVO o NON_ATTIVO");
+                                                                            String stato = sc.nextLine().toUpperCase();
+                                                                            System.out.println("Abbonamenti " + stato + " trovati: " + ad.contaAbbonamentiPerStato(StatoAbbonamento.valueOf(stato)));
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "6":
+                                                                        try {
+                                                                            System.out.println("Specifica il numero giorni");
+                                                                            String giorni = sc.nextLine();
+                                                                            ad.abbonamentiAttiviInScadenzaEntroGiorni(Integer.parseInt(giorni)).forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "7":
+                                                                        try {
+                                                                            ad.differenzaAbbonamentiAttiviNonAttivi();
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "0":
+                                                                        System.out.println("Torna al menu principale");
+                                                                        break;
+                                                                    default:
+                                                                        System.out.println("il valore non è valido");
+                                                                        break;
+                                                                }
+                                                                if (gestioneAbbonamenti.equals("0")) break;
+                                                            } catch (Exception ex) {
+                                                                System.out.println(ex.getMessage());
+                                                            }
+                                                        }
+                                                        break;
+                                                    case "6":
+                                                        System.out.println("Gestione biglietti");
+                                                        while (true) {
+                                                            try {
+                                                                System.out.println("""
+                                                                        1. Filtra biglietti per stato
+                                                                        2. Filtra biglietti per data vidimazione
+                                                                        3. Conta biglietti vidimati o non vidimati
+                                                                        4. Differenza biglietti per stato
+                                                                        5. Trova la tratta con il numero più alto di biglietti vidimati
+                                                                        0. Torna al menu precedente
+                                                                        """);
+                                                                String gestioneBiglietti = sc.nextLine();
+                                                                switch (gestioneBiglietti) {
+                                                                    case "1":
+                                                                        try {
+                                                                            System.out.println("Inserisci true per i biglietti vidimati, false per i non vidimati");
+                                                                            Boolean stato = Boolean.valueOf(sc.nextLine());
+                                                                            bd.filtraBigliettiPerStato(stato).forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "2":
+                                                                        try {
+                                                                            System.out.println("Inserisci una data valida");
+                                                                            String data = sc.nextLine();
+                                                                            bd.filtraBigliettiVidimatiInData(data).forEach(System.out::println);
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "3":
+                                                                        try {
+                                                                            System.out.println("Quali biglietti vuoi contare? true vidimati / false non vidimati");
+                                                                            Boolean stato = Boolean.valueOf(sc.nextLine());
+                                                                            System.out.println("Biglietti trovati " + bd.contaBigliettiVidimati(stato));
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "4":
+                                                                        try {
+                                                                            bd.differenzaBigliettiPerVidimazione();
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Input non valido " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "5":
+                                                                        try {
+                                                                            System.out.println(trd.findTrattaConIlNumeroPiuAltoDiBigliettiVidimati());
+                                                                        } catch (Exception ex) {
+                                                                            System.out.println("Errore: " + ex.getMessage());
+                                                                        }
+                                                                        break;
+                                                                    case "0":
+                                                                        System.out.println("Torna al menu principale");
+                                                                        break;
+                                                                    default:
+                                                                        System.out.println("il valore non è valido");
+                                                                        break;
+                                                                }
+                                                                if (gestioneBiglietti.equals("0")) break;
+                                                            } catch (Exception ex) {
+                                                                System.out.println(ex.getMessage());
+                                                            }
+                                                        }
+                                                        break;
+                                                    case "0":
+                                                        System.out.println("Torna al menu precedente");
+                                                        break;
+                                                    default:
+                                                        System.out.println("il valore non è valido");
+                                                        break;
+                                                }
+                                                if (menuAvanzato.equals("0")) break;
+                                            } catch (Exception ex) {
+                                                System.out.println(ex.getMessage());
                                             }
-                                            if (sceltaCercaElimina.equals("0")) break;
-                                        } catch (Exception ex) {
-                                            System.out.println(ex.getMessage());
                                         }
+
                                     }
+                                    case "4" -> System.out.println("Torno al menu precedente...");
+                                    default -> System.out.println("Scelta non valida");
                                 }
+                                if (scelta.equals("4")) break;
+                                if (scelta.equals("0")) return;
                             }
                         } else System.out.println("Password errata");
-                        break; //yo
+                        break;
                     case "2":
                         while (true) {
                             try {
@@ -1070,6 +1123,13 @@ public class Application {
                                                     8. Ottenere Tratte tra una zona di partenza e un capolinea specifico
                                                     9. Ottenere tutte le Tratte ordinate per tempo di percorrenza previsto
                                                     10. Ottenere la Tratta con il tempo di percorrenza previsto più veloce
+                                                    11. Cerca tratta tramite id
+                                                    12. Trova tratta più veloce tramite una data
+                                                    13. Trova il numero di giri in una determinata tratta
+                                                    14. Trova la tratta del giro tramite id
+                                                    15. Trova la tratta con il tempo di percorrenza previsto più veloce in base a una data
+                                                    16. Trova lista biglietti per id tratta
+                                                    17. Cerca giro tramite id
                                                     0. Torna al menu precedente""");
                                             String sceltaTratte = sc.nextLine();
                                             TrattaDAO trattaDAO = new TrattaDAO(em);
@@ -1131,6 +1191,74 @@ public class Application {
                                                     Tratta trattaVeloce = trattaDAO.getTrattaConTempoPercorrenzaPiuVeloce();
                                                     System.out.println(trattaVeloce);
                                                     break;
+                                                case "11":
+                                                    try {
+                                                        System.out.println("Quale tratta vuoi cercare tramite id?");
+                                                        String findId = sc.nextLine();
+                                                        System.out.println(trd.getByID(findId));
+                                                    } catch (NumberFormatException e) {
+                                                        System.out.println("Inserisci il formato corretto\n");
+                                                    } catch (Exception e) {
+                                                        System.out.println(e.getMessage());
+                                                    }
+                                                    break;
+                                                case "12":
+                                                    try {
+                                                        System.out.println("Inserisci una data");
+                                                        LocalDate data = LocalDate.parse(sc.nextLine());
+                                                        System.out.println(trd.findTrattaPiuVeloceFromData(data));
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "13":
+                                                    try {
+                                                        System.out.println("Inserisci l'id della tratta per trovare il numero di giri:");
+                                                        String trattaId = sc.nextLine();
+                                                        Long numeroGiri = md.trovaNumeroDiGiriInTratta(UUID.fromString(trattaId));
+                                                        System.out.println("Numero di giri nella tratta con id " + trattaId + ": " + numeroGiri);
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "14":
+                                                    try {
+                                                        System.out.println("Inserisci l'id del giro per trovare la tratta associata:");
+                                                        String giroId = sc.nextLine();
+                                                        Giro giro1 = gd.trovaTrattaPerGiro(UUID.fromString(giroId));
+                                                        System.out.println("Tratta associata al giro con id " + giroId + ": " + giro1);
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "15":
+                                                    try {
+                                                        System.out.println(trd.findTrattaConIlNumeroPiuAltoDiAbbonamenti());
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Errore: " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "16":
+                                                    try {
+                                                        System.out.println("Inserisci id tratta");
+                                                        String trattaID = sc.nextLine();
+                                                        bd.trovaListaBigliettiPassatiInTratta(UUID.fromString(trattaID)).forEach(System.out::println);
+                                                    } catch (Exception ex) {
+                                                        System.out.println("Input non valido: " + ex.getMessage());
+                                                    }
+                                                    break;
+                                                case "17":
+                                                    try {
+                                                        System.out.println("Quale giro vuoi cercare tramite id?");
+                                                        String findId = sc.nextLine();
+                                                        System.out.println(gd.getByID(findId));
+                                                    } catch (NumberFormatException e) {
+                                                        System.out.println("Inserisci il formato corretto\n");
+
+                                                    } catch (Exception e) {
+                                                        System.out.println(e.getMessage());
+                                                    }
+                                                    break;
                                                 case "0":
                                                     break;
                                                 default:
@@ -1153,7 +1281,7 @@ public class Application {
                             }
                         }
                         break;
-                    case "3":
+                    case "0":
                         System.out.println("Uscita dal programma in corso...");
                         return;
                     default:
