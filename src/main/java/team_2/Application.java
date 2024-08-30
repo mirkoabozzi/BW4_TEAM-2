@@ -99,7 +99,7 @@ public class Application {
                         if (pass.equals("1234")) {
                             while (true) {
 
-                                System.out.println("1. Crea\n2. Elimina o modifica\n3. Menu avanzato\n4. Torna al menu precedente\n0. Esci dal programma");
+                                System.out.println("1. Crea\n2. Elimina o modifica\n3. Menu avanzato\n0. Torna al menu precedente");
                                 String scelta = sc.nextLine();
                                 switch (scelta) {
                                     case "1" -> {
@@ -961,11 +961,10 @@ public class Application {
                                         }
 
                                     }
-                                    case "4" -> System.out.println("Torno al menu precedente...");
+                                    case "0" -> System.out.println("Torno al menu precedente...");
                                     default -> System.out.println("Scelta non valida");
                                 }
-                                if (scelta.equals("4")) break;
-                                if (scelta.equals("0")) return;
+                                if (scelta.equals("0")) break;
                             }
                         } else System.out.println("Password errata");
                         break;
@@ -1091,10 +1090,6 @@ public class Application {
                                         try {
                                             System.out.println("Inserisci un id utente valido");
                                             String idUtente = sc.nextLine();
-                                            // Controlla se l'ID utente è un UUID valido
-                                            UUID uuid = UUID.fromString(idUtente);
-                                            // Controlla se l'utente esiste
-                                            Utente utente1 = ud.getById(idUtente);
                                             boolean isActive = ud.hasAbbonamentoAttivo(idUtente);
                                             if (isActive) {
                                                 System.out.println("hai un abbonamento attivo.");
@@ -1113,69 +1108,56 @@ public class Application {
                                         while (true) {
                                             System.out.println("Gestisci Tratte");
                                             System.out.println("""
-                                                    1. Crea Tratta
-                                                    2. Cerca Tratta tramite id
-                                                    3. Elimina Tratta
-                                                    4. Ottenere tutte le Tratte
-                                                    5. Ottenere Tratte con una zona di partenza specifica
-                                                    6. Ottenere Tratte che partono in un orario specifico
-                                                    7. Ottenere Tratte associate a un determinato mezzo di trasporto
-                                                    8. Ottenere Tratte tra una zona di partenza e un capolinea specifico
-                                                    9. Ottenere tutte le Tratte ordinate per tempo di percorrenza previsto
-                                                    10. Ottenere la Tratta con il tempo di percorrenza previsto più veloce
-                                                    11. Cerca tratta tramite id
-                                                    12. Trova tratta più veloce tramite una data
-                                                    13. Trova il numero di giri in una determinata tratta
-                                                    14. Trova la tratta del giro tramite id
-                                                    15. Trova la tratta con il tempo di percorrenza previsto più veloce in base a una data
-                                                    16. Trova lista biglietti per id tratta
-                                                    17. Cerca giro tramite id
+                                                    1. Cerca Tratta tramite id
+                                                    2. Ottenere tutte le Tratte
+                                                    3. Ottenere Tratte con una zona di partenza specifica
+                                                    4. Ottenere Tratte che partono in un orario specifico
+                                                    5. Ottenere Tratte associate a un determinato mezzo di trasporto
+                                                    6. Ottenere Tratte tra una zona di partenza e un capolinea specifico
+                                                    7. Ottenere tutte le Tratte ordinate per tempo di percorrenza previsto
+                                                    8. Ottenere la Tratta con il tempo di percorrenza previsto più veloce
+                                                    9. Cerca tratta tramite id
+                                                    10. Trova tratta più veloce tramite una data
+                                                    11. Trova il numero di giri in una determinata tratta
+                                                    12. Trova la tratta del giro tramite id
+                                                    13. Trova la tratta con il tempo di percorrenza previsto più veloce in base a una data
+                                                    14. Trova lista biglietti per id tratta
+                                                    15. Cerca giro tramite id
                                                     0. Torna al menu precedente""");
                                             String sceltaTratte = sc.nextLine();
                                             TrattaDAO trattaDAO = new TrattaDAO(em);
 
                                             switch (sceltaTratte) {
                                                 case "1":
-                                                    Tratta nuovaTratta = new Tratta();
-                                                    trattaDAO.save(nuovaTratta);
-                                                    break;
-                                                case "2":
                                                     System.out.println("Inserisci l'ID della tratta:");
                                                     String idTratta = sc.nextLine();
                                                     Tratta trattaTrovata = trattaDAO.getByID(idTratta);
                                                     System.out.println(trattaTrovata);
                                                     break;
-                                                case "3":
-                                                    System.out.println("Inserisci l'ID della tratta da eliminare:");
-                                                    String idTrattaDaEliminare = sc.nextLine();
-                                                    trattaDAO.deleteById(idTrattaDaEliminare);
-                                                    break;
-                                                case "4":
+                                                case "2":
                                                     List<Tratta> tutteLeTratte = trattaDAO.getAllTratte();
                                                     tutteLeTratte.forEach(System.out::println);
                                                     break;
-                                                case "5":
+                                                case "3":
                                                     System.out.println("Inserisci la zona di partenza:");
                                                     String zonaPartenza = sc.nextLine();
                                                     List<Tratta> tratteZona = trattaDAO.getTratteByZonaPartenza(zonaPartenza);
                                                     tratteZona.forEach(System.out::println);
                                                     break;
-                                                case "6":
-
+                                                case "4":
                                                     System.out.println("Inserisci l'orario di partenza:");
                                                     double orarioPartenza = sc.nextDouble();
                                                     sc.nextLine();
                                                     List<Tratta> tratteOrario = trattaDAO.getTratteByOrarioPartenza(orarioPartenza);
                                                     tratteOrario.forEach(System.out::println);
                                                     break;
-                                                case "7":
-
+                                                case "5":
                                                     System.out.println("Inserisci l'ID del mezzo di trasporto:");
                                                     UUID mezzoId = UUID.fromString(sc.nextLine());
                                                     List<Tratta> tratteMezzo = trattaDAO.getTratteByMezzoId(mezzoId);
                                                     tratteMezzo.forEach(System.out::println);
                                                     break;
-                                                case "8":
+                                                case "6":
                                                     System.out.println("Inserisci la zona di partenza:");
                                                     String zonaPartenzaSpecifico = sc.nextLine();
                                                     System.out.println("Inserisci il capolinea:");
@@ -1183,15 +1165,15 @@ public class Application {
                                                     List<Tratta> tratteSpecifiche = trattaDAO.getTratteByZonaPartenzaAndCapolinea(zonaPartenzaSpecifico, capolinea);
                                                     tratteSpecifiche.forEach(System.out::println);
                                                     break;
-                                                case "9":
+                                                case "7":
                                                     List<Tratta> tratteOrdinate = trattaDAO.getTratteOrderByTempoPercorrenza();
                                                     tratteOrdinate.forEach(System.out::println);
                                                     break;
-                                                case "10":
+                                                case "8":
                                                     Tratta trattaVeloce = trattaDAO.getTrattaConTempoPercorrenzaPiuVeloce();
                                                     System.out.println(trattaVeloce);
                                                     break;
-                                                case "11":
+                                                case "9":
                                                     try {
                                                         System.out.println("Quale tratta vuoi cercare tramite id?");
                                                         String findId = sc.nextLine();
@@ -1202,7 +1184,7 @@ public class Application {
                                                         System.out.println(e.getMessage());
                                                     }
                                                     break;
-                                                case "12":
+                                                case "10":
                                                     try {
                                                         System.out.println("Inserisci una data");
                                                         LocalDate data = LocalDate.parse(sc.nextLine());
@@ -1211,7 +1193,7 @@ public class Application {
                                                         System.out.println("Input non valido " + ex.getMessage());
                                                     }
                                                     break;
-                                                case "13":
+                                                case "11":
                                                     try {
                                                         System.out.println("Inserisci l'id della tratta per trovare il numero di giri:");
                                                         String trattaId = sc.nextLine();
@@ -1221,7 +1203,7 @@ public class Application {
                                                         System.out.println("Input non valido " + ex.getMessage());
                                                     }
                                                     break;
-                                                case "14":
+                                                case "12":
                                                     try {
                                                         System.out.println("Inserisci l'id del giro per trovare la tratta associata:");
                                                         String giroId = sc.nextLine();
@@ -1231,14 +1213,14 @@ public class Application {
                                                         System.out.println("Input non valido " + ex.getMessage());
                                                     }
                                                     break;
-                                                case "15":
+                                                case "13":
                                                     try {
                                                         System.out.println(trd.findTrattaConIlNumeroPiuAltoDiAbbonamenti());
                                                     } catch (Exception ex) {
                                                         System.out.println("Errore: " + ex.getMessage());
                                                     }
                                                     break;
-                                                case "16":
+                                                case "14":
                                                     try {
                                                         System.out.println("Inserisci id tratta");
                                                         String trattaID = sc.nextLine();
@@ -1247,7 +1229,7 @@ public class Application {
                                                         System.out.println("Input non valido: " + ex.getMessage());
                                                     }
                                                     break;
-                                                case "17":
+                                                case "15":
                                                     try {
                                                         System.out.println("Quale giro vuoi cercare tramite id?");
                                                         String findId = sc.nextLine();
